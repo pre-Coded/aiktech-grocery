@@ -1,0 +1,16 @@
+.final_headline{
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 59px;
+}
+@media (max-width: 425px){
+    .final_headline{
+        font-size: 20px;
+        line-height: 40px;
+    }
+}
+@media (max-width: 768px){
+    .final_headline{
+        font-size: 30px;
+    }
+}

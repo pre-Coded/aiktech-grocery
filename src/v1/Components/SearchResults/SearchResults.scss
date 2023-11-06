@@ -1,0 +1,37 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.search-result-container {
+  position: fixed;
+  margin: auto;
+  z-index: 999;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  width: 90vw;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  padding: 1rem 0rem 8rem 0rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: scroll;
+  left: 0;
+  right: 0;
+}
+.category_name_addstock {
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+.load-more {
+  background-color: #ff9b9b;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin-top: 1rem;
+}
+.load-more:hover {
+  background-color: #e97979;
+}
+
+.everything-delivery-message {
+  margin-top: 2rem;
+  padding: 1rem;
+}

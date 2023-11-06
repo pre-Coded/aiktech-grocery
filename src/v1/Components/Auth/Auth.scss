@@ -1,0 +1,186 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.login-wrapper,
+.login-container {
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 999 !important;
+  background-color: white !important;
+  position: absolute !important;
+}
+
+.login-container {
+  padding: 0.2rem !important;
+  height: 100% !important;
+  display: inline-block !important;
+  position: sticky !important;
+  width: 100% !important;
+  border-bottom-left-radius: 1rem !important;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+
+.login-wrapper {
+  width: 20rem !important;
+  // height: 26rem !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  border-bottom-left-radius: 1rem !important;
+}
+
+.login-wrapper hr {
+  height: 0.5rem !important;
+  border-radius: 0.3rem !important;
+  transition: 0.5s !important;
+  background: #8188fa !important;
+  opacity: 1 !important;
+  margin-top: 0 !important;
+}
+
+.login-options {
+  display: flex !important;
+}
+
+.login-options * {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 1 !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+.login-head,
+.signup-head {
+  padding: 0.8rem 0 !important;
+  transition: 0.3s !important;
+}
+
+.signup-head:hover,
+.login-head:hover {
+  background-color: rgba(219, 219, 219, 0.397) !important;
+  transition: 0.3s !important;
+}
+
+.highlighted-head {
+  color: #748af9 !important;
+}
+
+.login-left-hr {
+  width: 50% !important;
+}
+.login-right-hr {
+  width: 50% !important;
+  margin-left: 50% !important;
+}
+
+.option-select {
+  transition: 1s !important;
+  margin-left: auto !important;
+}
+
+.login-content {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 1rem 1rem 2rem 1rem !important;
+}
+
+.login-wrapper {
+  input {
+    background: #f5f5f5 !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0.3rem 1rem !important;
+    border-radius: 0.5rem !important;
+    width: 100% !important;
+    // background-color: blue !important;
+  }
+  select {
+    // background-color: blue !important;
+  }
+}
+.login-wrapper {
+  .input-container {
+    margin: 0.8rem 0;
+  }
+}
+
+.login-wrapper input::placeholder {
+  font-family: $poppins !important;
+  font-size: 0.8rem !important;
+}
+
+.login-wrapper button {
+  background-color: #748af9 !important;
+  color: white !important;
+  border: none !important;
+  outline: none !important;
+  padding: 0.3rem !important;
+  border-radius: 10rem !important;
+}
+.login-wrapper button:hover {
+  background-color: #5768bb !important;
+}
+.signup-content {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 1rem 1rem 2rem 1rem !important;
+}
+
+.login-methods {
+  background-color: white !important;
+  border: 2px black solid !important;
+  padding: 0.3rem !important;
+  font-family: $poppins !important;
+  font-size: 1rem !important;
+  border-radius: 1rem !important;
+  margin: 1rem 1rem 0 1rem !important;
+  transition: 0.2s !important;
+  cursor: pointer !important;
+}
+
+.login-methods:hover {
+  background-color: gainsboro !important;
+  transition: 0.2s !important;
+}
+
+.login-img {
+  margin: 0 0.5rem 0 0 !important;
+  height: 100% !important;
+}
+
+.hide-login {
+  display: none !important;
+}
+
+.resend-otp {
+  font-size: 0.8rem;
+  color: #748af9;
+  font-weight: 500;
+  margin-bottom: 1rem !important;
+  cursor: pointer;
+}
+
+.login-user-methods {
+  width: 100%;
+  text-align: center;
+}
+
+.login-user-methods p {
+  text-decoration: none;
+  text-align: center;
+  color: black;
+  transition: 0.2s;
+  margin: auto;
+}
+
+.login-user-methods p:hover {
+  background-color: rgb(233, 233, 233);
+  transition: 0.2s;
+  margin: auto;
+}
+.logout p {
+  color: red;
+  border-bottom-left-radius: 0.8rem;
+}
+
+.login-content {
+}

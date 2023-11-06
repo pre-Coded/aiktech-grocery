@@ -1,0 +1,199 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.checkout-address-wrapper {
+  padding: 40px;
+  //   margin: 20px;
+  width: 35%;
+  background-color: $white;
+  border-radius: 10px;
+
+  .checkout-trace {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .active-trace {
+      font-family: $poppins;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      color: #3182ce;
+    }
+    .active-dash {
+      width: 25px;
+      border-bottom: 1px solid #3182ce;
+      line-height: 0.1em;
+      margin: 13px 15px 20px;
+    }
+    .dim-trace {
+      color: #c4c4c4;
+    }
+  }
+  .address-form {
+    // padding: 55px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dbdbdb;
+
+    .form-input {
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin: 10px 0px 10px 0px;
+      }
+      .input {
+        background-color: $platinum;
+        border-radius: 7px;
+        border: none;
+        padding: 8px;
+      }
+      .input:focus,
+      .input:focus-visible {
+        outline: none;
+        border: none;
+      }
+    }
+  }
+}
+.address-form:hover {
+  // border: 1px solid #3182ce;
+}
+
+.addresses-list {
+  margin: 20px 0;
+  .address-card {
+    overflow-x: hidden;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    .circle {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      min-height: 18px;
+      border-radius: 100%;
+      border: 1px solid #e0e0e0;
+      margin-right: 10px;
+    }
+  }
+  .address-card.selected {
+    border-color: #3182ce;
+    .circle {
+      background-color: #3182ce;
+      border-color: #3182ce;
+    }
+  }
+}
+
+.address-button-wrapper {
+  margin-top: 10px;
+  padding: 30px;
+  button {
+    width: 100%;
+  }
+}
+
+.address-icon-wrapper {
+  display: flex;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.address-icon-image {
+  width: 0.9rem;
+  margin-left: 0.6rem;
+  bottom: 0;
+}
+
+.address-option-container {
+  width: 80vw;
+  background-color: white;
+  border-radius: 1rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding: 2rem;
+  transform: translate(-50%, -50%);
+  max-width: 30rem;
+}
+
+.address-option-container h4 {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.5rem;
+  transition: 0.2s;
+  cursor: pointer;
+  font-weight: 1000;
+}
+.address-option-container h4:hover {
+  color: red;
+  transition: 0.2s;
+}
+
+.address-option-container input {
+  width: 100%;
+  border-radius: 0.3rem;
+  border: none;
+  background-color: rgb(243, 243, 243);
+  padding: 0.3rem;
+}
+
+.option-buttons {
+  text-align: right;
+  padding-top: 1rem;
+}
+
+.option-buttons button {
+  padding: 0.3rem 0.7rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.save-changes-buttons button:last-of-type {
+  background-color: #5c77ff;
+  border: 1px solid #5c77ff;
+  color: white;
+  pointer-events: unset;
+}
+
+.delete-message {
+  color: rgb(0, 0, 0);
+}
+
+.delete-buttons button:last-of-type {
+  border: 1px solid red;
+  background-color: red;
+  color: white;
+}
+.delete-buttons button:first-of-type {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+}
+
+.or {
+  padding: 0.1rem 0;
+  h6 {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgb(228, 228, 228);
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    color: gray;
+    font-size: 0.8rem;
+  }
+
+  h6 span {
+    background: #fff;
+    padding: 0 10px;
+  }
+}

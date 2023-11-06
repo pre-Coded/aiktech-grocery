@@ -1,0 +1,12 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.location-popup {
+  display: flex;
+  flex-direction: column;
+  img {
+    max-width: 100%;
+  }
+  * {
+    text-align: center;
+  }
+}

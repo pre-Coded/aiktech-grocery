@@ -1,0 +1,67 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.discount-wrapper {
+  width: 100%;
+  max-width: 100%;
+
+  .discount-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+  }
+
+  .discount-form {
+    display: flex;
+    align-items: center;
+  }
+
+  .submit-discount {
+    border: none;
+    border-radius: 0.3rem;
+    height: 2.4rem;
+    transition: 0.3rem;
+    background-color: #ffcece;
+  }
+  .submit-discount:hover {
+    transition: 0.3rem;
+    background-color: #ffa7a7;
+  }
+  .discount-scroll {
+    display: flex;
+    overflow-x: scroll;
+    max-width: 100%;
+    padding-top: 10px;
+  }
+
+  .discount-loader {
+    border: 1px solid #080808; /* Blue */
+    border-bottom: none;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+.discount-opacity {
+  opacity: 0.5 !important;
+}
+
+@media #{$media-tablet} {
+  .discount-wrapper {
+    .discount-title-wrapper {
+      flex-direction: column;
+      align-items: unset;
+    }
+  }
+}

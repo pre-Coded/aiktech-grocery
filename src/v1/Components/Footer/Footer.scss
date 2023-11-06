@@ -1,0 +1,142 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding-bottom: 1rem;
+  max-width: 100%;
+  padding: 3rem;
+  vertical-align: top;
+}
+
+.footer hr {
+  width: 80%;
+  color: white;
+  margin: 2rem auto;
+}
+
+.footer-wrapper * {
+  padding: 0;
+  margin: 0;
+}
+.footer-wrapper {
+  vertical-align: top;
+  background-color: black;
+  color: #707070;
+  text-align: left;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.footer-wrapper p {
+}
+
+.footer-head {
+  color: white;
+  margin: auto;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.footer-content {
+  display: inline-block;
+}
+.footer-content ul {
+  text-align: left;
+  display: inline-block;
+}
+.footer-content li {
+  list-style: none;
+  margin-bottom: 1rem;
+  line-height: 1.1rem;
+  cursor: pointer;
+}
+.footer-content a {
+  text-decoration: none;
+  color: #707070;
+}
+
+.footer-content a:hover {
+  color: white;
+}
+.footer-content li:hover {
+  color: white;
+}
+
+.footer-content img {
+  margin-right: 0.3rem;
+}
+.footer-content input {
+  background-color: #424242;
+  outline: none;
+  border: none;
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+  color: white;
+  margin-bottom: 0.3rem;
+  margin-right: 0.3rem;
+  vertical-align: top;
+  width: 100%;
+  max-width: 15rem;
+}
+
+.footer-content input::placeholder {
+  font-family: $roboto;
+}
+
+.footer-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-aboutus {
+  max-width: 40%;
+  display: inline-block;
+}
+.footer-categories {
+  text-transform: capitalize !important;
+  div {
+    display: flex;
+  }
+  ul {
+    width: 50%;
+    max-width: 15rem;
+  }
+}
+.footer-contact {
+  text-align: center;
+  display: inline-block;
+  width: 40%;
+}
+.footer-links {
+  width: 60%;
+}
+.footer-newsletter p {
+  margin-bottom: 1rem;
+}
+
+.category-link {
+  color: #707070;
+  text-decoration: none;
+}
+
+.category-link:hover {
+  color: white;
+}
+
+@media #{$media-mobile} {
+  .footer-content-wrapper {
+    flex-direction: column;
+    .footer-aboutus {
+      max-width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+  .footer-links {
+    margin-bottom: .5rem;
+    text-align: left;
+    width: 100%;
+  }
+}

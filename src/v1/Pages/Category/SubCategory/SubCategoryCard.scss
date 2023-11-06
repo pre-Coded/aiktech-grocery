@@ -1,0 +1,62 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.sub-category-card {
+    height: 9rem;
+    width: 7rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    
+    .sub-category-wrapper{
+        margin-top: .5rem;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // justify-content: center;
+        .sub-category-image-wrapper{
+            background-color: $sub-category-bg-color;
+            border-radius: 50%;
+            width: 80%;
+            min-height: 60%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            img{
+                width: 50%;
+                margin: auto;
+            }
+        }
+        .sub-category-text{
+            padding-top: .5rem;
+            white-space: break-spaces;
+        }
+    }
+    
+    
+}
+.sub-category-card-active{
+    box-shadow: 0px 3px 12px $category-card-active;
+    // border-radius: 50%;
+}
+
+@media #{$media-mobile} {
+    
+    .sub-category-card {
+        height: 7rem;
+        width: 5rem;
+        .sub-category-wrapper{
+            .sub-category-image-wrapper{
+                width: 70%;
+                min-height: 50%;
+                
+            }
+        }
+    
+    }
+}
+  

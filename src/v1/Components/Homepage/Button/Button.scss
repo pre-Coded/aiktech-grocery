@@ -1,0 +1,39 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5c77ff;
+  color: white;
+  border: none;
+  border-radius: 3rem;
+  transition: 0.3s;
+
+  padding: 0.5rem 0.9rem;
+  white-space: nowrap;
+}
+.btn:hover {
+  transition: 0.3s;
+  background-color: #3951c9;
+  color: white;
+}
+.button-loader {
+  width: 14px;
+  height: 14px;
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px $white solid;
+  border-bottom: none;
+  margin-right: 10px !important;
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

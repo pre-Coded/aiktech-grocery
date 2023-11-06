@@ -1,0 +1,33 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.whyshop-card {
+  background: #f4f6ff;
+  display: flex;
+  padding: 1rem;
+  font-family: $roboto;
+  align-items: center;
+  border-radius: 0.3rem;
+  margin: 1.5rem 0;
+  position: relative;
+  max-width: 30rem;
+
+  * {
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  img:first-of-type {
+    margin-right: 1rem;
+    height: 2rem;
+  }
+  img:last-of-type {
+    height: 1rem;
+    position: absolute;
+    right: 1rem;
+    top: calc(50% - 0.5rem);
+  }
+  .whyshop-card-text {
+    max-width: 65%;
+  }
+}

@@ -1,0 +1,40 @@
+
+.modal_section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal_content {
+    width: 550px;
+    background: #2b273a;
+    padding: 1rem 1rem 0.5rem 1rem;
+    border-radius: 10px;
+    color: black;
+  }
+  .modal_text {
+    padding: 0.5rem;
+    font-size: 20px;
+  }
+  .modal_footer {
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+@media screen and (max-width: 768px){
+    .modal_content {
+      width: 400px;
+    }
+}
+@media screen and (max-width: 425px){
+  .modal_content {
+    width: 300px;
+  }
+}

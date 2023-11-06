@@ -1,0 +1,24 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.steps-card {
+  width: 10rem;
+  display: inline-flex;
+  flex-direction: column;
+  background-color: white;
+  img {
+    width: 100%;
+  }
+  .steps-text {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem;
+    p {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    h2 {
+      color: #d6d6d6;
+      margin-right: 0.5rem;
+    }
+  }
+}

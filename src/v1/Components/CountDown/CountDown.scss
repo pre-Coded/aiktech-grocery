@@ -1,0 +1,112 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.CountDown-container * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+}
+
+.delivered-message {
+  color: rgb(143, 206, 48);
+  font-weight: 600;
+  animation: shinyText 1s 10;
+}
+
+@keyframes shinyText {
+  0% {
+    text-shadow: 0px 0px 0px rgb(199, 255, 115);
+  }
+  50% {
+    text-shadow: 5px 0px 5px rgb(199, 255, 115);
+  }
+  100% {
+    text-shadow: 0px 0px 0px rgb(199, 255, 115);
+  }
+}
+
+.CountDown-container {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.CountDown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+  img {
+    max-height: 12rem;
+    margin-bottom: 2rem;
+    width: auto;
+  }
+}
+
+.CountDown div {
+  margin: 1rem;
+  text-align: center;
+}
+
+.CountDown div:first-child {
+  text-align: center;
+}
+
+.CountDown-icon {
+  font-size: 8em;
+}
+
+.CountDown-container h2 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.CountDown div:first-child {
+}
+
+.CountDown div:last-child {
+  border: 2px solid white;
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}
+
+.CountDown-container section p:first-child,
+.CountDown div:last-child span {
+  font-size: 3rem;
+}
+
+.clock {
+  // background: linear-gradient(180deg, #748af9 0%, #5767f5 100%);
+  padding: 1rem;
+  // color: white;
+}
+
+.clock p {
+  width: 4rem;
+}
+
+.thankyou-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+@media #{$media-tablet} {
+  .CountDown {
+    flex-direction: column-reverse;
+  }
+  .CountDown-container {
+  }
+}
+
+.delivery-message {
+  padding: 0 1rem;
+}

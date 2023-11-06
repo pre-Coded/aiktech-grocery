@@ -1,0 +1,31 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.addonbanner{
+    color: $banner-text;
+    display: flex;
+    font-family: $poppins;
+    position: relative;
+    justify-content: space-evenly;
+    background-image: url('../../Assets/Images/addons/bg.svg');
+    background-size: cover;
+    background-position: center;
+    min-height: 350px;
+    align-items: center;
+    overflow: hidden;
+
+    .addonbanner-text {
+        margin: 4rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.addon-text-heading{
+    color: $addontext;
+    line-height: 2rem;
+}
+
+.addon-paragraph{
+    color: $black;
+    line-height: 1.5rem;
+}

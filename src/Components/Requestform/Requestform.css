@@ -1,0 +1,132 @@
+.label{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+}
+.forms input, .forms textarea{
+    border: 0px solid #565656 !important;
+    background: transparent;
+    border-bottom: 2px solid #565656 !important;
+    color: #fff!important;
+    width: 100%;
+}
+.forms input:nth-of-type(5){
+    width: 50%;
+}
+.forms input:focus, .forms textarea:focus{
+    outline: none;
+}
+
+.submit_button{
+    background: #fff;
+    padding: 8px 55px;
+    color: #2B273A;
+    width: 250px;
+    /* margin-top: 5%; */
+}
+.submit_button:focus, .submit_button:hover{
+    box-shadow: none;
+    background: #f2f2f2;
+}
+.marker{
+    position: relative;
+    top: -69px;
+    left: 30px;
+}
+
+@media (max-width: 992px){
+    .marker {
+        display: none;
+    }
+}
+@media (max-width: 768px){
+    .submit_button{
+        width: 300px;
+    }
+}
+
+@media (max-width: 425px){
+    .submit_button{
+        width: 200px;
+        padding: 8px 45px;
+    }
+}
+.dim-text{
+    padding-top: 15px;
+    font-size: 12px;
+    /* width: 50%; */
+    opacity: .4;
+    display: none;
+}
+
+.forms .input:nth-of-type(1):focus~.dim-text:nth-of-type(1){
+    display: block!important;
+}
+
+.forms .input:nth-of-type(2):focus~.dim-text:nth-of-type(2){
+    display: block!important;
+}
+
+.forms .input:nth-of-type(3):focus~.dim-text:nth-of-type(3){
+    display: block!important;
+}
+
+.forms .input:nth-of-type(4):focus~.dim-text:nth-of-type(4){
+    display: block!important;
+}
+
+.forms .input:nth-of-type(5):focus~.dim-text:nth-of-type(5){
+    display: block!important;
+    width: 50%;
+}
+
+
+.dim-text-show{
+    display: block;
+}
+.back_button{
+    background: #fff;
+    border-radius: 50%;
+}
+
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+  .tag {
+    width: auto;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0 8px;
+    font-size: 14px;
+    list-style: none;
+    border-radius: 6px;
+    margin: 0 8px 8px 0;
+    background: #0052cc;
+  }
+  .tag-title {
+    margin-top: 3px;
+  }
+  
+  .tag-close-icon {
+    display: block;
+    position: relative;
+    top: -15px;
+    left: 15px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 14px;
+    margin-left: 8px;
+    color: #0052cc;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+  

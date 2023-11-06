@@ -1,0 +1,35 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.addon-container{
+    display: flex;
+    font-family: $poppins;
+    position: relative;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow: hidden;
+
+    .addon-content{
+        margin: 2rem;
+        width: 50%;
+        color: $addontext;
+    }
+}
+
+.addonCenter{
+    text-align: center;
+    margin: 2rem 1rem;
+
+    a{
+        text-decoration: none;
+    }
+}
+
+@media #{$media-mobile} {
+    .addon-container{
+    
+        .addon-content{
+            margin: 2rem;
+            width: 100%;
+        }
+    }
+}

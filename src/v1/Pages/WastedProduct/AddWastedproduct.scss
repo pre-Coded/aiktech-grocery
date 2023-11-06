@@ -1,0 +1,33 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.wasted-product-wrapper {
+  .title {
+    font-weight: bold;
+  }
+  .wasted-table-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .item-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      display: inline-block;
+    }
+    input {
+      display: inline-block;
+      max-width: 100%;
+    }
+    select {
+      margin: 0;
+      padding: 0;
+      background-color: unset;
+      color: black;
+      height: unset;
+      width: unset;
+      border: unset;
+      border-radius: unset;
+    }
+  }
+}

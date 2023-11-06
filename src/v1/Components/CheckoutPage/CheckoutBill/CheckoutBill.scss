@@ -1,0 +1,71 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.checkout-product-wrapper {
+  // border: dashed 1px #5c77ff;
+  background-color: $white;
+  padding: 40px;
+  width: 60%;
+  border-radius: 10px;
+  // padding-left: 70px;
+  //   margin: 20px;
+
+  //   width: 584px;
+  height: auto;
+}
+.checkout-button {
+  //   padding-left: 22px;
+  //   width: 605px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  //   margin-left: 90px;
+
+  button {
+    width: 25%;
+    min-width: 8rem;
+  }
+}
+
+.wallet-btn {
+  overflow-x: hidden;
+  position: relative;
+  border: 2px solid #e0e0e0;
+  width: 100%;
+  border-radius: 8px;
+  padding: 20px 15px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+
+  .circle {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    border-radius: 100%;
+    border: 1px solid #e0e0e0;
+    margin-right: 10px;
+  }
+}
+.wallet-selected {
+  border: #4457b6 2px solid;
+}
+
+.circle-selected {
+  background-color: #4457b6 !important;
+}
+.wallet-disabled {
+  pointer-events: disabled !important;
+  opacity: 0.5;
+}
+
+.selectWrap {
+  display: flex;
+  align-items: center;
+  max-width: 12rem;
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Category 1",
+    "image": "/v1/phurti-images/catego...icon/img1.png",
+    "products": "50"
+  },
+  {
+    "title": "Category 2",
+    "image": "/v1/phurti-images/catego...icon/img2.png",
+    "products": "150"
+  },
+  {
+    "title": "Category 3",
+    "image": "/v1/phurti-images/catego...icon/img3.png",
+    "products": "250"
+  },
+  {
+    "title": "Category 4",
+    "image": "/v1/phurti-images/catego...icon/img4.png",
+    "products": "350"
+  },
+  {
+    "title": "Category 5",
+    "image": "/v1/phurti-images/catego...icon/img5.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 6",
+    "image": "/v1/phurti-images/catego...icon/img6.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 7",
+    "image": "/v1/phurti-images/catego...icon/img7.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 8",
+    "image": "/v1/phurti-images/catego...icon/img7.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 9",
+    "image": "/v1/phurti-images/catego...icon/img7.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 10",
+    "image": "/v1/phurti-images/catego...icon/img7.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category 11",
+    "image": "/v1/phurti-images/catego...icon/img7.png",
+    "products": "5350"
+  },
+  {
+    "title": "Category CAtegory 8",
+    "image": "/v1/phurti-images/catego...icon/img8.png",
+    "products": "5350"
+  }
+]

@@ -1,0 +1,10 @@
+@import "../../Assets/Styles/Variables.scss";
+.favourite-product-container {
+  padding: 4rem 10%;
+}
+
+@media #{$media-mobile} {
+  .favourite-product-container {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,36 @@
+/* Contact  */
+
+input { 
+    border: 1px solid #fff !important; -webkit-box-shadow: none !important;
+    box-shadow: none !important; 
+}
+#contact{
+    background:#05c3f9;
+    padding:50px 0;
+}	
+.MT40 { margin-top:40px;}
+#contact p { font-size:16px;}
+
+#contact-area h3{
+    padding:0 0 38px 0;
+}
+#contact-form .form-group{
+    margin:0 0 20px;
+}
+#contact-form .form-control{
+    
+    font-size:16px;
+    font-weight:400;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    
+}
+#contact-form .form-control:focus{
+    border-color:#fff;
+}
+#contact-form input.form-control{
+    height:40px;
+    line-height:40px !important;
+    padding:3px 20px 0;
+}

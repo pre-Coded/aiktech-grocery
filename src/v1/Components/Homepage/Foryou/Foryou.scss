@@ -1,0 +1,63 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.feed-wrapper {
+  max-width: 100%;
+  background: #f7f7f7;
+  padding: 2rem 1rem;
+  padding-bottom: 5rem;
+  position: relative;
+}
+
+.feed-title {
+  font-family: $poppins;
+  padding: 0 3.5rem;
+  text-transform: capitalize;
+}
+
+.feed-title p {
+  color: #4461ee;
+}
+
+.feed-title * {
+  margin: 0;
+  font-weight: 600;
+}
+
+.product-scroll {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.foryou-container {
+  display: flex;
+  overflow-x: scroll;
+  margin: 0 4.5rem;
+  text-align: center;
+  scroll-behavior: smooth;
+}
+.arrow-product {
+  background-color: $productarrowfill;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media #{$media-tablet} {
+  .feed-wrapper {
+    padding: 2rem 0 1rem 0;
+  }
+  .feed-title p {
+    font-size: 0.8rem;
+  }
+  .feed-title h3 {
+    font-size: 1.2rem;
+  }
+  .foryou-container {
+    margin: 0 1.5rem;
+    text-align: center;
+  }
+  .feed-title {
+    padding: 0 1.5rem;
+  }
+}

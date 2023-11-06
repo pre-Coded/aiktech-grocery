@@ -1,0 +1,65 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.invoice_item {
+  display: flex;
+  /* align-items: center; */
+}
+@media #{$media-mobile} {
+  .invoice-container {
+    padding: 2rem 1rem !important;
+  }
+  .invoice-details {
+    flex-direction: column !important;
+    .price-details {
+      margin-left: 0 !important;
+      margin-top: 2rem;
+      width: 100% !important;
+    }
+  }
+}
+
+.b-bottom {
+  border-bottom: 1px solid #9c9c9c;
+}
+
+.invoice-container {
+  padding: 4rem 10%;
+  background-color: $platinum;
+}
+.invoice-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .item-details {
+    background-color: #ffffff;
+    padding: 40px;
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+  }
+  .price-details {
+    width: 40%;
+    margin-left: 3rem;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+}
+
+
+.discount-card-invoice {
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
+  margin: 1rem 0;
+  transition: 0.3s;
+  padding: 1rem;
+  .highlight-message {
+    color: #4461ee;
+    font-size: large;
+    font-weight: bold;
+  }
+}
+
+.discount-card-invoice:hover {
+    padding: 1rem;
+    box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.2);
+}

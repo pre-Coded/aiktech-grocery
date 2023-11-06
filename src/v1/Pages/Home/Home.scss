@@ -1,0 +1,26 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.modal-image {
+  width: 70%;
+}
+
+.modal-logo {
+  margin: auto;
+  width: 9rem;
+}
+
+.home-page-modal {
+  text-align: center;
+}
+
+@media #{$media-mobile} {
+  .whyshop-wrapper {
+    padding-left: 2rem;
+  }
+  .help-wrapper {
+    .help-item {
+      max-width: 100%;
+      margin: 0.5rem 1rem;
+    }
+  }
+}

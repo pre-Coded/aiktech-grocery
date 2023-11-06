@@ -1,0 +1,42 @@
+[
+  {
+    "code": "AAA223XSD45",
+    "title": "5%",
+    "description": "Flat 5% off on select items",
+    "code_start_time": "21-22-2323 11:23:56",
+    "end_time": "28-22-2323 18:23:56",
+    "is_active": "true",
+    "type": "percent",
+    "value": "1234"
+  },
+  {
+    "code": "BBB223XSD45",
+    "title": "25%",
+    "description": "Flat 25% off on select items",
+    "code_start_time": "21-22-2323 11:23:56",
+    "end_time": "28-22-2323 18:23:56",
+    "is_active": "true",
+    "type": "percent",
+    "value": "1234"
+  },
+  {
+    "code": "CCC223XSD45",
+    "title": "35%",
+    "description": "Flat 35% off on select items",
+    "code_start_time": "21-22-2323 11:23:56",
+    "end_time": "28-22-2323 18:23:56",
+    "is_active": "true",
+    "type": "percent",
+    "value": "1234"
+  },
+  {
+    "code": "DDD223XSD45",
+    "title": "45%",
+    "description": "Flat 45% off on select items",
+    "code_start_time": "21-22-2323 11:23:56",
+    "end_time": "28-22-2323 18:23:56",
+    "is_active": "true",
+    "type": "percent",
+    "value": "1234"
+  }
+]

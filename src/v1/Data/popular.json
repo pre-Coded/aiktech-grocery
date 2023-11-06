@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Maggi",
+    "image": "/v1/phurti-images/grocery/maggi.png",
+    "products": "50"
+  },
+  {
+    "title": "aata",
+    "image": "/v1/phurti-images/grocery/aata.png",
+    "products": "50"
+  },
+  {
+    "title": "amulgold",
+    "image": "/v1/phurti-images/grocery/amulgold.png",
+    "products": "50"
+  },
+  {
+    "title": "amulmilk",
+    "image": "/v1/phurti-images/grocery/amulmilk.png",
+    "products": "50"
+  },
+  {
+    "title": "bru",
+    "image": "/v1/phurti-images/grocery/bru.png",
+    "products": "50"
+  },
+  {
+    "title": "chickenmasala",
+    "image": "/v1/phurti-images/grocery/maggi.png",
+    "products": "50"
+  },
+  {
+    "title": "cocacola",
+    "image": "/v1/phurti-images/grocery/cocacola.png",
+    "products": "50"
+  },
+  {
+    "title": "mirch",
+    "image": "/v1/phurti-images/grocery/mirch.png",
+    "products": "50"
+  },
+  {
+    "title": "pav",
+    "image": "/v1/phurti-images/grocery/pav.png",
+    "products": "50"
+  },
+  {
+    "title": "roses",
+    "image": "/v1/phurti-images/grocery/roses.png",
+    "products": "50"
+  }
+]

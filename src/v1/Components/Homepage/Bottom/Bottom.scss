@@ -1,0 +1,41 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.bottom-wrapper {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  padding: 2rem;
+  color: white;
+  font-size: 1.3rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-wrapper p {
+  // max-width: 30rem;
+  text-align:center;
+}
+
+.bottom-wrapper img {
+  width: 100%;
+  border-radius: 3rem;
+  margin: 0.4rem;
+  max-width: 10rem;
+}
+
+.bottom-image img {
+  // min-width: 5rem;
+}
+
+@media #{$media-mobile} {
+  .bottom-wrapper {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .bottom-image {
+    text-align: center;
+  }
+}

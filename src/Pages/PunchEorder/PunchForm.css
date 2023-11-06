@@ -1,0 +1,43 @@
+.product_input{
+    display: flex;
+    flex-direction: row;
+}
+.product_input input:nth-child(1){
+  width: 200px;
+}
+.fa-trash{
+    cursor: pointer;
+}
+
+.suggestionContainer{
+    display: flex;
+    flex-direction: column;
+}
+.suggestionList{
+    padding: 8px;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+}
+
+::-webkit-input-placeholder { /* Edge */
+
+    font-size: 18px;
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-size: 18px;
+  }
+  
+  ::placeholder {
+    font-family: monospace;
+    font-size: 18px;
+  }
+
+@media screen and (max-width: 768px){
+    .product_input{
+      flex-direction: column;
+  }
+  .product_input input:nth-child(1){
+    width: 100%;
+  }
+}

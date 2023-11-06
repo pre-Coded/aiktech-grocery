@@ -1,0 +1,53 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.tab * {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  // color: white;
+}
+
+.tab {
+  background-color: white;
+  border: 1px solid #f1f1f1;
+  margin: 1rem;
+  padding: 0.3rem 0.5rem;
+  margin: 1rem;
+  border-radius: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.tab.active {
+  background-color: #5c77ff;
+  border-color: #5c77ff;
+  color: white;
+}
+
+.tab-color1 {
+  background-color: $category-card0;
+}
+.tab-color2 {
+  background-color: $category-card1;
+}
+.tab-color3 {
+  background-color: $category-card2;
+}
+.tab-color4 {
+  background-color: $category-card3;
+}
+.tab-color5 {
+  background-color: $category-card4;
+}
+.tab-color6 {
+  background-color: $category-card5;
+}
+
+@media #{$media-mobile} {
+  .tab {
+    font-size: 0.8rem;
+    font-weight: bolder;
+  }
+}

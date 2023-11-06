@@ -1,0 +1,43 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.slideshow-wrapper {
+  width: 100%;
+  img {
+    width: 100%;
+  }
+}
+
+.slideshow {
+  margin: 0 auto;
+  overflow: hidden;
+
+  .slideshowSlider {
+    white-space: nowrap;
+    transition: ease 1s;
+  }
+
+  .slide {
+    display: inline-block;
+    width: 100%;
+  }
+
+  /* Buttons */
+
+  .slideshowDots {
+    text-align: center;
+  }
+
+  .slideshowDot {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 15px 7px 0px;
+    background-color: #c4c4c4;
+  }
+
+  .slideshowDot.active {
+    background-color: $banner-color;
+  }
+}

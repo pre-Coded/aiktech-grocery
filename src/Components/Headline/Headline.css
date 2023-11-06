@@ -1,0 +1,177 @@
+.main_headline{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 59px;
+}
+
+.tagline{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: first baseline;
+    align-content: center;
+}
+
+.neonText {
+    color: #fff;
+    text-shadow:
+        0 0 7px #fff,
+        0 0 10px #fff,
+        0 0 12px #fff,
+        0 0 20px #0fa,
+        0 0 1px #0fa;
+  }
+
+.small_headline{
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 22px;
+}
+.small_small_headline{
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 22px;
+    transition: all 0.5s;
+}
+.toggle{
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: initial;
+}
+
+.toggle input[type=checkbox]{
+    display:none;
+}
+.toggle label{
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    border: 1px solid #fff;
+    background: transparent;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+
+}
+.toggle label::after{
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    left: 5px;
+    background-color: #fff;
+    border-radius: 50%; 
+    transition: all 0.5s;
+    transform: translateX(0px);
+}
+
+
+.toggle input[type=checkbox]:checked + label::after{
+    transition: all 0.5s;
+    transform: translateX(58px);
+    background-color: #fff;
+}
+
+.toggle .btn:hover{
+    color: inherit;
+    border: none;
+    box-shadow: none;
+}
+.toggle .btn{
+    border: none;
+    box-shadow: none;
+    border-radius: 40px;
+    color: #fff!important;
+}
+.toggle-container{
+    border: 1px solid #fff;
+    border-radius: 40px;
+    display: flex;
+}
+
+.location{
+    background:#9282EC;
+    align-items: center;
+    border-radius: 40px;
+    color: #0A0A0A;
+    transition: background 1000ms ease;
+}
+
+.fade-animation{
+    border-radius: 10px;
+    animation-name: fade;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-duration: .5s;
+    animation-direction: alternate;
+  }
+
+@keyframes fade{
+    0% {
+      opacity: 0;
+    }
+    25%{
+        opacity: 0.25
+    }
+    50%{
+        opacity: .5;
+    }
+    75%{
+        opacity: .75;
+    }
+    100%{
+      opacity: 1;
+  }
+}
+
+@media (max-width: 425px) {
+    .main_headline{
+        font-weight: 500;
+        font-size: 25px;
+        line-height: 35px;
+    }
+    .small_headline{
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .small{
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 20px;
+    }
+    .toggle label{
+        cursor: pointer;
+        width: 50px;
+        height: 30px;
+        border: 1px solid #fff;
+        background: transparent;
+        display: block;
+        border-radius: 100px;
+        position: relative;
+    
+    }
+    .toggle label::after{
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 4px;
+        left: 5px;
+        background-color: #fff;
+        border-radius: 50%; 
+        transition: all 0.5s;
+        transform: translateX(0px);
+    }
+    .toggle input[type=checkbox]:checked + label::after{
+        transition: all 0.5s;
+        transform: translateX(20px);
+        background-color: #fff;
+    }
+    /* .toggle-container{
+        flex-direction: column;
+    } */
+}

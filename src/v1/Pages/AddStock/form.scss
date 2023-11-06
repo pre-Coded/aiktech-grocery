@@ -1,0 +1,58 @@
+
+.btn-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+ .close_btn{
+     outline: none;
+     border: none;
+     cursor: pointer;
+     color:black;
+     width: 120px;
+ }
+
+ #quantity input, #product_p input, #ppp input{
+    width: 150px;
+  }
+@media screen and (max-width: 990px){
+    #quantity input, #product_p input, #ppp input{
+        width: 120px;
+      }
+    select{
+        width: 90%!important;
+    }
+    
+}
+ @media screen and (max-width: 768px){
+    .btn-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    select{
+        width: 100%!important;
+    }
+    label{
+        font-size: 12px;
+    }
+    #quantity input, #product_p input, #ppp input{
+        width: 100%;
+      }
+    
+ }
+@media screen and (max-width: 425px){
+    .btn-container{
+        flex-direction: column;
+        /* justify-content: space-around; */
+    }
+    select{
+        width: 100%!important;
+    }
+    label{
+        font-size: 12px;
+    }
+    #quantity input, #product_p input, #ppp input{
+        width: 100%;
+      }
+}

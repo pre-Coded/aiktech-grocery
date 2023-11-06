@@ -1,0 +1,147 @@
+@import "../../../Assets/Styles/Variables.scss";
+.banner {
+  color: $banner-text;
+  display: flex;
+  font-family: $poppins;
+  position: relative;
+  justify-content: space-evenly;
+  background: repeat;
+  background-color: $banner-color;
+  min-height: 350px;
+  align-items: center;
+  overflow: hidden;
+  .blob2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-height: 100%;
+  }
+  .blob1 {
+    position: absolute;
+    bottom: -80%;
+    left: -4rem;
+    max-height: 100%;
+    transform: rotate(-20deg);
+  }
+}
+
+.install-image {
+  max-width: 40%;
+  margin-top: 2rem;
+}
+
+.install-image img {
+  max-width: 10rem;
+  border-radius: 2rem;
+  max-height: 3rem;
+  margin: 0.4rem;
+}
+
+.banner-head {
+  font-weight: 700;
+  max-width: 30rem;
+}
+.banner-text {
+  margin: 4rem 0 4rem 4rem;
+  width: 100%;
+  z-index: 1;
+}
+
+.banner-image {
+  margin: auto 0 0 0;
+  position: absolute;
+  bottom: 0;
+  right: 5rem;
+  max-height: 100%;
+  max-width: 45%;
+}
+.banner-discount {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 2rem;
+  img {
+    margin-bottom: 1rem;
+    width: 10rem;
+    max-width: 25vw;
+  }
+  .button_container {
+    display: none;
+  }
+  .hide_button_in_mobile {
+    display: unset;
+  }
+  .banner-discount-text {
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+
+    p {
+      font-weight: 500;
+      font-size: 1.2rem;
+    }
+    h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
+    }
+    span {
+      color: #748af9;
+    }
+  }
+}
+
+@media #{$media-tablet} {
+  .banner-text {
+    padding: 0;
+    margin: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    text-align: left;
+    p {
+      max-width: 50%;
+    }
+  }
+  .banner-image {
+    right: 1rem;
+    max-height: 90%;
+  }
+}
+
+@media #{$media-mobile} {
+  .banner {
+    min-height: 15rem;
+  }
+  .install-image img {
+    max-width: 40vw;
+    max-height: 3rem;
+    margin-left: 0;
+  }
+  .banner-text {
+    margin: 1rem;
+    margin-right: auto;
+    margin-bottom: 0;
+    max-width: unset;
+    width: 100%;
+  }
+  .banner-image {
+    max-width: 50%;
+    right: 0;
+  }
+
+  .banner-discount {
+    padding: 1rem;
+    button {
+      margin-left: auto;
+    }
+  }
+  .button_container {
+    display: unset;
+  }
+
+  .hide_in_normal_view {
+    display: unset !important;
+  }
+  .hide_button_in_mobile {
+    display: none !important;
+  }
+}

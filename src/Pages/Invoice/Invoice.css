@@ -1,0 +1,13 @@
+.invoice_item{
+    display: flex;
+    /* align-items: center; */
+}
+@media (max-width: 425px){
+    .invoice_item_element{
+        font-size: 12px;
+    }
+}
+
+.b-bottom {
+    border-bottom: 1px solid #9c9c9c;
+}

@@ -1,0 +1,55 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.tab-wrapper {
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 1;
+}
+.tab-container {
+  padding: 0.8rem 3.5rem;
+  background-color: #f2f2f2;
+  margin-bottom: 1.0rem;
+
+}
+
+.tab-color1 {
+  background-color: $category-card0;
+}
+.tab-color2 {
+  background-color: $category-card1;
+}
+.tab-color3 {
+  background-color: $category-card2;
+}
+.tab-color4 {
+  background-color: $category-card3;
+}
+.tab-color5 {
+  background-color: $category-card4;
+}
+.tab-color6 {
+  background-color: $category-card5;
+}
+
+.tab-products {
+  text-align: center;
+  padding-bottom: 5rem;
+}
+
+.category-name {
+  text-align: center;
+  // margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+@media #{$media-mobile} {
+  .category-name {
+    font-size: 1.2rem;
+    text-transform: capitalize;
+  }
+  .tab-container {
+    padding: 0.8rem 1.5rem;
+  }
+}

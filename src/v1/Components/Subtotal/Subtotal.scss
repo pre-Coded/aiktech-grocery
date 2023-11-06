@@ -1,0 +1,49 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.checkout-subtotal-wrapper {
+  margin: 50px;
+
+  .checkout-subtotal {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 10px 0px 10px 0px;
+    border-bottom: 1px solid #e0e0e0;
+
+    .checkout-subtotal-price {
+      font-family: $roboto;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+    }
+    .discount-applied {
+      color: palevioletred;
+      font-weight: bold;
+    }
+    .strike-subtotal {
+      text-decoration: line-through;
+      font-weight: lighter;
+      font-size: 0.8rem;
+      color: gray;
+    }
+    .checkout-subtotal-title {
+      font-family: $poppins;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
+
+@media #{$media-mobile} {
+  .checkout-subtotal-wrapper {
+    margin: 0px;
+
+    .checkout-subtotal {
+      .checkout-subtotal-title,
+      .checkout-subtotal-price {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

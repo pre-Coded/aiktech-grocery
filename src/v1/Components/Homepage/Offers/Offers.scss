@@ -1,0 +1,27 @@
+@import "../../../Assets/Styles/Variables.scss";
+
+.offer-wrapper {
+  background-color: #f6f6f6;
+  .offer-title {
+    font-weight: 600;
+    padding-left: 3.5rem;
+  }
+  .offer-title p {
+    font-size: 1rem;
+    font-family: $poppins;
+    color: #4461ee;
+    margin: 0;
+  }
+
+  .offer-title h3 {
+    font-family: $poppins;
+    font-weight: 600;
+  }
+}
+
+.offer-container {
+  margin-top: 2rem;
+}
+
+@media #{$media-mobile} {
+}

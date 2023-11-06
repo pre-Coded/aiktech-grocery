@@ -1,0 +1,28 @@
+.dots img{
+    position: relative;
+    left: -116px;
+}
+.scooter-img{
+    width: 100%;
+    /* padding-top: 50px; */
+}
+@media (max-width: 425px){
+    .dots img{
+        position: relative;
+        left: -25px;
+    }
+    .scooter-img{
+        width: 100%;
+        /* padding-top: 50px; */
+    }
+}
+@media (max-width: 768px){
+    .dots img{
+        position: relative;
+        left: -25px;
+    }
+    .scooter-img{
+        width: 100%;
+        padding-top: 50px;
+    }
+}
