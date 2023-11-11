@@ -5,7 +5,7 @@ import { CheckoutAddress, Button, Alert } from "../../Components";
 import { actionsCreator } from "../../Redux/actions/actionsCreator";
 import "./EverythingDelivery.scss";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import deleteIcon from "../../Assets/Icons/delete.svg";
 import get from "lodash/get";
 import Modal from "../../Components/Modal/";

@@ -12,11 +12,13 @@ const Dashboard=()=>{
    
 
     const [orders,setOrders]=useState([]);
+    const [display,SetDisplay]=useState([])
     const [number_of_orders,setNoOfOrders]=useState(0);
     const [loading,setLoading]=useState(true);
     const [load,setLoad]=useState(false);
     
     const fetchorders=()=>{
+
    
         try{
         const params={}
@@ -24,10 +26,10 @@ const Dashboard=()=>{
         const promise=requestMaker("/shop/fetch_all_orders/","get",params,payload);
         
         promise.then((response)=>{
-            // console.log(response);
-            // console.log("orders");
+           
             setOrders(response.data);
             setNoOfOrders(response.data.length);
+            SetDisplay(orders.slice(0,20));
         if(response.data.length!==number_of_orders){
             new Audio(sound).play();
             }
@@ -76,8 +78,8 @@ const Dashboard=()=>{
 
                             
                             {
-                                orders?
-                                orders.map((order,index)=>{
+                                display?
+                                display.map((order,index)=>{
                                     
                                     
                                     return (

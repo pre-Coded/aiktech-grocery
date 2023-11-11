@@ -10,7 +10,7 @@ import { activeOrders } from "../../Api/cartAPI";
 import { set } from "lodash";
 import deliveryIcon from "../../Assets/Images/delivery/delivery1.jpg";
 import { dateExtractor, getToken, polling } from "../../Utils";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import defaultImage from "../../Assets/Images/default-image.png";
 import { useDispatch } from "react-redux";
 import { actionsCreator } from "../../Redux/actions/actionsCreator";

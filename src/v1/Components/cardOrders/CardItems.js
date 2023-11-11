@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 
-const CardItems=()=>{
+
+const CardItems=({SetNotClicked})=>{
+    const navigate=useNavigate()
     return(
         <div>
-
+            
+             Order Items of clicked card
         </div>
     )
 }

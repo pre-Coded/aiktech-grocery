@@ -66,3 +66,4 @@ const requestMaker = (
 };
 
 export default requestMaker;
+export  {getBaseUrl}
