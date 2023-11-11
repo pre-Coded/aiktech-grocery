@@ -6,7 +6,7 @@ const getBaseUrl = () => {
   const url = window.location.href;
   const domain = new URL(url);
   const isLocalEnv = domain ? domain.hostname === "localhost" : false;
-  const origin = domain && !isLocalEnv ? domain.origin : "localhost:8000";
+  const origin = domain && !isLocalEnv ? domain.origin : "http://localhost:8000";
   return origin;
 };
 

@@ -22,6 +22,7 @@ import "./Home.scss";
 import { welcomeModalHandler } from "../../Utils";
 import Bannerv2 from "../../Components/Homepage/Bannerv2";
 import Slideshow from "../../Components/Homepage/Bannerv2/Slideshow";
+import Dashboard from "../dashboard";
 
 const mapStateToProps = ({ auth, categories = {} }) => ({
   auth,
@@ -131,6 +132,7 @@ const Home = () => {
           <h5>Phurti is Revamped! Start shopping with us Now!</h5>
         </div>
       </Modal> */}
+      
     </div>
   );
 };
