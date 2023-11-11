@@ -73,7 +73,7 @@ function App() {
                 {/* <Route path="/shipping-policy" component={Shippingpolicy} /> */}
                 <Route path="/privacy-policy" component={Privacypolicy} />
                  {/* added */}
-                <Route path='/dashboard' component={()=>(<Dashboard/>)}/>
+                <Route path='/dashboard' component={()=>(<AuthWrapper><Dashboard/></AuthWrapper>)}/>
                 
                 {/* <Route path="/aboutus" component={Aboutus} />
                 <Route path="/contactus" component={Contactus} /> */}
