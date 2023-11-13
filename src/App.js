@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import Checkout from './Pages/Checkout/Checkout';
 // import Comingsoon from './Pages/Comingsoon/Comingsoon'
 import Feedback from './Pages/Feedback/Feedback';
@@ -28,8 +28,6 @@ import {
   Contactus
 } from './v1/Pages';
 import { Navigation, Footer, Bottom, ProductCard } from './v1/Components';
-
-
 import configureStore from './v1/Redux/store/configureStore';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -37,14 +35,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './v1/Components/ScrollToTop/ScrollToTop';
 import { AuthWrapper } from './v1/Wrapper/'
 import Dashboard from './v1/Pages/dashboard/Dashboard';
+import Carditems from './v1/Components/cardItems/CardItems';
+
+
 
 export const { store } = configureStore();
 
 function App() {
+  
   return (
     <div className="AppRoot">
       <Provider store={store}>
-        <BrowserRouter>
           <Switch>
             <Route path="/">
               <Navigation />
@@ -73,8 +74,9 @@ function App() {
                 {/* <Route path="/shipping-policy" component={Shippingpolicy} /> */}
                 <Route path="/privacy-policy" component={Privacypolicy} />
                  {/* added */}
-                <Route path='/dashboard' component={()=>(<AuthWrapper><Dashboard/></AuthWrapper>)}/>
-                
+                <Route exact path='/dashboard'component={()=>(<AuthWrapper><Switch><Dashboard/></Switch></AuthWrapper>)}/>         
+               <Route path='/dashboard/orderItems' render={()=><Carditems/>}/>
+
                 {/* <Route path="/aboutus" component={Aboutus} />
                 <Route path="/contactus" component={Contactus} /> */}
                 <Route path="*" component={Home} />
@@ -84,7 +86,7 @@ function App() {
               <Footer />
             </Route>
           </Switch>
-        </BrowserRouter>
+        
       </Provider>
       <ToastContainer
         className="toast-container"
