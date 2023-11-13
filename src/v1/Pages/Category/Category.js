@@ -1,7 +1,7 @@
 // import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router-dom";
 import { productAPI } from "../../Api";
 import { ProductCard } from "../../Components";
 import { actionsCreator } from "../../Redux/actions/actionsCreator";

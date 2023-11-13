@@ -27,22 +27,25 @@ import {
   Aboutus,
   Contactus
 } from './v1/Pages';
-import { Navigation, Footer, Bottom } from './v1/Components';
-
+import { Navigation, Footer, Bottom, ProductCard } from './v1/Components';
 import configureStore from './v1/Redux/store/configureStore';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './v1/Components/ScrollToTop/ScrollToTop';
 import { AuthWrapper } from './v1/Wrapper/'
+import Dashboard from './v1/Pages/dashboard/Dashboard';
+import Carditems from './v1/Components/cardItems/CardItems';
+
+
 
 export const { store } = configureStore();
 
 function App() {
+  
   return (
     <div className="AppRoot">
       <Provider store={store}>
-        <BrowserRouter>
           <Switch>
             <Route path="/">
               <Navigation />
@@ -70,15 +73,20 @@ function App() {
                 {/* <Route path="/terms" component={Terms} /> */}
                 {/* <Route path="/shipping-policy" component={Shippingpolicy} /> */}
                 <Route path="/privacy-policy" component={Privacypolicy} />
+                 {/* added */}
+                <Route exact path='/dashboard'component={()=>(<AuthWrapper><Switch><Dashboard/></Switch></AuthWrapper>)}/>         
+               <Route path='/dashboard/orderItems' render={()=><Carditems/>}/>
+
                 {/* <Route path="/aboutus" component={Aboutus} />
                 <Route path="/contactus" component={Contactus} /> */}
                 <Route path="*" component={Home} />
+
               </Switch>
               <Bottom />
               <Footer />
             </Route>
           </Switch>
-        </BrowserRouter>
+        
       </Provider>
       <ToastContainer
         className="toast-container"

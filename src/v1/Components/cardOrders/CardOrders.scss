@@ -1,0 +1,99 @@
+@import "../../Assets/Styles/Variables.scss";
+
+.cardorder{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background-color: white;
+    display: inline-block;
+    
+    margin-left: 3%;
+    width: 20vw;
+    height: 40vh;
+    margin-top: 2%;
+    margin-right: 3%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-bottom: 3%;
+    
+    
+}
+.cardorder-heading{
+    padding: 4%;
+    padding-bottom: 7%;
+    background-color: rgb(252,222,196);
+   
+    font-size: 18px;
+    font-weight: 400;
+}
+.cardorder-quantity{
+    margin-top: 1%;
+    padding-bottom: 4%;
+    padding-left: 4%;
+    font-size: 18px;
+    font-weight: 400;
+
+}
+.cardorder-price{
+    padding: 4%;
+    font-size: 13px;
+}
+.cardorder-date{
+    padding-left: 4%;
+    font-size: 13px;
+}
+.cardorder-tags{
+    padding-left: 4%;
+    margin-top: 4%;
+    margin-bottom: 14%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 25%;
+    
+    
+    
+}
+.cardorder-icons{
+    position: absolute;
+    padding-left: 4%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-right: 25%;
+    bottom: 5%;
+    width: 68%;
+}
+.cardorder-tag{
+    width: 50%;
+    border: 1px solid black;
+    background-color: rgb(229,230,232);
+    border-radius: 7px;
+    width: 35%;
+    padding-left: 7%;
+
+}
+.cardorder-button-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20%;
+    text-decoration: none;
+    
+    align-items: center;
+}
+.cardorder-open-button{
+    padding: auto;
+    margin-top: 4%;
+    margin-bottom: 14%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 40%;
+
+    border-radius: 10px;
+    display: flex;
+    background-color: rgb(88,121,234);
+    color: white;
+    
+    
+}

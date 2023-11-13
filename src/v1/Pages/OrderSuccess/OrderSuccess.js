@@ -4,7 +4,7 @@ import { Modal } from "../../Components";
 import { activeOrders } from "../../Api/cartAPI";
 import gift from '../../Assets/Images/gifs/gift.gif';
 import "./OrderSuccess.scss"
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 export default function OrderSuccess() {
     const [seconds, setSeconds] = useState(3);

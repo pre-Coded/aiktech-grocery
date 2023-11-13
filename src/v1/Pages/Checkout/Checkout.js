@@ -19,7 +19,7 @@ import { actionsCreator } from "../../Redux/actions/actionsCreator";
 import { extractFinalPrice, errorMsg } from "../../Utils";
 import { toast } from "react-toastify";
 import get from "lodash/get";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import logo from "../../Assets/Images/navbar/new_logo.svg";
 
 const mapStateToProps = ({ cart, auth, payment }) => ({
