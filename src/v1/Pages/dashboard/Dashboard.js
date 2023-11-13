@@ -14,7 +14,8 @@ const Dashboard=()=>{
     const [loading,setLoading]=useState(true);
     const [load,setLoad]=useState(false);
     const [display,setDisplay]=useState([]);
-    const [firstRender,setFirstRender]=useState(true)
+    const [firstRender,setFirstRender]=useState(true);
+    const ref=useRef(null)
     
     const fetchorders=()=>{
         try{
@@ -43,6 +44,7 @@ const Dashboard=()=>{
         }
     }
         useEffect(()=>{
+            ref.current.click();
             setFirstRender(false)
             fetchorders();
 
@@ -55,7 +57,7 @@ const Dashboard=()=>{
         },[load])
 
     return(
-        <div>
+        <div className="dashboard" ref={ref}>
             {
                 loading===true?(<Loader/>):(
                     <div>
@@ -83,6 +85,7 @@ const Dashboard=()=>{
                         }   
                         
                         </div>
+                        
                     </div>
                 )
             }
