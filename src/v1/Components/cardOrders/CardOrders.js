@@ -24,7 +24,7 @@ const CardOrders=({order})=>{
                     "id":order.id
                 },
                 headers: {
-                    'Content-Type': 'application/json', // Set the Content-Type header to JSON
+                    'Content-Type': 'application/json', 
                 },
             }
             localStorage.setItem(`${order.id}`,"1");
