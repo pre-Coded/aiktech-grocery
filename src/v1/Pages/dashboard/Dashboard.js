@@ -70,7 +70,10 @@ const Dashboard=()=>{
                     <div>
                          <div className="dashboard-heading-wrapper">
                          <h4 className="dashboard-heading">Table Orders Dashboard</h4>
-                         <button onClick={notificationHandler} className="dashboard-notification-button">
+                         <button onClick={notificationHandler} 
+                         className="dashboard-notification-button"
+                         style={{backgroundColor :"rgb(126,145,243)",color:"black"}}
+                         >
                             {
                             (notifications===true)?
                             (<IoIosNotifications fontSize={30}/>):
@@ -79,6 +82,7 @@ const Dashboard=()=>{
                             }
 
                          </button>
+
                          </div>
                         <div className="cards-dashboard-wrapper"> 
                         {

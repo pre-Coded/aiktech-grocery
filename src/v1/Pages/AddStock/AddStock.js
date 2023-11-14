@@ -52,7 +52,9 @@ export default function AddStock() {
   const [inventoryname, setInventoryname] = useState("")
   const [showModal, setshowModal] = useState(false)
   const [productRemaining, setProductRemaining] = useState("NA")
-  const [productAddress, setProductAddress] = useState("NA")
+  const [productAddress, setProductAddress] = useState("NA");
+  const [expiry,setExpiry]=useState(new Date());
+  const [batch_number,setBatchNumber]=useState(-1)
 
   const inventoryfix = () => {
     if (stockdropdownList.inventory){
@@ -125,17 +127,21 @@ export default function AddStock() {
     } else if (key === "BARCODE") {
       setBarcode(value);
     }
+    console.log(e.target.value);
   };
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
   const addItem = () => {
+    console.log(cartData);
     if (
       product === "" ||
       pricePerProduct === "" ||
       quantity === "" ||
       unit === "" ||
       inventory === "" ||
-      addedBy === ""
+      addedBy === ""||
+      batch_number===-1 
     ) {
+      console.log(unit);
       toast.error("Please add detail correctly.");
     } else {
       if (product && quantity) {
@@ -150,7 +156,9 @@ export default function AddStock() {
           description: productDescription,
           barcode: barcode,
           product_remaining: productRemaining,
-          product_address: productAddress
+          product_address: productAddress,
+          expiry:expiry,
+          batch_number:batch_number
         };
         let cartObj = [...cartData];
         cartObj.push(payload);
@@ -257,6 +265,7 @@ export default function AddStock() {
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
+          setProduct(product_name)
 
           // console.log(searchResults);
         } else if (barcode) {
@@ -279,6 +288,7 @@ export default function AddStock() {
             }
           } else {
             // setBarcodeQuery("");
+            // setProduct(e.target.value)
           }
         }
       }
@@ -300,6 +310,7 @@ export default function AddStock() {
     console.log(e.target.getAttribute("data-productdescription"));
     setTempProduct(e.target.getAttribute("data-producttitle"));
     setPrices(e.target.getAttribute("data-product-price"));
+    console.log(prices);
     setMarketPrices(e.target.getAttribute("data-product-market-price"));
     setImage(e.target.getAttribute("data-product-image"));
     setBarcode(e.target.getAttribute("data-product-barcode"));
@@ -310,6 +321,7 @@ export default function AddStock() {
     if (searchPriceinput) {
       searchPriceinput.focus();
     }
+
   };
 
   const history = useHistory();
@@ -333,12 +345,16 @@ export default function AddStock() {
         inventory: inventory,
         procurement_price_per_product: pricePerProduct,
         barcode: barcode,
+        batch_number:batch_number,
+        expiry:expiry
       };
       cartData.push(temp);
     }
     console.log(cartData);
     if (!cartData || cartData.length === 0) {
       console.log(cartData);
+      console.log(expiry);
+      console.log(product);
       toast.error("Please add stock correctly.");
     } else {
       // API calls for adding data to the backend
@@ -567,7 +583,7 @@ export default function AddStock() {
                         stockdropdownList.stock_unit.map(
                           (stock_unit, index) => (
                             <option value={stock_unit.id} key={index}>
-                              {stock_unit.unit}
+                              {stock_unit.name}
                             </option>
                           )
                         )}
@@ -647,6 +663,24 @@ export default function AddStock() {
                     value={quantity}
                   />
                 </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="date"
+                    placeholder="expiry date"
+                    onChange={(e) => {setExpiry(e.target.value)}}
+                    value={expiry}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="number"
+                    placeholder="Batch Number"
+                    onChange={(e) => setBatchNumber(e.target.value)}
+                    value={batch_number}
+                  />
+                </div>
 
                 <div className="responsive__wrapper bottom-buttons">
                   <button type="button" className="add" onClick={addItem}>
@@ -669,6 +703,8 @@ export default function AddStock() {
                   <th>Inventory</th>
                   <th>Price</th>
                   <th>Quantity</th>
+                  <th>Expiry</th>
+                  <th>Batch Number</th>
                 </tr>
 
                 {cartData.map((product, index) => {
@@ -717,6 +753,8 @@ export default function AddStock() {
                       </td>
                       <td>{procurement_price_per_product}</td>
                       <td>{stock_quantity}</td>
+                      <td>{expiry}</td>
+                      <td>{batch_number}</td>
                       <td>
                         <div onClick={() => deleteItem(index)}>
                           <img
@@ -840,9 +878,11 @@ export default function AddStock() {
                         stockdropdownList.stock_unit &&
                         stockdropdownList.stock_unit.map(
                           (stock_unit, index) => (
+                           
                             <option value={stock_unit.id} key={index}>
-                              {stock_unit.unit}
+                              {stock_unit.name}
                             </option>
+                            
                           )
                         )}
                     </select>
@@ -891,6 +931,7 @@ export default function AddStock() {
                       <option value={marketPrices}>Market Price</option>
                     )}
                   </datalist>
+
                 </div>
 
                 <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
@@ -900,6 +941,24 @@ export default function AddStock() {
                     placeholder="Quantity"
                     onChange={(e) => onChangeHandler(e, "QUANTITY")}
                     value={quantity}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="date"
+                    placeholder="expiry date"
+                    onChange={(e) => {setExpiry(e.target.value)}}
+                    value={expiry}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="number"
+                    placeholder="Batch Number"
+                    onChange={(e) => {setBatchNumber(e.target.value)}}
+                    value={batch_number}
                   />
                 </div>
 

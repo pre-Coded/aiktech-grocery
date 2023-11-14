@@ -87,7 +87,7 @@
 
   .responsive__wrapper {
     width: 15rem;
-    max-width: 80%;
+    max-width: 90%;
     padding: 0 1rem;
     display: flex;
     flex-direction: row;
@@ -281,10 +281,16 @@ select {
 @media #{$media-tablet} {
   table.product__details__table td,
   table.product__details__table th {
-    padding: 5px;
+    // padding: 5px;
+  }
+  table.product_details_table tr{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 10%;
+
   }
   .everything-delivery-wrapper {
-    padding: 2rem 1rem;
+    padding: 2rem 2rem;
 
     .responsive__wrapper {
       height: 3rem;
@@ -326,7 +332,7 @@ select {
     }
   }
   .table__wrapper__stock {
-    padding: 1rem;
+    padding: 3rem;
   }
 }
 
