@@ -18,3 +18,11 @@
     height: 100vh;
 
 }
+.dashboard-heading-wrapper{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10%;
+}
+.dashboard-notification-button{
+    border-radius: 5px;
+}

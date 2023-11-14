@@ -8,48 +8,33 @@
 
 .carditems-h{
     color: red;
-    
-}
-
-.carditems-cards{
-
-
 }
 .carditems-card{
-    
     min-width: 55vw;
     min-height: 60vh;
-    
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    
-
 }
 
 
 tr{
-   
     width: 80%;
     display: flex;
     justify-content: space-around;
     margin-left: 10%;
 }
 table, th, td {
-    
     width: 100%;
 }
 th,td{
-    
         border:1px solid black;
-      
 }
 .carditems-headings{
     margin-top: 5%;
 }
 .carditems-wrapper{
     display: flex;
-    gap: 5%;
-    
+    gap: 5%; 
 }
 .carditems-back{
     background-color: red;

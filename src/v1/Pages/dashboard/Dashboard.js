@@ -4,37 +4,43 @@ import sound from './Message notification.mp3'
 import axios from "axios";
 import Loader from "../../Components/Loader";
 import CardOrders from "../../Components/cardOrders/CardOrders";
-import { dashboardAPI } from "../../Api";
 import './Dashboard.scss';
-
+import { IoMdNotificationsOff,IoIosNotifications } from 'react-icons/io'
+import { toast } from "react-toastify";
 
 const Dashboard=()=>{
     const [orders,setOrders]=useState([]);
-    const [number_of_orders,setNoOfOrders]=useState(0);
+    const [notifications,setNotifications]=useState(false)
     const [loading,setLoading]=useState(true);
     const [load,setLoad]=useState(false);
     const [display,setDisplay]=useState([]);
     const [firstRender,setFirstRender]=useState(true);
-    const ref=useRef(null)
+   
     
+    const notificationHandler=()=>{
+        if(notifications){
+            toast.warn("Turned off notifications",{autoClose: 1000})
+        }
+        else{
+            toast.success("Turned on notifications",{autoClose: 1000})
+        }
+        setNotifications(!notifications)
+    }
+
     const fetchorders=()=>{
         try{
         const params={}
         const payload={}
         const promise=requestMaker("/shop/fetch_all_orders/","get",params,payload);
-        
         promise.then((response)=>{
             setOrders(response.data);
-            
-            if(orders.length!==0){
+            if(orders.length!==0 && notifications===true){
             if(response.data[0].id!==orders[0].id){
-                new Audio(sound).play();
+                new Audio(sound).play()
+            }
             }
             setDisplay(orders.slice(0,20))
-            }
-            else{
-                
-            } 
+            
         }
             )
         }
@@ -43,10 +49,10 @@ const Dashboard=()=>{
 
         }
     }
-        useEffect(()=>{
-            ref.current.click();
-            setFirstRender(false)
-            fetchorders();
+    useEffect(()=>{
+            
+        setFirstRender(false)
+        fetchorders();
 
         const intervalId=setInterval(()=>{
             setLoad(!load);
@@ -57,11 +63,23 @@ const Dashboard=()=>{
         },[load])
 
     return(
-        <div className="dashboard" ref={ref}>
+        <div className="dashboard" >
+
             {
                 loading===true?(<Loader/>):(
                     <div>
-                         <h4 className="dashboard-heading">Table Orders Dashboard</h4>  
+                         <div className="dashboard-heading-wrapper">
+                         <h4 className="dashboard-heading">Table Orders Dashboard</h4>
+                         <button onClick={notificationHandler} className="dashboard-notification-button">
+                            {
+                            (notifications===true)?
+                            (<IoIosNotifications fontSize={30}/>):
+                            (<IoMdNotificationsOff fontSize={30}/>)
+                            
+                            }
+
+                         </button>
+                         </div>
                         <div className="cards-dashboard-wrapper"> 
                         {
                             orders.length===0 && firstRender===false?(
