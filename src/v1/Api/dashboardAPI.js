@@ -16,3 +16,9 @@ export const fetchTenantID=(data)=>{
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+export const fetchInventorys=(data)=>{
+    const url='/shop/inventorys/fetch_all_inventorys/'
+    const params={}
+    const payload={}
+    return requestMaker(url,"get",{params,payload})
+}

@@ -19,7 +19,7 @@ import Addinventory from "./Addinventory";
 import AddUnit from "./AddUnit";
 import AddProduct from "./AddProduct";
 import { errorMsg } from "../../Utils";
-import { cartAPI } from "../../Api";
+import { cartAPI, dashboardAPI } from "../../Api";
 import logo from "../../Assets/Images/logo/phurti_logo.png";
 import Loader from "../../Components/Loader";
 import fuzzysort from 'fuzzysort'
@@ -29,14 +29,15 @@ const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
   productsearch
 });
 
-export default function AddStock({id}) {
+export default function AddStock() {
   // const { id } = useParams();
   // const id=1
+  const id=2
   const {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
   } = useSelector(mapStateToProps);
-
+  const [inventory_id,setInventoryId]=useState(null)
   const [cartData, setCartData] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [barcode, setBarcode] = useState("");
@@ -54,23 +55,36 @@ export default function AddStock({id}) {
   const [showModal, setshowModal] = useState(false)
   const [productRemaining, setProductRemaining] = useState("NA")
   const [productAddress, setProductAddress] = useState("NA");
-  const [expiry,setExpiry]=useState(new Date());
+  const [expiry,setExpiry]=useState(null);
   const [batch_number,setBatchNumber]=useState(0)
+  const [allInventories,SetAllInventories]=useState(null)
 
-  const inventoryfix = () => {
-    if (stockdropdownList.inventory){
-      setInventory(null)
-      stockdropdownList.inventory.map(i => {
-        if(i.id===parseInt(id)){
-          setInventory(id)
-          setInventoryname(i.name)
-          return 0
-        }
-      })
-    }
+
+  const inventoryHandler=(e)=>{
+    setInventory(e.target.value)
+    setInventoryId(e.target.value);
+    console.log(e.target.value);
+    console.log(allInventories);
+    stockdropdownList.inventory.map(i => {
+      if(i.id===parseInt(e.target.value)){
+        setInventoryname(i.name)
+        return 0
+      }
+    })
+   
+
   }
   useEffect(()=>{
-    inventoryfix()
+    const invenrorys_promise=dashboardAPI.fetchInventorys();
+    invenrorys_promise.then((response)=>{
+     SetAllInventories(response.data.message);
+    }).catch((err)=>{
+      console.log(err.message);
+    })
+  },[])
+  useEffect(()=>{
+   
+
     if (inventory==null){
       // alert("Inventory Not Found!")
       setInventoryname("NOT FOUND")
@@ -157,9 +171,12 @@ export default function AddStock({id}) {
           barcode: barcode,
           product_remaining: productRemaining,
           product_address: productAddress,
-          expiry:expiry,
           batch_number:batch_number
         };
+      if(!Object.is(expiry,null)){
+        payload["expiry"]=expiry
+      }
+
         let cartObj = [...cartData];
         cartObj.push(payload);
         setCartData(cartObj);
@@ -482,6 +499,26 @@ export default function AddStock({id}) {
           />
         ) : null}
       </Modal>
+      <div className="inventory-select-wrapper">
+      <select
+                  onChange={inventoryHandler}
+                  value={inventory}
+                  className="inventory-list"
+                    >
+                      <option>---------select inventory---------------</option>
+
+                      {stockdropdownList &&
+                        stockdropdownList.inventory.map(
+                          (i, index) => (
+                            <option value={i.id} key={index}>
+                              {i.name}
+                            </option>
+                          )
+                        )}
+                    </select>
+
+      </div>
+                  
       <form
         className="forms"
         onSubmit={handleSubmit}
