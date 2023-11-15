@@ -56,7 +56,7 @@ export default function AddStock() {
   const [productRemaining, setProductRemaining] = useState("NA")
   const [productAddress, setProductAddress] = useState("NA");
   const [expiry,setExpiry]=useState(null);
-  const [batch_number,setBatchNumber]=useState(0)
+  const [batch_number,setBatchNumber]=useState(null)
   const [allInventories,SetAllInventories]=useState(null)
 
 
@@ -729,8 +729,8 @@ export default function AddStock() {
               </div>
             )}
             <div className="table-responsive">
-              <table className="product__details__table">
-                <tr>
+              <table className="product__details__table" style={{"width":"100%"}}>
+                <tr className="stock-headings">
                   <th>Address</th>
                   <th>Product Remaining</th>
                   <th>Added By</th>
@@ -742,6 +742,8 @@ export default function AddStock() {
                   <th>Quantity</th>
                   <th>Expiry</th>
                   <th>Batch Number</th>
+                  <th>Delete</th>
+                  <th>Edit</th>
                 </tr>
 
                 {cartData.map((product, index) => {
@@ -758,7 +760,7 @@ export default function AddStock() {
                     product_address
                   } = product;
                   return (
-                    <tr key={index}>
+                    <tr className="stock-products" key={index}>
                       <td>{product_address}</td>
                       <td>{product_remaining}</td>
                       <td>
@@ -770,7 +772,7 @@ export default function AddStock() {
                           )}
                       </td>
                       <td>{barcode}</td>
-                      <td style={{ maxWidth: "450px", wordWrap: "break-word" }}>
+                      <td style={{ maxWidth: "550px", wordWrap: "break-word" }}>
                         {temp_stock_product} ({description})
                       </td>
                       <td>
