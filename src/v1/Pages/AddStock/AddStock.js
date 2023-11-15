@@ -29,8 +29,9 @@ const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
   productsearch
 });
 
-export default function AddStock() {
-  const { id } = useParams();
+export default function AddStock({id}) {
+  // const { id } = useParams();
+  // const id=1
   const {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
@@ -54,7 +55,7 @@ export default function AddStock() {
   const [productRemaining, setProductRemaining] = useState("NA")
   const [productAddress, setProductAddress] = useState("NA");
   const [expiry,setExpiry]=useState(new Date());
-  const [batch_number,setBatchNumber]=useState(-1)
+  const [batch_number,setBatchNumber]=useState(0)
 
   const inventoryfix = () => {
     if (stockdropdownList.inventory){
@@ -138,8 +139,7 @@ export default function AddStock() {
       quantity === "" ||
       unit === "" ||
       inventory === "" ||
-      addedBy === ""||
-      batch_number===-1 
+      addedBy === ""
     ) {
       console.log(unit);
       toast.error("Please add detail correctly.");
@@ -754,7 +754,15 @@ export default function AddStock() {
                       <td>{procurement_price_per_product}</td>
                       <td>{stock_quantity}</td>
                       <td>{expiry}</td>
+                      
+                     { 
+                     batch_number!==0?(
                       <td>{batch_number}</td>
+                     ):(
+                        <td></td>
+                     )
+                     }
+                     
                       <td>
                         <div onClick={() => deleteItem(index)}>
                           <img

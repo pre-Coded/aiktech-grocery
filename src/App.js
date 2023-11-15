@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch,Router } from 'react-router-dom';
 // import Checkout from './Pages/Checkout/Checkout';
 // import Comingsoon from './Pages/Comingsoon/Comingsoon'
 import Feedback from './Pages/Feedback/Feedback';
@@ -36,6 +36,8 @@ import ScrollToTop from './v1/Components/ScrollToTop/ScrollToTop';
 import { AuthWrapper } from './v1/Wrapper/'
 import Dashboard from './v1/Pages/dashboard/Dashboard';
 import Carditems from './v1/Components/cardItems/CardItems';
+import SideBar from './v1/Components/SideBar/SideBar';
+import TenantDashboard from './v1/Pages/TenantDashboard/TenantDashboard';
 
 
 
@@ -47,6 +49,7 @@ function App() {
     <div className="AppRoot">
       <Provider store={store}>
           <Switch>
+          <Route path='/dashboard' render={()=>(<AuthWrapper><TenantDashboard/></AuthWrapper>)}/> 
             <Route path="/">
               <Navigation />
               <ScrollToTop />
@@ -74,9 +77,8 @@ function App() {
                 {/* <Route path="/shipping-policy" component={Shippingpolicy} /> */}
                 <Route path="/privacy-policy" component={Privacypolicy} />
                  {/* added */}
-                <Route exact path='/dashboard'component={()=>(<AuthWrapper><Switch><Dashboard/></Switch></AuthWrapper>)}/>         
-               <Route path='/dashboard/orderItems' render={()=><Carditems/>}/>
-
+                        
+               <Route path='/orderItems' render={()=><Carditems/>}/>
                 {/* <Route path="/aboutus" component={Aboutus} />
                 <Route path="/contactus" component={Contactus} /> */}
                 <Route path="*" component={Home} />
@@ -85,6 +87,7 @@ function App() {
               <Bottom />
               <Footer />
             </Route>
+            
           </Switch>
         
       </Provider>

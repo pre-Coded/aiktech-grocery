@@ -9,3 +9,10 @@ export const fetchAllOrders=(data)=>{
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+
+export const fetchTenantID=(data)=>{
+    const url='/account/tenants/fetch_tenant_id/'
+    const params={}
+    const payload={}
+    return requestMaker(url,"get",{params,payload})
+}
