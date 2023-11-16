@@ -19,7 +19,7 @@ import Addinventory from "./Addinventory";
 import AddUnit from "./AddUnit";
 import AddProduct from "./AddProduct";
 import { errorMsg } from "../../Utils";
-import { cartAPI } from "../../Api";
+import { cartAPI, dashboardAPI } from "../../Api";
 import logo from "../../Assets/Images/logo/phurti_logo.png";
 import Loader from "../../Components/Loader";
 import fuzzysort from 'fuzzysort'
@@ -30,12 +30,14 @@ const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
 });
 
 export default function AddStock() {
-  const { id } = useParams();
+  // const { id } = useParams();
+  // const id=1
+  const id=2
   const {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
   } = useSelector(mapStateToProps);
-
+  const [inventory_id,setInventoryId]=useState(null)
   const [cartData, setCartData] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [barcode, setBarcode] = useState("");
@@ -52,22 +54,37 @@ export default function AddStock() {
   const [inventoryname, setInventoryname] = useState("")
   const [showModal, setshowModal] = useState(false)
   const [productRemaining, setProductRemaining] = useState("NA")
-  const [productAddress, setProductAddress] = useState("NA")
+  const [productAddress, setProductAddress] = useState("NA");
+  const [expiry,setExpiry]=useState(null);
+  const [batch_number,setBatchNumber]=useState(null)
+  const [allInventories,SetAllInventories]=useState(null)
 
-  const inventoryfix = () => {
-    if (stockdropdownList.inventory){
-      setInventory(null)
-      stockdropdownList.inventory.map(i => {
-        if(i.id===parseInt(id)){
-          setInventory(id)
-          setInventoryname(i.name)
-          return 0
-        }
-      })
-    }
+
+  const inventoryHandler=(e)=>{
+    setInventory(e.target.value)
+    setInventoryId(e.target.value);
+    console.log(e.target.value);
+    console.log(allInventories);
+    stockdropdownList.inventory.map(i => {
+      if(i.id===parseInt(e.target.value)){
+        setInventoryname(i.name)
+        return 0
+      }
+    })
+   
+
   }
   useEffect(()=>{
-    inventoryfix()
+    const invenrorys_promise=dashboardAPI.fetchInventorys();
+    invenrorys_promise.then((response)=>{
+     SetAllInventories(response.data.message);
+    }).catch((err)=>{
+      console.log(err.message);
+    })
+  },[])
+  useEffect(()=>{
+   
+
     if (inventory==null){
       // alert("Inventory Not Found!")
       setInventoryname("NOT FOUND")
@@ -125,9 +142,11 @@ export default function AddStock() {
     } else if (key === "BARCODE") {
       setBarcode(value);
     }
+    console.log(e.target.value);
   };
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
   const addItem = () => {
+    console.log(cartData);
     if (
       product === "" ||
       pricePerProduct === "" ||
@@ -136,6 +155,7 @@ export default function AddStock() {
       inventory === "" ||
       addedBy === ""
     ) {
+      console.log(unit);
       toast.error("Please add detail correctly.");
     } else {
       if (product && quantity) {
@@ -150,8 +170,13 @@ export default function AddStock() {
           description: productDescription,
           barcode: barcode,
           product_remaining: productRemaining,
-          product_address: productAddress
+          product_address: productAddress,
+          batch_number:batch_number
         };
+      if(!Object.is(expiry,null)){
+        payload["expiry"]=expiry
+      }
+
         let cartObj = [...cartData];
         cartObj.push(payload);
         setCartData(cartObj);
@@ -257,6 +282,7 @@ export default function AddStock() {
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
+          setProduct(product_name)
 
           // console.log(searchResults);
         } else if (barcode) {
@@ -279,6 +305,7 @@ export default function AddStock() {
             }
           } else {
             // setBarcodeQuery("");
+            // setProduct(e.target.value)
           }
         }
       }
@@ -300,6 +327,7 @@ export default function AddStock() {
     console.log(e.target.getAttribute("data-productdescription"));
     setTempProduct(e.target.getAttribute("data-producttitle"));
     setPrices(e.target.getAttribute("data-product-price"));
+    console.log(prices);
     setMarketPrices(e.target.getAttribute("data-product-market-price"));
     setImage(e.target.getAttribute("data-product-image"));
     setBarcode(e.target.getAttribute("data-product-barcode"));
@@ -310,6 +338,7 @@ export default function AddStock() {
     if (searchPriceinput) {
       searchPriceinput.focus();
     }
+
   };
 
   const history = useHistory();
@@ -333,12 +362,16 @@ export default function AddStock() {
         inventory: inventory,
         procurement_price_per_product: pricePerProduct,
         barcode: barcode,
+        batch_number:batch_number,
+        expiry:expiry
       };
       cartData.push(temp);
     }
     console.log(cartData);
     if (!cartData || cartData.length === 0) {
       console.log(cartData);
+      console.log(expiry);
+      console.log(product);
       toast.error("Please add stock correctly.");
     } else {
       // API calls for adding data to the backend
@@ -466,6 +499,26 @@ export default function AddStock() {
           />
         ) : null}
       </Modal>
+      <div className="inventory-select-wrapper">
+      <select
+                  onChange={inventoryHandler}
+                  value={inventory}
+                  className="inventory-list"
+                    >
+                      <option>---------select inventory---------------</option>
+
+                      {stockdropdownList &&
+                        stockdropdownList.inventory.map(
+                          (i, index) => (
+                            <option value={i.id} key={index}>
+                              {i.name}
+                            </option>
+                          )
+                        )}
+                    </select>
+
+      </div>
+                  
       <form
         className="forms"
         onSubmit={handleSubmit}
@@ -567,7 +620,7 @@ export default function AddStock() {
                         stockdropdownList.stock_unit.map(
                           (stock_unit, index) => (
                             <option value={stock_unit.id} key={index}>
-                              {stock_unit.unit}
+                              {stock_unit.name}
                             </option>
                           )
                         )}
@@ -647,6 +700,24 @@ export default function AddStock() {
                     value={quantity}
                   />
                 </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="date"
+                    placeholder="expiry date"
+                    onChange={(e) => {setExpiry(e.target.value)}}
+                    value={expiry}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="number"
+                    placeholder="Batch Number"
+                    onChange={(e) => setBatchNumber(e.target.value)}
+                    value={batch_number}
+                  />
+                </div>
 
                 <div className="responsive__wrapper bottom-buttons">
                   <button type="button" className="add" onClick={addItem}>
@@ -658,8 +729,8 @@ export default function AddStock() {
               </div>
             )}
             <div className="table-responsive">
-              <table className="product__details__table">
-                <tr>
+              <table className="product__details__table" style={{"width":"100%"}}>
+                <tr className="stock-headings">
                   <th>Address</th>
                   <th>Product Remaining</th>
                   <th>Added By</th>
@@ -669,6 +740,10 @@ export default function AddStock() {
                   <th>Inventory</th>
                   <th>Price</th>
                   <th>Quantity</th>
+                  <th>Expiry</th>
+                  <th>Batch Number</th>
+                  <th>Delete</th>
+                  <th>Edit</th>
                 </tr>
 
                 {cartData.map((product, index) => {
@@ -685,7 +760,7 @@ export default function AddStock() {
                     product_address
                   } = product;
                   return (
-                    <tr key={index}>
+                    <tr className="stock-products" key={index}>
                       <td>{product_address}</td>
                       <td>{product_remaining}</td>
                       <td>
@@ -697,7 +772,7 @@ export default function AddStock() {
                           )}
                       </td>
                       <td>{barcode}</td>
-                      <td style={{ maxWidth: "450px", wordWrap: "break-word" }}>
+                      <td style={{ maxWidth: "550px", wordWrap: "break-word" }}>
                         {temp_stock_product} ({description})
                       </td>
                       <td>
@@ -717,6 +792,16 @@ export default function AddStock() {
                       </td>
                       <td>{procurement_price_per_product}</td>
                       <td>{stock_quantity}</td>
+                      <td>{expiry}</td>
+                      
+                     { 
+                     batch_number!==0?(
+                      <td>{batch_number}</td>
+                     ):(
+                        <td></td>
+                     )
+                     }
+                     
                       <td>
                         <div onClick={() => deleteItem(index)}>
                           <img
@@ -840,9 +925,11 @@ export default function AddStock() {
                         stockdropdownList.stock_unit &&
                         stockdropdownList.stock_unit.map(
                           (stock_unit, index) => (
+                           
                             <option value={stock_unit.id} key={index}>
-                              {stock_unit.unit}
+                              {stock_unit.name}
                             </option>
+                            
                           )
                         )}
                     </select>
@@ -891,6 +978,7 @@ export default function AddStock() {
                       <option value={marketPrices}>Market Price</option>
                     )}
                   </datalist>
+
                 </div>
 
                 <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
@@ -900,6 +988,24 @@ export default function AddStock() {
                     placeholder="Quantity"
                     onChange={(e) => onChangeHandler(e, "QUANTITY")}
                     value={quantity}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="date"
+                    placeholder="expiry date"
+                    onChange={(e) => {setExpiry(e.target.value)}}
+                    value={expiry}
+                  />
+                </div>
+                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
+                  <input
+                    className="product_quantity"
+                    type="number"
+                    placeholder="Batch Number"
+                    onChange={(e) => {setBatchNumber(e.target.value)}}
+                    value={batch_number}
                   />
                 </div>
 

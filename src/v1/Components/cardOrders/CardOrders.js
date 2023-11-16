@@ -16,7 +16,7 @@ const CardOrders=({order})=>{
         const formattedTime=`${hours}:${timestamp.getMinutes()} ${period}`
         return `${formattedDate} ${formattedTime}`
     }
-    const orderItemsDisplay=async ()=>{
+    const orderItemsDisplay=()=>{
         console.log("localstorage");
         console.log(localStorage);
             const config={
@@ -32,7 +32,7 @@ const CardOrders=({order})=>{
             .then((response)=>{
                 console.log(response.data.message);
                 const data =response.data.message;
-                history.push({pathname:'/dashboard/orderItems',state:data})
+                history.push({pathname:'/orderItems',state:data})
             }).catch((err)=>{
                 console.error(err.message)
             })
