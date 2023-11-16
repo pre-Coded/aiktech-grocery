@@ -23,6 +23,8 @@ import { cartAPI, dashboardAPI } from "../../Api";
 import logo from "../../Assets/Images/logo/phurti_logo.png";
 import Loader from "../../Components/Loader";
 import fuzzysort from 'fuzzysort'
+import axios from "axios";
+import { getBaseUrl } from "../../Lib/NetworkHandler";
 
 const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
   stockdropdown,
@@ -32,7 +34,7 @@ const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
 export default function AddStock() {
   // const { id } = useParams();
   // const id=1
-  const id=2
+  // const id=2
   const {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
@@ -62,17 +64,31 @@ export default function AddStock() {
 
   const inventoryHandler=(e)=>{
     setInventory(e.target.value)
-    setInventoryId(e.target.value);
     console.log(e.target.value);
     console.log(allInventories);
-    stockdropdownList.inventory.map(i => {
-      if(i.id===parseInt(e.target.value)){
-        setInventoryname(i.name)
+    allInventories.map(i => {
+      if(i.name===e.target.value){
+        setInventoryname(i.name);
+        const config={
+            params:{
+            "name":i.name
+          },
+          headers: {
+            'Content-Type': 'application/json', 
+        },
+        }
+        axios.get(`${getBaseUrl()}/api/shop/fetch_inventory_id/`,config)
+        .then((response)=>{
+          console.log(response.data.data,"inventory id");
+          setInventoryId(response.data.data);
+          fetchProductsearch(response.data.data);
+        }).catch((err)=>{
+          console.log(err.message);
+        }) 
+        
         return 0
       }
     })
-   
-
   }
   useEffect(()=>{
     const invenrorys_promise=dashboardAPI.fetchInventorys();
@@ -80,7 +96,8 @@ export default function AddStock() {
      SetAllInventories(response.data.message);
     }).catch((err)=>{
       console.log(err.message);
-    })
+    });
+
   },[])
   useEffect(()=>{
    
@@ -104,7 +121,7 @@ export default function AddStock() {
   const fetchStockDropdown = async () => {
     dispatch(actionsCreator.FETCH_STOCK_DROPDOWN());
   };
-  const fetchProductsearch = async () => {
+  const fetchProductsearch = async (id) => {
     dispatch(actionsCreator.FETCH_ALL_PRODUCTS(id));
   };
 
@@ -121,9 +138,7 @@ export default function AddStock() {
     fetchStockDropdown();
   }, []);
 
-  useEffect(() => {
-    fetchProductsearch()
-  }, [])
+
   
   const onChangeHandler = (e, key) => {
     const value = e.target.value;
@@ -164,7 +179,7 @@ export default function AddStock() {
           stock_quantity: quantity,
           procurement_price_per_product: pricePerProduct,
           stock_unit: unit,
-          inventory: inventory,
+          inventory: inventory_id,
           added_by: addedBy,
           temp_stock_product: tempProduct,
           description: productDescription,
@@ -214,7 +229,7 @@ export default function AddStock() {
           stock_quantity: quantity,
           stock_unit: unit,
           stock_product: product,
-          inventory: inventory,
+          inventory: inventory_id,
           procurement_price_per_product: pricePerProduct,
           barcode: barcode,
           temp_stock_product: tempProduct,
@@ -359,7 +374,7 @@ export default function AddStock() {
         stock_quantity: quantity,
         stock_unit: unit,
         stock_product: product,
-        inventory: inventory,
+        inventory: inventory_id,
         procurement_price_per_product: pricePerProduct,
         barcode: barcode,
         batch_number:batch_number,
@@ -508,7 +523,8 @@ export default function AddStock() {
                       <option>---------select inventory---------------</option>
 
                       {stockdropdownList &&
-                        stockdropdownList.inventory.map(
+                      allInventories &&
+                        allInventories.map(
                           (i, index) => (
                             <option value={i.id} key={index}>
                               {i.name}
