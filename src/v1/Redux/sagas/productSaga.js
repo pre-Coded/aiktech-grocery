@@ -69,6 +69,7 @@ function* fetchProductsearch(action) {
         yield put(actionsCreator.SET_ALL_PRODUCTS({ results: data }));
         if (response.status===200){
             yield put(actionsCreator.SET_ALL_PRODUCTS({ loading: false }))
+            
         }
         else{
             yield put(actionsCreator.SET_ALL_PRODUCTS({ loading: false }))
