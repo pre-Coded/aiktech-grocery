@@ -34,9 +34,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './v1/Components/ScrollToTop/ScrollToTop';
 import { AuthWrapper } from './v1/Wrapper/'
-import Dashboard from './v1/Pages/dashboard/Dashboard';
 import Carditems from './v1/Components/cardItems/CardItems';
-import SideBar from './v1/Components/SideBar/SideBar';
 import TenantDashboard from './v1/Pages/TenantDashboard/TenantDashboard';
 
 
