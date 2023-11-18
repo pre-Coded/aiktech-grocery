@@ -64,8 +64,6 @@ export default function AddStock() {
 
   const inventoryHandler=(e)=>{
     setInventory(e.target.value)
-    console.log(e.target.value);
-    console.log(allInventories);
     allInventories.map(i => {
       if(i.name===e.target.value){
         setInventoryname(i.name);
@@ -79,7 +77,7 @@ export default function AddStock() {
         }
         axios.get(`${getBaseUrl()}/api/shop/fetch_inventory_id/`,config)
         .then((response)=>{
-          console.log(response.data.data,"inventory id");
+         
           setInventoryId(response.data.data);
           // fetchProductsearch();
           
@@ -140,9 +138,9 @@ export default function AddStock() {
     }
 
     axios.get(`${getBaseUrl()}/api/shop/fetch_all_products/`,config).then((response)=>{
-      console.log("all products",response.data);
+      
       setAllProducts(response.data.data);
-      console.log(response.data.data[0]["barcode"],typeof response.data.data[0]["barcode"]);
+      
       toast.success("products fetched successfully");
     })
     .catch((err)=>{
@@ -174,7 +172,7 @@ export default function AddStock() {
   };
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
   const addItem = () => {
-    console.log(cartData);
+    
     if (
       product === "" ||
       pricePerProduct === "" ||
@@ -183,7 +181,7 @@ export default function AddStock() {
       inventory === "" ||
       addedBy === ""
     ) {
-      console.log(unit);
+     
       toast.error("Please add detail correctly.");
     } else {
       if (product && quantity) {
@@ -305,19 +303,13 @@ export default function AddStock() {
         if (product_name) {
           setShowSuggestions(true);
           let regex = new RegExp(`${product_name}`, 'i');
-          console.log(regex,"regex");
-          console.log(productsearch,"productsearch");
           let suggestion = allproducts.filter(o => regex.test(o.product_name));
-          console.log(suggestion,"suggestion");
           let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'product_name'})
           suggestion = sortedSuggestion.map(i => i.obj);
-          console.log(suggestion,"suggestion2");
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
           setProduct(product_name)
-          console.log(product_name,"product_name");
-
           // console.log(searchResults);
         } else if (barcode) {
 
@@ -332,7 +324,7 @@ export default function AddStock() {
             setImage(product_from_barcode[0].photo);
             setProductRemaining(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.product_remaining: null)))
             setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.address: null)));
-            console.log(product_from_barcode,"product_fron_barcode");
+            
             
             let searchPriceinput = document.querySelector("#price_per_product");
             if (searchPriceinput) {
@@ -358,12 +350,9 @@ export default function AddStock() {
     document.querySelector(".suggestion_input").value =
       e.target.getAttribute("data-producttitle");
     setProduct(e.target.getAttribute("data-productid"));
-    console.log(e.target.getAttribute("data-productid"),"data-productid");
     setProductDescription(e.target.getAttribute("data-productdescription"));
-    console.log(e.target.getAttribute("data-productdescription"));
     setTempProduct(e.target.getAttribute("data-producttitle"));
     setPrices(e.target.getAttribute("data-product-price"));
-    console.log(prices);
     setMarketPrices(e.target.getAttribute("data-product-market-price"));
     setImage(e.target.getAttribute("data-product-image"));
     setBarcode(e.target.getAttribute("data-product-barcode"));
@@ -403,11 +392,8 @@ export default function AddStock() {
       };
       cartData.push(temp);
     }
-    console.log(cartData);
+
     if (!cartData || cartData.length === 0) {
-      console.log(cartData);
-      console.log(expiry);
-      console.log(product);
       toast.error("Please add stock correctly.");
     } else {
       // API calls for adding data to the backend
@@ -457,8 +443,6 @@ export default function AddStock() {
   useEffect(() => {
     let barcode = document.querySelector(".product_barcode");
     if (barcode) barcode.focus();
-
-    console.log({ barcode: barcode });
     setImage(logo);
   }, []);
 
@@ -497,9 +481,7 @@ export default function AddStock() {
     setBarcodeQuery(null);
   }, [barcodeQuery]);
 
-  useEffect(() => {
-    console.log({ CartData: cartData });
-  }, [cartData]);
+
 
   //qwert
   return (
@@ -538,7 +520,7 @@ export default function AddStock() {
             setTempProduct={setTempProduct}
           />
         ) : null}
-        {console.log(allproducts)}
+        
       </Modal>
       <div className="inventory-select-wrapper">
       <select
@@ -628,7 +610,6 @@ export default function AddStock() {
                         }
                       }}
                     />
-                    {console.log(productSuggestions)}
                     <Searchsuggestion
                       inventory={inventory}
                       productSuggestions={productSuggestions}
@@ -820,10 +801,6 @@ export default function AddStock() {
                       <td>
                         {stockdropdownList &&
                           stockdropdownList.stock_unit.map((stockunit) =>{
-                            {console.log(stockunit)}
-                            {console.log(typeof stockunit.id)}
-                            {console.log(typeof stock_unit)}
-                            {console.log(stock_unit)}
                             return(
                             stockunit.id === parseInt(stock_unit)
                               ? stockunit.name
