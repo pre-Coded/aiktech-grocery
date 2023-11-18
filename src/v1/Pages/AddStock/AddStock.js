@@ -32,9 +32,8 @@ const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
 });
 
 export default function AddStock() {
-  // const { id } = useParams();
-  // const id=1
-  // const id=2
+  
+
   const {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
@@ -59,7 +58,8 @@ export default function AddStock() {
   const [productAddress, setProductAddress] = useState("NA");
   const [expiry,setExpiry]=useState(null);
   const [batch_number,setBatchNumber]=useState(null)
-  const [allInventories,SetAllInventories]=useState(null)
+  const [allInventories,SetAllInventories]=useState(null);
+  const [allproducts,setAllProducts]=useState([])
 
 
   const inventoryHandler=(e)=>{
@@ -81,7 +81,8 @@ export default function AddStock() {
         .then((response)=>{
           console.log(response.data.data,"inventory id");
           setInventoryId(response.data.data);
-          fetchProductsearch(response.data.data);
+          // fetchProductsearch();
+          
         }).catch((err)=>{
           console.log(err.message);
         }) 
@@ -100,8 +101,6 @@ export default function AddStock() {
 
   },[])
   useEffect(()=>{
-   
-
     if (inventory==null){
       // alert("Inventory Not Found!")
       setInventoryname("NOT FOUND")
@@ -121,8 +120,8 @@ export default function AddStock() {
   const fetchStockDropdown = async () => {
     dispatch(actionsCreator.FETCH_STOCK_DROPDOWN());
   };
-  const fetchProductsearch = async (id) => {
-    dispatch(actionsCreator.FETCH_ALL_PRODUCTS(id));
+  const fetchProductsearch = async () => {
+    dispatch(actionsCreator.FETCH_ALL_PRODUCTS());
   };
 
   const closeModal = (value, value1) => {
@@ -136,6 +135,20 @@ export default function AddStock() {
 
   useEffect(() => {
     fetchStockDropdown();
+    const config={
+
+    }
+
+    axios.get(`${getBaseUrl()}/api/shop/fetch_all_products/`,config).then((response)=>{
+      console.log("all products",response.data);
+      setAllProducts(response.data.data);
+      console.log(response.data.data[0]["barcode"],typeof response.data.data[0]["barcode"]);
+      toast.success("products fetched successfully");
+    })
+    .catch((err)=>{
+      console.log(err.message);
+    })
+    
   }, []);
 
 
@@ -286,33 +299,40 @@ export default function AddStock() {
     try {
       let product_name = e.target.value;
       let barcode = e.target.barcode;
+      
       if (product_name || barcode) {
 
         if (product_name) {
           setShowSuggestions(true);
-          let regex = new RegExp(`${product_name}`, 'i')
-          let suggestion = productsearch.filter(o => regex.test(o.title));
-          let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'title'})
-          suggestion = sortedSuggestion.map(i => i.obj)
+          let regex = new RegExp(`${product_name}`, 'i');
+          console.log(regex,"regex");
+          console.log(productsearch,"productsearch");
+          let suggestion = allproducts.filter(o => regex.test(o.product_name));
+          console.log(suggestion,"suggestion");
+          let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'product_name'})
+          suggestion = sortedSuggestion.map(i => i.obj);
+          console.log(suggestion,"suggestion2");
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
           setProduct(product_name)
+          console.log(product_name,"product_name");
 
           // console.log(searchResults);
         } else if (barcode) {
 
-          let product_from_barcode = productsearch.filter(i => i.barcode===barcode.replace("\n", ""));
+          let product_from_barcode = allproducts.filter(i => i.barcode===barcode.replace("\n", ""));
           if (product_from_barcode.length > 0) {
-            setTempProduct(product_from_barcode[0].title);
+            setTempProduct(product_from_barcode[0].product_name);
             setProduct(product_from_barcode[0].id);
             setMarketPrices(product_from_barcode[0].market_price);
             setPrices(product_from_barcode[0].price);
             setProductDescription(product_from_barcode[0].description);
-            setBarcodeQuery(product_from_barcode[0].title);
+            setBarcodeQuery(product_from_barcode[0].product_name);
             setImage(product_from_barcode[0].photo);
             setProductRemaining(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.product_remaining: null)))
-            setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.address: null)))
+            setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.address: null)));
+            console.log(product_from_barcode,"product_fron_barcode");
             
             let searchPriceinput = document.querySelector("#price_per_product");
             if (searchPriceinput) {
@@ -338,6 +358,7 @@ export default function AddStock() {
     document.querySelector(".suggestion_input").value =
       e.target.getAttribute("data-producttitle");
     setProduct(e.target.getAttribute("data-productid"));
+    console.log(e.target.getAttribute("data-productid"),"data-productid");
     setProductDescription(e.target.getAttribute("data-productdescription"));
     console.log(e.target.getAttribute("data-productdescription"));
     setTempProduct(e.target.getAttribute("data-producttitle"));
@@ -511,8 +532,13 @@ export default function AddStock() {
             setBarcode={setBarcode}
             closeModal={closeModal}
             dropdown={dropdown}
+            allproducts={allproducts}
+            setAllProducts={setAllProducts}
+            setProduct={setProduct}
+            setTempProduct={setTempProduct}
           />
         ) : null}
+        {console.log(allproducts)}
       </Modal>
       <div className="inventory-select-wrapper">
       <select
@@ -602,7 +628,7 @@ export default function AddStock() {
                         }
                       }}
                     />
-
+                    {console.log(productSuggestions)}
                     <Searchsuggestion
                       inventory={inventory}
                       productSuggestions={productSuggestions}
@@ -728,7 +754,7 @@ export default function AddStock() {
                 <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
                   <input
                     className="product_quantity"
-                    type="number"
+                    type="text"
                     placeholder="Batch Number"
                     onChange={(e) => setBatchNumber(e.target.value)}
                     value={batch_number}
@@ -775,8 +801,8 @@ export default function AddStock() {
                     product_remaining,
                     product_address
                   } = product;
-                  return (
-                    <tr className="stock-products" key={index}>
+                  return ( 
+                    <tr className="stock-products" key={index} style={{wordBreak: "break-all"}}>
                       <td>{product_address}</td>
                       <td>{product_remaining}</td>
                       <td>
@@ -788,23 +814,27 @@ export default function AddStock() {
                           )}
                       </td>
                       <td>{barcode}</td>
-                      <td style={{ maxWidth: "550px", wordWrap: "break-word" }}>
+                      <td >
                         {temp_stock_product} ({description})
                       </td>
                       <td>
                         {stockdropdownList &&
-                          stockdropdownList.stock_unit.map((stockunit) =>
-                            stockunit.id.toString() === stock_unit
-                              ? stockunit.unit
+                          stockdropdownList.stock_unit.map((stockunit) =>{
+                            {console.log(stockunit)}
+                            {console.log(typeof stockunit.id)}
+                            {console.log(typeof stock_unit)}
+                            {console.log(stock_unit)}
+                            return(
+                            stockunit.id === parseInt(stock_unit)
+                              ? stockunit.name
                               : null
+                            )
+                           
+                          }
                           )}
                       </td>
                       <td>
-                        {stockdropdownList &&
-                          stockdropdownList.inventory.map((i) =>
-                            i.id.toString() === inventory ? i.name : null
-                          )}
-                        {}
+                      {inventoryname}
                       </td>
                       <td>{procurement_price_per_product}</td>
                       <td>{stock_quantity}</td>
@@ -1018,7 +1048,7 @@ export default function AddStock() {
                 <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
                   <input
                     className="product_quantity"
-                    type="number"
+                    type="text"
                     placeholder="Batch Number"
                     onChange={(e) => {setBatchNumber(e.target.value)}}
                     value={batch_number}

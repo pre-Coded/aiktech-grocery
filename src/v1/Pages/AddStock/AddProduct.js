@@ -27,7 +27,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 });
 
 ////
-function AddProductForm({ closeModal, setBarcode }) {
+function AddProductForm({ closeModal, setBarcode, setAllProducts, setProduct, setTempProduct}) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -72,14 +72,23 @@ function AddProductForm({ closeModal, setBarcode }) {
         // console.log(res);
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
-          productsearch.push(res.data.data? res.data.data[0]: {})
+          setAllProducts((prev)=>([...prev,res.data.data[0]]))
+          setProduct(res.data.data[0].id);
+          
+          //productsearch.push(res.data.data? res.data.data[0]: {})
           closeModal(false);
+          console.log(res.data.data[0]);
+        
         } else if (res.data.status === 400) {
           toast.success("Please fill values correctly.");
         }
 
         const code = data["barcode"] + "\n";
+        console.log(typeof data["barcode"]);
         setBarcode(code);
+        console.log(code,"barcode after adding product");
+        console.log(typeof code);
+        setTempProduct(data["product_name"]);
       })
       .catch((error) => {
         const msg = errorMsg(error);

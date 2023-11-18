@@ -370,11 +370,29 @@ select {
 .inventory-list select{
   font-size: 30px;
 }
+
 .stock-headings{
   width: 100% !important;
-  margin-left: 0% !important;
+  margin-left: -1% !important;
+  
+  display: flex;
+  justify-content: space-around !important;
+  font-size: 12px;
+  
 }
 .stock-products{
   width: 100% !important;
-  margin-left: 0% !important;
+  margin-left: -1% !important;
+  display: flex;
+  justify-content: space-around !important;
+  font-size: 13px;
+
+ 
+}
+.stock-products td{
+ width: 100%;
+ 
+}
+.product__details__table tr{
+  width: 100%;
 }
