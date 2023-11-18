@@ -88,6 +88,7 @@ export const sellableProductSearch = (data) => {
 
 export const searchProduct = (data) => {
   const { inv } = data;
+  console.log(inv,"inv");
   const url = `/shop/productsearch/?inv=${inv}`;
   const params = {};
   const payload = {};

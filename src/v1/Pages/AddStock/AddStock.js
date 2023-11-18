@@ -38,7 +38,7 @@ export default function AddStock() {
     stockdropdown: { list: stockdropdownList },
     productsearch: {results: productsearch=[], loading: load, state: api_state},
   } = useSelector(mapStateToProps);
-  const [inventory_id,setInventoryId]=useState(null)
+  const [inventory_id,setInventoryId]=useState(null);
   const [cartData, setCartData] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [barcode, setBarcode] = useState("");
@@ -62,6 +62,8 @@ export default function AddStock() {
   const [allproducts,setAllProducts]=useState([])
 
 
+
+
   const inventoryHandler=(e)=>{
     setInventory(e.target.value)
     allInventories.map(i => {
@@ -79,7 +81,9 @@ export default function AddStock() {
         .then((response)=>{
          
           setInventoryId(response.data.data);
-          // fetchProductsearch();
+          console.log(response.data.data);
+          fetchProductsearch(response.data.data);
+          console.log(productsearch);
           
         }).catch((err)=>{
           console.log(err.message);
@@ -118,8 +122,8 @@ export default function AddStock() {
   const fetchStockDropdown = async () => {
     dispatch(actionsCreator.FETCH_STOCK_DROPDOWN());
   };
-  const fetchProductsearch = async () => {
-    dispatch(actionsCreator.FETCH_ALL_PRODUCTS());
+  const fetchProductsearch = async (id) => {
+    dispatch(actionsCreator.FETCH_ALL_PRODUCTS(id));
   };
 
   const closeModal = (value, value1) => {
@@ -137,15 +141,16 @@ export default function AddStock() {
 
     }
 
-    axios.get(`${getBaseUrl()}/api/shop/fetch_all_products/`,config).then((response)=>{
+    // axios.get(`${getBaseUrl()}/api/shop/fetch_all_products/`,config).then((response)=>{
       
-      setAllProducts(response.data.data);
+    //   setAllProducts(response.data.data);
+
       
-      toast.success("products fetched successfully");
-    })
-    .catch((err)=>{
-      console.log(err.message);
-    })
+    //   toast.success("products fetched successfully");
+    // })
+    // .catch((err)=>{
+    //   console.log(err.message);
+    // })
     
   }, []);
 
@@ -170,6 +175,7 @@ export default function AddStock() {
     }
     console.log(e.target.value);
   };
+  const isEqual = (item, id, inventory_id) => item.id === id && item.inventory_id === inventory_id;
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
   const addItem = () => {
     
@@ -184,7 +190,11 @@ export default function AddStock() {
      
       toast.error("Please add detail correctly.");
     } else {
+
       if (product && quantity) {
+        const entered_product=productsearch.find(item => isEqual(item, parseInt(product), inventory_id));
+       
+        console.log(entered_product);
         let payload = {
           stock_product: product,
           stock_quantity: quantity,
@@ -195,8 +205,8 @@ export default function AddStock() {
           temp_stock_product: tempProduct,
           description: productDescription,
           barcode: barcode,
-          product_remaining: productRemaining,
-          product_address: productAddress,
+          product_remaining: entered_product.quantity_remaining,
+          product_address: entered_product.address,
           batch_number:batch_number
         };
       if(!Object.is(expiry,null)){
@@ -303,7 +313,7 @@ export default function AddStock() {
         if (product_name) {
           setShowSuggestions(true);
           let regex = new RegExp(`${product_name}`, 'i');
-          let suggestion = allproducts.filter(o => regex.test(o.product_name));
+          let suggestion = productsearch.filter(o => regex.test(o.product_name));
           let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'product_name'})
           suggestion = sortedSuggestion.map(i => i.obj);
           setProductSuggestions(suggestion);
@@ -313,7 +323,8 @@ export default function AddStock() {
           // console.log(searchResults);
         } else if (barcode) {
 
-          let product_from_barcode = allproducts.filter(i => i.barcode===barcode.replace("\n", ""));
+          let product_from_barcode = productsearch.filter(i => i.barcode===barcode.replace("\n", ""));
+          console.log(product_from_barcode,"product_from_barcode");
           if (product_from_barcode.length > 0) {
             setTempProduct(product_from_barcode[0].product_name);
             setProduct(product_from_barcode[0].id);
@@ -323,8 +334,8 @@ export default function AddStock() {
             setBarcodeQuery(product_from_barcode[0].product_name);
             setImage(product_from_barcode[0].photo);
             setProductRemaining(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.product_remaining: null)))
-            setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.address: null)));
-            
+            // setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].map(i => (i.inventory_id==inventory? i.address: null)));
+            setProductAddress(product_from_barcode[0].inventory_id===inventory ? product_from_barcode[0].address:null)
             
             let searchPriceinput = document.querySelector("#price_per_product");
             if (searchPriceinput) {
@@ -515,7 +526,6 @@ export default function AddStock() {
             closeModal={closeModal}
             dropdown={dropdown}
             allproducts={allproducts}
-            setAllProducts={setAllProducts}
             setProduct={setProduct}
             setTempProduct={setTempProduct}
           />

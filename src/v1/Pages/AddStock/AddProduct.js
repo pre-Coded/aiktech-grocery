@@ -72,15 +72,13 @@ function AddProductForm({ closeModal, setBarcode, setAllProducts, setProduct, se
         // console.log(res);
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
-          setAllProducts((prev)=>([...prev,res.data.data[0]]))
           setProduct(res.data.data[0].id);
-          //productsearch.push(res.data.data? res.data.data[0]: {})
+          productsearch.push(res.data.data? res.data.data[0]: {})
           closeModal(false);
         
         } else if (res.data.status === 400) {
           toast.success("Please fill values correctly.");
         }
-
         const code = data["barcode"] + "\n";
         setBarcode(code);
         setTempProduct(data["product_name"]);
