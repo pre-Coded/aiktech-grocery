@@ -22,13 +22,14 @@ export default function Searchsuggestion(props) {
       id="search-container"
     >
       {props.productSuggestions.map((product, index) => (
+        
         <div
           key={index}
           className="suggestionList"
           onClick={props.handleSuggestion}
           data-productid={product.id}
           data-productdescription={product.description}
-          data-producttitle={product.title}
+          data-producttitle={product.product_name}
           data-product-price={product.price_variation && product.price_variation.map(i => (i.price))}
           data-product-market-price={product.price_variation && product.price_variation.map(i => (i.market_price))}
           data-product-image={product.photo}
@@ -36,10 +37,13 @@ export default function Searchsuggestion(props) {
           data-product-remaining={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.product_remaining: null))}
           data-product-address={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.address: null))}
         >
-          {product.title}({product.description})
+          
+          {product.product_name}({product.description})
           <p className="category_name_addstock">
-            in {product.category.join(", ")}
+            in {Object.entries(product.category).map(([key, value]) => value).join(", ")}
+            
           </p>
+          
         </div>
       ))}
     </div>
