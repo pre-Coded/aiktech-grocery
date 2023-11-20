@@ -4,7 +4,7 @@ import requestMaker from "../Lib";
 
 
 export const fetchAllOrders=(data)=>{
-    const url = "/shop/fetch_all_orders/"
+    const url = "/shop/tenant/orders/"
     const params={}
     const payload={}
     return requestMaker(url,"get",{params,payload})
@@ -17,7 +17,7 @@ export const fetchTenantID=(data)=>{
     return requestMaker(url,"get",{params,payload})
 }
 export const fetchInventorys=(data)=>{
-    const url='/shop/inventorys/fetch_all_inventorys/'
+    const url='/shop/inventories/'
     const params={}
     const payload={}
     return requestMaker(url,"get",{params,payload})

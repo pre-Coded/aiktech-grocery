@@ -28,7 +28,7 @@ const CardOrders=({order})=>{
                 },
             }
             localStorage.setItem(`${order.id}`,"1");
-            axios.get(`${getBaseUrl()}/api/shop/order/fetch_order_items/`,config)
+            axios.get(`${getBaseUrl()}/api/shop/order/items/`,config)
             .then((response)=>{
                 console.log(response.data.message);
                 const data =response.data.message;

@@ -62,7 +62,7 @@ export default function AddStock() {
   const [allproducts,setAllProducts]=useState([])
 
 
-
+  console.log(allproducts,"all products");
 
   const inventoryHandler=(e)=>{
     setInventory(e.target.value)
@@ -77,12 +77,23 @@ export default function AddStock() {
             'Content-Type': 'application/json', 
         },
         }
-        axios.get(`${getBaseUrl()}/api/shop/fetch_inventory_id/`,config)
+        axios.get(`${getBaseUrl()}/api/shop/inventory/id/`,config)
         .then((response)=>{
          
           setInventoryId(response.data.data);
           console.log(response.data.data);
-          fetchProductsearch(response.data.data);
+          const config={
+            params:{
+              "inv":response.data.data
+            }
+          }
+          axios.get(`${getBaseUrl()}/api/shop/products/data/`,config)
+          .then((response)=>{
+            console.log(response.data.data,"products");
+            setAllProducts(response.data.data);
+          }).catch((err)=>{
+            console.log(err.message);
+          })
           console.log(productsearch);
           
         }).catch((err)=>{
@@ -136,22 +147,7 @@ export default function AddStock() {
   }, [dropdown]);
 
   useEffect(() => {
-    fetchStockDropdown();
-    const config={
-
-    }
-
-    // axios.get(`${getBaseUrl()}/api/shop/fetch_all_products/`,config).then((response)=>{
-      
-    //   setAllProducts(response.data.data);
-
-      
-    //   toast.success("products fetched successfully");
-    // })
-    // .catch((err)=>{
-    //   console.log(err.message);
-    // })
-    
+    fetchStockDropdown();  
   }, []);
 
 
@@ -192,7 +188,8 @@ export default function AddStock() {
     } else {
 
       if (product && quantity) {
-        const entered_product=productsearch.find(item => isEqual(item, parseInt(product), inventory_id));
+        console.log(allproducts,"all products");
+        const entered_product=allproducts.find(item => isEqual(item, parseInt(product), inventory_id));
        
         console.log(entered_product);
         let payload = {
@@ -204,11 +201,12 @@ export default function AddStock() {
           added_by: addedBy,
           temp_stock_product: tempProduct,
           description: productDescription,
-          barcode: barcode,
-          product_remaining: entered_product.quantity_remaining,
-          product_address: entered_product.address,
+          barcode: barcode?(barcode):(entered_product?entered_product.barcode:null),
+          product_remaining: entered_product?entered_product.quantity_remaining:null,
+          product_address: entered_product?entered_product.address:null,
           batch_number:batch_number
         };
+        
       if(!Object.is(expiry,null)){
         payload["expiry"]=expiry
       }
@@ -311,11 +309,14 @@ export default function AddStock() {
       if (product_name || barcode) {
 
         if (product_name) {
+          console.log(allproducts,"for suggestions");
           setShowSuggestions(true);
           let regex = new RegExp(`${product_name}`, 'i');
-          let suggestion = productsearch.filter(o => regex.test(o.product_name));
+          let suggestion = allproducts.filter(o => regex.test(o.product_name));
+          console.log(suggestion);
           let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'product_name'})
           suggestion = sortedSuggestion.map(i => i.obj);
+          console.log(suggestion);
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
@@ -323,7 +324,7 @@ export default function AddStock() {
           // console.log(searchResults);
         } else if (barcode) {
 
-          let product_from_barcode = productsearch.filter(i => i.barcode===barcode.replace("\n", ""));
+          let product_from_barcode = allproducts.filter(i => i.barcode===barcode.replace("\n", ""));
           console.log(product_from_barcode,"product_from_barcode");
           if (product_from_barcode.length > 0) {
             setTempProduct(product_from_barcode[0].product_name);

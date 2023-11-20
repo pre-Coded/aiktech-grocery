@@ -17,25 +17,6 @@ const TenantDashboard=()=>{
     const history=useHistory();
     const [tenant_id,setTenantID]=useState(0);
     console.log(tenant_id);
-    function getTenantID(){
-        const promise=dashboardAPI.fetchTenantID();
-        console.log("response");
-        promise.then((response)=>{
-            console.log(response.data.tenant_id);
-            setTenantID(response.data.tenant_id);
-
-        }).catch((err)=>{
-            console.error(err.message)
-        })
-        
-
-    }
-    useEffect(()=>{
-        getTenantID()
-        
-    },[])
-   
-    
 
     return(
         <div className="tenant-dashboard-main">
@@ -48,7 +29,7 @@ const TenantDashboard=()=>{
             {
                 option===1?(<Dashboard/>):(
                     option===2?(
-                    <AddStock id={tenant_id}/>
+                    <AddStock/>
                     ):(<div>
 
                     </div>)
