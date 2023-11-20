@@ -22,6 +22,7 @@ export default function Searchsuggestion(props) {
       id="search-container"
     >
       {props.productSuggestions.map((product, index) => (
+
         
         <div
           key={index}
@@ -37,11 +38,11 @@ export default function Searchsuggestion(props) {
           data-product-remaining={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.product_remaining: null))}
           data-product-address={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.address: null))}
         >
+          {console.log(product)}
           
           {product.product_name}({product.description})
           <p className="category_name_addstock">
-            in {Object.entries(product.category).map(([key, value]) => value).join(", ")}
-            
+            in { product.category? (Object.entries(product.category).map(([key, value]) => value).join(", ")):(null)}
           </p>
           
         </div>

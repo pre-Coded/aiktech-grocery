@@ -31,7 +31,7 @@ const Dashboard=()=>{
         try{
         const params={}
         const payload={}
-        const promise=requestMaker("/shop/fetch_all_orders/","get",params,payload);
+        const promise=requestMaker("/shop/tenant/orders/","get",params,payload);
         promise.then((response)=>{
             setOrders(response.data);
             if(orders.length!==0 && notifications===true){
