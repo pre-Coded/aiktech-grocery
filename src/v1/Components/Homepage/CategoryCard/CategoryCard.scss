@@ -1,18 +1,18 @@
 @import "../../../Assets/Styles/Variables.scss";
 
 .category-card {
-  height: 6rem;
+  height: 8rem;
   width: 8rem;
   margin: 0.5rem;
   border-radius: 0.3rem;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 .category-content-wrapper {
-  padding-top: 0.8rem;
+  padding-top: 0.1rem;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -33,7 +33,7 @@
 
 .category-card img {
   margin: auto;
-  height: 50%;
+  height: 67%;
   margin-bottom: 0.3rem;
 }
 .category-text * {
