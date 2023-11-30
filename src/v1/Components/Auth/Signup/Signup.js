@@ -74,13 +74,13 @@ export default function Signup({ submitHandler, controls, errors, showErr, onCha
                 addressSetter={addressSetter}
             />
 
-            {/* <InputField type="password"
+            <InputField type="password"
                 placeholder='Password'
                 value={password}
                 onChange={(e) =>
                     onChange(e, 'PASSWORD')}
                 error={findError('password', errors, showErr)}
-            /> */}
+            />
 
             <Button
                 loading={loading}
