@@ -88,7 +88,6 @@ const Auth = (props) => {
     };
 
     const isValidPassword = (value) => {
-        // Customize this function based on your password requirements
         // Example: Minimum 8 characters, at least one letter, and one number
         const minLength = 8;
         const containsLetter = /[a-zA-Z]/.test(value);
@@ -217,39 +216,6 @@ const Auth = (props) => {
     }
 
     const loginHandler = async () => {
-        // if(login_option === 'password'){
-        //     const payload = {
-        //         phone_number,
-        //         password
-        //     }
-        //     const validationError = checkValidData(payload, errors);
-        //     if (!validationError) {
-        //         const res = await authAPI.login(payload);
-        //         if (res) {
-        //             const statusCode = get(res, 'data.status');
-        //             if (statusCode === 200) {
-        //                 loginSuccess(res)
-        //             }
-        //         }
-        //     }
-        //     else {
-        //         setShowErr(true);
-        //     }
-
-        // } else{
-        //     //const msg = errorMsg(error);
-        //     const isVerified = get('response.data.is_verified');
-        //     if (isVerified === 'false') {
-        //         toast.error('Please verify your phone number');
-        //         setShowErr(false);
-        //         sendOtp();
-        //         setOtpScreen(true);
-        //     }
-        //     else {
-        //         //toast.error(msg);
-        //         toast.error("error");
-        //     }
-        // }
         try {
             const payload = {
                 phone_number,
@@ -311,76 +277,31 @@ const Auth = (props) => {
 
     const controls = { phone_number, username, email, otp, address, password, coordinates };
 
-    // return (
-    //     <div className='login-wrapper' >
-    //         <div className="login-container">
-    //             <div className='login-options'>
-    //                 <h5 className={login_option === 'login' ? 'login-head highlighted-head' : 'login-head'} onClick={() => { setlogin_option('login'); }} >Login</h5>
-    //                 <h5 className={login_option === 'signup' ? 'signup-head highlighted-head' : 'signup-head'} onClick={() => { setlogin_option('signup'); }} >Sign-Up</h5>
-    //             </div>
-    //             <hr className={login_option === 'login' ? 'login-left-hr' : 'login-right-hr'} />
-
-    //             {login_option === 'login'
-    //                 ?
-    //                 otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Login controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //                 : otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //             }
-    //             {/* {login_option === 'login'
-    //                 ? otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
-    //                 : <PasswordLogin controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //                 : otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
-    //                 : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //             } */}
-    //         </div>
-    //     </div >
-    // )
-    // return (
-    //     <div className='login-wrapper'>
-    //       <div className="login-container">
-    //         <div className='login-options'>
-    //           <h5 className={login_option === 'login' ? 'login-head highlighted-head' : 'login-head'} onClick={() => { setlogin_option('login'); }} >Login</h5>
-    //           <h5 className={login_option === 'signup' ? 'signup-head highlighted-head' : 'signup-head'} onClick={() => { setlogin_option('signup'); }} >Sign-Up</h5>
-    //         </div>
-    //         <hr className={login_option === 'login' ? 'login-left-hr' : 'login-right-hr'} />
-      
-    //         {login_option === 'login'
-    //           ? otpScreen
-    //             ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
-    //             : (
-    //               <>
-    //                 <Login controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //                 <PasswordLogin controls={controls} submitHandler={validateInput} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //               </>
-    //             )
-    //           : otpScreen
-    //             ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
-    //             : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-    //         }
-    //       </div>
-    //     </div>
-    //   )
-      return (
-        <div className='login-wrapper' >
-            <div className="login-container">
-                <div className='login-options'>
-                    <h5 className={login_option === 'login' ? 'login-head highlighted-head' : 'login-head'} onClick={() => { setlogin_option('login'); }} >Login</h5>
-                    <h5 className={login_option === 'signup' ? 'signup-head highlighted-head' : 'signup-head'} onClick={() => { setlogin_option('signup'); }} >Sign-Up</h5>
-                </div>
-                <hr className={login_option === 'login' ? 'login-left-hr' : 'login-right-hr'} />
-
-                {login_option === 'login'
-                    ?
-                    otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Login controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-                    : otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-                }
-                {login_option === 'login'
-                    ?
-                    otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Login controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-                    : otpScreen ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} /> : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
-                }
+    return (
+        <div className='login-wrapper'>
+          <div className="login-container">
+            <div className='login-options'>
+              <h5 className={login_option === 'login' ? 'login-head highlighted-head' : 'login-head'} onClick={() => { setlogin_option('login'); }} >Login</h5>
+              <h5 className={login_option === 'signup' ? 'signup-head highlighted-head' : 'signup-head'} onClick={() => { setlogin_option('signup'); }} >Sign-Up</h5>
             </div>
-        </div >
-    )
+            <hr className={login_option === 'login' ? 'login-left-hr' : 'login-right-hr'} />
+      
+            {login_option === 'login'
+              ? otpScreen
+                ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
+                : (
+                  <>
+                    <Login controls={controls} submitHandler={sendOtp} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
+                    <PasswordLogin controls={controls} submitHandler={loginHandler} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
+                  </>
+                )
+              : otpScreen
+                ? <Otp controls={controls} submitHandler={verifyOtp} onChange={onChange} errors={errors} showErr={showErr} sendOtp={sendOtp} loading={loading} />
+                : <Signup controls={controls} submitHandler={register} onChange={onChange} errors={errors} showErr={showErr} loading={loading} />
+            }
+          </div>
+        </div>
+      )
       
 }
 
