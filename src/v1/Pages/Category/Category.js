@@ -22,7 +22,6 @@ const Category = () => {
     auth = {},
     categories: { list: categoryList },
   } = useSelector(mapStateToProps);
-  console.log(categoryList,"category list");
   const { isLoggedIn } = auth;
   const [categoryName, setCategory] = useState("");
   const [categoryId, setCategoryId] = useState(null)
@@ -53,16 +52,13 @@ const Category = () => {
 
   const fetchMoreProducts = async (page)=> {
     try {
-      console.log("more products is invoked");
       const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page });
       if(response.data.data.length===0){
         setHasMore(false)
       }
       else{
-        console.log(productsList,"fetch more data");
       setProductsList(productsList.concat(response.data.data));
       setPage(page)
-      console.log(response,"products list");
       }
       
     } catch (error) { }
@@ -129,7 +125,6 @@ const Category = () => {
     try {
       const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page});
       setProductsList(response.data.data);
-      console.log(response,"products list");
     } catch (error) { }
   };
 
