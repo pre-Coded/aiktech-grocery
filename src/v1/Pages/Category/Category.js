@@ -10,6 +10,7 @@ import "./Category.scss";
 // import get from "lodash/get";
 import { CategoryCard } from "../../Components";
 import SubCategoryCard from './SubCategory/SubCategoryCard'
+import InfiniteScroll from 'react-infinite-scroller';
 
 const mapStateToProps = ({ auth = {}, categories = {} }) => ({
   auth,
@@ -28,6 +29,8 @@ const Category = () => {
   const [subCategoryId, setSubcategoryId] = useState(null)
   const [productsList, setProductsList] = useState(null);
   const { category = "" } = useParams();
+  const [page, setPage]=useState(1);
+  const [hasMore, setHasMore] = useState(true)
   const dispatch = useDispatch();
   const history = useHistory();
   let color_generator = 0;
@@ -43,10 +46,27 @@ const Category = () => {
     setCategory(category)
 
   };
+  const loadMore = ()=>{
+    setTimeout(()=>{fetchMoreProducts(page+1)},500);
+  }
+
+  const fetchMoreProducts = async (page)=> {
+    try {
+      const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page });
+      if(response.data.data.length===0){
+        setHasMore(false)
+      }
+      else{
+      setProductsList(productsList.concat(response.data.data));
+      setPage(page)
+      }
+      
+    } catch (error) { }
+    
+  }
  
 
   useEffect(() => {
-    // fetchProducts(categoryName);
     // setCategory(categoryName);
     categoryList
       && categoryList.map((item) => {
@@ -79,7 +99,9 @@ const Category = () => {
   }, [categoryName]);
 
   useEffect(() => {
-    fetchProducts(subCategoryName, subCategoryId);
+    if(subCategoryName && subCategoryId && page){
+    fetchProducts(subCategoryName, subCategoryId, page);
+    }
     setSubCategoryName(subCategoryName);
   }, [subCategoryName]);
 
@@ -91,7 +113,6 @@ const Category = () => {
         let firstCategory = categoryList[0]["name"];
         setCategory(firstCategory);
         setCategoryId(categoryList[0]["id"])
-        // fetchProducts(firstCategory);
       }
     }
   }, [categoryList]);
@@ -100,9 +121,9 @@ const Category = () => {
     dispatch(actionsCreator.FETCH_CATEGORIES());
   };
 
-  const fetchProducts = async (name, id) => {
+  const fetchProducts = async (name, id, page) => {
     try {
-      const response = await productAPI.fetchProducts({ name, id });
+      const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page});
       setProductsList(response.data.data);
     } catch (error) { }
   };
@@ -130,10 +151,9 @@ const Category = () => {
         <div className="category-name">{categoryName}</div>
         <div className="tab-wrapper">
           {categoryList
-            ? categoryList.map((item, index) => {
-              
+            ? categoryList.map((item, index) => {    
               return (
-                <CategoryCard
+                  <CategoryCard
                   active={item.name===categoryName}
                   title={item.name}
                   key={item.name}
@@ -150,20 +170,21 @@ const Category = () => {
       <div className="tab-wrapper">
           {categoryList && categoryList.map((item, index) => (
               item.sub_categories.length>0 && item.name===categoryName? 
-              <SubCategoryCard
+
+                <SubCategoryCard
                 active={item.name===subCategoryName}
                 title={"All"}
                 key={item.name}
                 image={item.image}
                 onClick={() => subtabhandler(item.name, item.id)}
                 color={(index)} 
-              />: null
+              />
+              : null
           ))}
           {categoryList && categoryList.map((item) => (
               item.name===categoryName? 
               item.sub_categories.length>0 && item.sub_categories.map((subitem, index)=>{
                 return (
-                  
                     <SubCategoryCard
                       active={subitem.name===subCategoryName}
                       title={subitem.name}
@@ -179,10 +200,16 @@ const Category = () => {
       
 
       <div className="tab-products">
-        {productsList && productsList.length > 0 ? (
-          productsList.sort((a, b) => b.quantity_remaining - a.quantity_remaining).map((item) => {
+        {productsList && productsList.length > 0 ? (      
+          <InfiniteScroll
+          className="product-cards"
+          loadMore={loadMore}
+          hasMore={hasMore}
+          >
+          {productsList.map((item) => {
             return (
-              <ProductCard
+              
+                <ProductCard
                 title={item.product_name}
                 quantity={item.description}
                 price={item.price}
@@ -193,9 +220,15 @@ const Category = () => {
                 outofstock={item.out_of_stock}
                 quantity_remaining={item.quantity_remaining}
               />
+              
             );
           })
-        ) : (
+        }
+        
+        </InfiniteScroll>
+        )
+        
+         : (
           <div>Products are coming soon!</div>
         )}
       </div>
@@ -204,3 +237,4 @@ const Category = () => {
 };
 
 export default Category;
+
