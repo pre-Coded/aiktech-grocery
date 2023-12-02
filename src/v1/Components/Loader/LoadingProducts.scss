@@ -1,0 +1,41 @@
+.loading-cards{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.card {
+    width: 200px;
+    background: #fff;
+    border-radius: 10px;
+    height: 52%;
+    margin: 1%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .card__content {
+    padding: 17px;
+  }
+  .card__image,
+  .loading-card-heading,
+  .loading-card-para{
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1s shine linear infinite;
+  }
+  .card__image {
+    height: 195px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .card__content {
+    padding: 20px;
+  }
+  
+  .loading-card-heading {
+    height: 30px;
+  }
+  .loading-card-para {
+    height: 68px;
+    width: 80%;
+  }

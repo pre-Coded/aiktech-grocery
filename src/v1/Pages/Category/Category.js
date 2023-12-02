@@ -11,6 +11,7 @@ import "./Category.scss";
 import { CategoryCard } from "../../Components";
 import SubCategoryCard from './SubCategory/SubCategoryCard'
 import InfiniteScroll from 'react-infinite-scroller';
+import LoadingProducts from "../../Components/Loader/LoadingProducts";
 
 const mapStateToProps = ({ auth = {}, categories = {} }) => ({
   auth,
@@ -205,6 +206,7 @@ const Category = () => {
           className="product-cards"
           loadMore={loadMore}
           hasMore={hasMore}
+	  loader={<p>loading...</p>}
           >
           {productsList.map((item) => {
             return (
@@ -224,12 +226,21 @@ const Category = () => {
             );
           })
         }
+	{
+          hasMore===false?(
+            <div>
+              Products Finished...
+            </div>
+          ):(<div>
+
+          </div>)
+        }
         
         </InfiniteScroll>
         )
         
          : (
-          <div>Products are coming soon!</div>
+          <LoadingProducts number={10}/>
         )}
       </div>
     </div>
