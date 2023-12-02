@@ -31,9 +31,11 @@ const Category = () => {
   const [productsList, setProductsList] = useState(null);
   const { category = "" } = useParams();
   const [page, setPage]=useState(1);
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(true);
+  const [showLoadingCards, SetShowLoadingCards] = useState(false)
   const dispatch = useDispatch();
   const history = useHistory();
+
   let color_generator = 0;
   
   const subtabhandler = (subcategory, id) => {
@@ -100,8 +102,11 @@ const Category = () => {
   }, [categoryName]);
 
   useEffect(() => {
-    if(subCategoryName && subCategoryId && page){
-    fetchProducts(subCategoryName, subCategoryId, page);
+    setHasMore(true);
+    setPage(1);
+    if(subCategoryName && subCategoryId && page){   
+    fetchProducts(1);
+
     }
     setSubCategoryName(subCategoryName);
   }, [subCategoryName]);
@@ -122,10 +127,15 @@ const Category = () => {
     dispatch(actionsCreator.FETCH_CATEGORIES());
   };
 
-  const fetchProducts = async (name, id, page) => {
+  const fetchProducts = async (page) => {
     try {
+      SetShowLoadingCards(true)
       const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page});
       setProductsList(response.data.data);
+      SetShowLoadingCards(false);
+      if(response.data.data.length===0){
+        setHasMore(false)
+      }
     } catch (error) { }
   };
 
@@ -206,11 +216,16 @@ const Category = () => {
           className="product-cards"
           loadMore={loadMore}
           hasMore={hasMore}
-	  loader={<p>loading...</p>}
+          loader={<div className="make-inline"><LoadingProducts number={6}/></div>}
           >
+            {
+            showLoadingCards?(<LoadingProducts number={10}/>)
+            :
+            
+            <>
+           
           {productsList.map((item) => {
             return (
-              
                 <ProductCard
                 title={item.product_name}
                 quantity={item.description}
@@ -225,8 +240,9 @@ const Category = () => {
               
             );
           })
+            
         }
-	{
+        {
           hasMore===false?(
             <div>
               Products Finished...
@@ -235,12 +251,16 @@ const Category = () => {
 
           </div>)
         }
+        </>
+     }
         
         </InfiniteScroll>
         )
         
          : (
+          hasMore?
           <LoadingProducts number={10}/>
+          :<p>Products Coming soon</p>
         )}
       </div>
     </div>
