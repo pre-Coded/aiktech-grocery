@@ -11,7 +11,7 @@ import "./Category.scss";
 import { CategoryCard } from "../../Components";
 import SubCategoryCard from './SubCategory/SubCategoryCard'
 import InfiniteScroll from 'react-infinite-scroller';
-import LoadingProducts from "../../Components/LoadingProducts/LoadingProducts";
+import LoadingProducts from "../../Components/Loader/LoadingProducts";
 
 const mapStateToProps = ({ auth = {}, categories = {} }) => ({
   auth,
