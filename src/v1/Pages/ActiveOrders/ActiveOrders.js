@@ -227,7 +227,7 @@ const ActiveOrders = (props) => {
               </div>
             </div>
           </div>
-          <div className="active-timer" key={checkoutTime}>
+          /*<div className="active-timer" key={checkoutTime}>
             <CountDown
               orderID={orderID}
               checkoutTime={checkoutTime}
@@ -235,7 +235,7 @@ const ActiveOrders = (props) => {
               key={delivered}
               isExpress={false}
             />
-          </div>
+          </div>*/
         </>
       ) : (
         <EmptyData text={"No Order Found"} />

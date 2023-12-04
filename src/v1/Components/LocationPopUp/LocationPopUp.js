@@ -15,7 +15,7 @@ const LocationPopUp = (props) => {
             <div className='location-popup'>
                 <img src={location2} alt="" />
                 <h3>
-                    Hey! We will need access to your location to deliver your groceries in 10 minutes.
+                    Hey! We will need access to your location to deliver your groceries.
                 </h3>
             </div>
         </Modal>
