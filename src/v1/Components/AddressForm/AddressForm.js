@@ -150,7 +150,7 @@ const AddressForm = (props) => {
             clicker={() => {
               if (completeAddress)
                 addAddress(completeAddress);
-              if (coordinates) {
+	      else if(coordinates) {
                 addAddress(coordinates, 4);
               }
               else toast.error("Empty Fields");
