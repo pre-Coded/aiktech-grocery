@@ -88,19 +88,6 @@ const CountDown = (props) => {
         </div>
         {message === "timer" ? (
           <div className="clock">
-            <section>
-              <p>{minutes}</p>
-              <p>
-                <small>Minutes</small>
-              </p>
-            </section>
-            <span>:</span>
-            <section>
-              <p>{seconds}</p>
-              <p>
-                <small>Seconds</small>
-              </p>
-            </section>
           </div>
         ) : (
           <h3
