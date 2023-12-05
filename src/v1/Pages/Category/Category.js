@@ -49,20 +49,6 @@ const Category = () => {
     setCategory(category)
 
   };
-  const loadMore = ()=>{
-    setTimeout(()=>{fetchMoreProducts(page+1)},500);
-  }
-
-  const debounce = (func, delay) => {
-  let timeoutId;
-  return function () {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(this, arguments), delay);
-  };
-};
-
-const debouncedLoadMore = debounce(loadMore, 500);
-
 
   useEffect(() => {
     // setCategory(categoryName);
@@ -136,6 +122,18 @@ const debouncedLoadMore = debounce(loadMore, 500);
       fetchMoreProducts(page + 1);
     }
   };
+
+  const debounce = (func, delay) => {
+  let timeoutId;
+  return function () {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+    };
+   };
+
+const debouncedLoadMore = debounce(loadMore, 500);
+
+
 
   const fetchMoreProducts = async (newPage) => {
     try {
