@@ -62,7 +62,7 @@ const ProductCard = (props) => {
     <div
       className={
         outOfStock && !modal ? "product-wrapper fade-card" : "product-wrapper"
-      } mm  m n n n n n
+      }
     >
       <Modal show={modal} onClose={() => setModal(false)}>
         <div className="image-viwer">
