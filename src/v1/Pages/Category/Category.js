@@ -63,21 +63,6 @@ const Category = () => {
 
 const debouncedLoadMore = debounce(loadMore, 500);
 
-  const fetchMoreProducts = async (page)=> {
-    try {
-      const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page });
-      if(response.data.data.length===0){
-        setHasMore(false)
-      }
-      else{
-      setProductsList(productsList.concat(response.data.data));
-      setPage(page)
-      }
-      
-    } catch (error) { }
-    
-  }
- 
 
   useEffect(() => {
     // setCategory(categoryName);
@@ -136,6 +121,41 @@ const debouncedLoadMore = debounce(loadMore, 500);
   const fetchCategories = async () => {
     dispatch(actionsCreator.FETCH_CATEGORIES());
   };
+
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const loadMore = () => {
+    if (isMounted.current) {
+      fetchMoreProducts(page + 1);
+    }
+  };
+
+  const fetchMoreProducts = async (newPage) => {
+    try {
+      const response = await productAPI.fetchPagedProducts({
+        subCategoryName,
+        subCategoryId,
+        page: newPage,
+      });
+
+      if (response.data.data.length === 0) {
+        setHasMore(false);
+      } else {
+        setProductsList((prevProducts) => [...prevProducts, ...response.data.data]);
+        setPage(newPage);
+      }
+    } catch (error) {
+      console.log("Api error")
+    }
+  };
+
 
   const fetchProducts = async (page) => {
     try {
