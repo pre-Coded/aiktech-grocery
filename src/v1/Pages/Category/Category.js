@@ -53,6 +53,16 @@ const Category = () => {
     setTimeout(()=>{fetchMoreProducts(page+1)},500);
   }
 
+  const debounce = (func, delay) => {
+  let timeoutId;
+  return function () {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+  };
+};
+
+const debouncedLoadMore = debounce(loadMore, 500);
+
   const fetchMoreProducts = async (page)=> {
     try {
       const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page });
@@ -214,7 +224,7 @@ const Category = () => {
         {productsList && productsList.length > 0 ? (      
           <InfiniteScroll
           className="product-cards"
-          loadMore={loadMore}
+          loadMore={debouncedLoadMore}
           hasMore={hasMore}
           loader={<div className="make-inline"><LoadingProducts number={6}/></div>}
           >
