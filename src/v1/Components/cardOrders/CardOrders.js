@@ -49,6 +49,19 @@ const CardOrders=({order})=>{
             <div className="cardorder-date">Created at : {formatTime(order.created_on)}</div>
             <div>
             </div>
+	    <div className="cardorder-customer">
+                <div className="cardorder-customer-details">
+                    Customer Name: {order.customer.name}
+                </div>
+
+                <div className="cardorder-customer-details">
+                    Contact Number: {order.customer.phone_number}
+                </div>
+
+            </div>
+            <div className="cardorder-address">
+                Address: {order.fulfilment_address}
+            </div>
             <div className="cardorder-button-wrapper">
                 <button 
                 className="cardorder-open-button"

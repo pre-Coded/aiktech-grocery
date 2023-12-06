@@ -1,5 +1,5 @@
 // import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { productAPI } from "../../Api";
@@ -35,6 +35,8 @@ const Category = () => {
   const [showLoadingCards, SetShowLoadingCards] = useState(false)
   const dispatch = useDispatch();
   const history = useHistory();
+  const [loadingMore, setLoadingMore] = useState(false);
+
 
   let color_generator = 0;
   
@@ -49,25 +51,6 @@ const Category = () => {
     setCategory(category)
 
   };
-  const loadMore = ()=>{
-    setTimeout(()=>{fetchMoreProducts(page+1)},500);
-  }
-
-  const fetchMoreProducts = async (page)=> {
-    try {
-      const response = await productAPI.fetchPagedProducts({subCategoryName, subCategoryId, page });
-      if(response.data.data.length===0){
-        setHasMore(false)
-      }
-      else{
-      setProductsList(productsList.concat(response.data.data));
-      setPage(page)
-      }
-      
-    } catch (error) { }
-    
-  }
- 
 
   useEffect(() => {
     // setCategory(categoryName);
@@ -104,9 +87,9 @@ const Category = () => {
   useEffect(() => {
     setHasMore(true);
     setPage(1);
-    if(subCategoryName && subCategoryId && page){   
+    if(subCategoryName && subCategoryId && page){
+    setProductsList([]);
     fetchProducts(1);
-
     }
     setSubCategoryName(subCategoryName);
   }, [subCategoryName]);
@@ -126,6 +109,60 @@ const Category = () => {
   const fetchCategories = async () => {
     dispatch(actionsCreator.FETCH_CATEGORIES());
   };
+
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const loadMore = () => {
+    if (!loadingMore && isMounted.current) {
+      setLoadingMore(true);  // Set loadingMore to true to prevent concurrent requests
+      fetchMoreProducts(page + 1)
+        .finally(() => setLoadingMore(false));  // Reset loadingMore on completion (success or failure)
+    }
+  };
+
+  const debounce = (func, delay) => {
+  let timeoutId;
+  return function () {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+    };
+   };
+
+const debouncedLoadMore = debounce(loadMore, 500);
+
+
+
+  const fetchMoreProducts = async (newPage) => {
+    try {
+      const response = await productAPI.fetchPagedProducts({
+        subCategoryName,
+        subCategoryId,
+        page: newPage,
+      });
+
+      if (response.data.data.length === 0) {
+        setHasMore(false);
+      } else {
+        setProductsList((prevProducts) => {
+          const uniqueProducts = [
+            ...new Map([...prevProducts, ...response.data.data].map((item) => [item.id, item])).values(),
+          ];
+          setPage(newPage);
+          return uniqueProducts;
+        });
+      }
+    } catch (error) {
+      console.log("Api error")
+    }
+  };
+
 
   const fetchProducts = async (page) => {
     try {
@@ -214,7 +251,7 @@ const Category = () => {
         {productsList && productsList.length > 0 ? (      
           <InfiniteScroll
           className="product-cards"
-          loadMore={loadMore}
+          loadMore={debouncedLoadMore}
           hasMore={hasMore}
           loader={<div className="make-inline"><LoadingProducts number={6}/></div>}
           >

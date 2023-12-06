@@ -7,7 +7,7 @@
     
     margin-left: 3%;
     width: 20vw;
-    height: 40vh;
+    height: 46vh;
     margin-top: 2%;
     margin-right: 3%;
     display: flex;
@@ -47,21 +47,9 @@
     margin-bottom: 14%;
     display: flex;
     justify-content: space-between;
-    margin-right: 25%;
-    
-    
-    
+    margin-right: 25%; 
 }
-.cardorder-icons{
-    position: absolute;
-    padding-left: 4%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-right: 25%;
-    bottom: 5%;
-    width: 68%;
-}
+
 .cardorder-tag{
     width: 50%;
     border: 1px solid black;
@@ -75,9 +63,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 15%;
+    margin-top: 5%;
     text-decoration: none;
-    
     align-items: center;
 }
 .cardorder-open-button{
@@ -87,13 +74,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
     width: 40%;
-
     border-radius: 10px;
     display: flex;
     background-color: rgb(88,121,234);
-    color: white;
-    
-    
+    color: white;   
+}
+.cardorder-address{
+    margin-top: 4%;
+    margin-left: 4%;
+    font-size: 14px;
+}
+.cardorder-customer{
+    margin-left: 4%;
+    margin-top: 3%;
+    font-size: 14px;
+}
+.cardorder-customer-details{
+    margin-top: 1%;
 }
