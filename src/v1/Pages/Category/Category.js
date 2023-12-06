@@ -35,6 +35,8 @@ const Category = () => {
   const [showLoadingCards, SetShowLoadingCards] = useState(false)
   const dispatch = useDispatch();
   const history = useHistory();
+  const [loadingMore, setLoadingMore] = useState(false);
+
 
   let color_generator = 0;
   
@@ -85,9 +87,9 @@ const Category = () => {
   useEffect(() => {
     setHasMore(true);
     setPage(1);
-    if(subCategoryName && subCategoryId && page){   
+    if(subCategoryName && subCategoryId && page){
+    setProductsList([]);
     fetchProducts(1);
-
     }
     setSubCategoryName(subCategoryName);
   }, [subCategoryName]);
@@ -118,8 +120,10 @@ const Category = () => {
   }, []);
 
   const loadMore = () => {
-    if (isMounted.current) {
-      fetchMoreProducts(page + 1);
+    if (!loadingMore && isMounted.current) {
+      setLoadingMore(true);  // Set loadingMore to true to prevent concurrent requests
+      fetchMoreProducts(page + 1)
+        .finally(() => setLoadingMore(false));  // Reset loadingMore on completion (success or failure)
     }
   };
 
@@ -146,8 +150,13 @@ const debouncedLoadMore = debounce(loadMore, 500);
       if (response.data.data.length === 0) {
         setHasMore(false);
       } else {
-        setProductsList((prevProducts) => [...prevProducts, ...response.data.data]);
-        setPage(newPage);
+        setProductsList((prevProducts) => {
+          const uniqueProducts = [
+            ...new Map([...prevProducts, ...response.data.data].map((item) => [item.id, item])).values(),
+          ];
+          setPage(newPage);
+          return uniqueProducts;
+        });
       }
     } catch (error) {
       console.log("Api error")
