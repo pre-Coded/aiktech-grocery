@@ -66,7 +66,7 @@ const AddressForm = (props) => {
 
   useEffect(() => {
     if (props.isSignup !== true) {
-      if (area !== "" && addressLine1 !== "") {
+      if ( addressLine1 !== "") {
         setcompleteAddress(addressLine1 + "\n" + addressLine2 + "\n" + pinCode + "coordinates{'lat':" + coordinates.lat + ",'long':" + coordinates.lng + ",'link':" + coordinates.link + "}");
         props.valueTransfer("new", addressToString(completeAddress));
       }
@@ -97,7 +97,7 @@ const AddressForm = (props) => {
 
   useEffect(() => {
     if (!props.isSignup)
-      if (area === "" || addressLine1 === "") setcompleteAddress(null);
+      if ( addressLine1 === "") setcompleteAddress(null);
   }, [area, addressLine1]);
 
   const fetchInventories = () => {
