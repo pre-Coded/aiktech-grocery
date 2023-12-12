@@ -51,3 +51,10 @@ export const company = (data) => {
     const payload = {};
     return requestMaker(url, 'get', { params, payload });
 };
+
+export const updateUserInventory = (data) => {
+    const url = `/account/user/updateInventory/`;
+    const params = {...data};
+    const payload = {};
+    return requestMaker(url, 'get', { params, payload });
+};

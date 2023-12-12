@@ -7,7 +7,7 @@ import { checkValidData, errorMsg, findError, isRequired, storeToken, validate }
 import get from 'lodash/get';
 import { toast } from 'react-toastify';
 import { DEFAULT_INPUT_ERROR } from '../../Assets/Constant';
-import { Login, Signup, Otp } from '../../Components';
+import { Login, Signup, Otp, LocationPopUp   } from '../../Components';
 import PasswordLogin from './Login/PasswordLogin';
 import { useSelector } from 'react-redux';
 import { getNearestInventory } from '../../Utils/general-utils'
@@ -113,7 +113,7 @@ const Auth = (props) => {
             if(inventory===null){
                 toast.error("your location cannot be delivered");
             }
-            
+
             const payload = {
                 name: username,
                 password,
