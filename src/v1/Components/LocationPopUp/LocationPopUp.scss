@@ -3,10 +3,13 @@
 .location-popup {
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
+  padding: 15px;
   img {
-    max-width: 100%;
+    max-width: 98%;
   }
   * {
     text-align: center;
   }
 }
+

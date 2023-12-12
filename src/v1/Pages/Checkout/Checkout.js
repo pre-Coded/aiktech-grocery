@@ -21,14 +21,21 @@ import { toast } from "react-toastify";
 import get from "lodash/get";
 import { useHistory } from "react-router-dom";
 import logo from "../../Assets/Images/navbar/new_logo.svg";
+import {coordinateDistanceFinder, getCoordinates} from '../../Utils/general-utils'
+import { fetchUserDetails, updateUserInventory } from "../../Api/authAPI";
 
 const mapStateToProps = ({ cart, auth, payment }) => ({
   cart,
   auth,
+  inventory,
   payment,
 });
 
 export default function Checkout() {
+  const {
+    inventory: { list: inventoryList },
+
+  } = useSelector(mapStateToProps);
   const {
     cart: cartData,
     auth: { isLoggedIn = false },
@@ -58,6 +65,15 @@ export default function Checkout() {
   //   console.log(cartData);
   cartData.out_of_stock = outOfStock
   const { cartitem = [], delivery_charge, default_delivery_charge, previous_delivery_charge, transactionDebit, start_time } = cartData;
+  const [userInventory,setUserInventory ] = useState("")
+  useEffect(async ()=>{
+    const response = await fetchUserDetails();
+    if(response.data.data.inventory){
+      setUserInventory(response.data.data.inventory.id)
+    }
+    
+  },[])
+
   useEffect(() => {
     if (isLoggedIn) {
       fetchCartDetails();
@@ -68,6 +84,42 @@ export default function Checkout() {
     dispatch(actionsCreator.SET_PREVIOUS_DELIVERY_CHARGE({previous_delivery_charge: cartData.delivery_charge}))
     dispatch(actionsCreator.FETCH_CART_DETAILS());
   };
+
+  const checkDeliverability = async ()=>{
+    let distances_list = [];
+    let inventories = [];
+  const coordinates = getCoordinates(selectedAddress);
+  let latitude,longitude;
+  if(coordinates){
+     latitude = coordinates[0];
+     longitude = coordinates[1];
+  }
+
+  for(let i=0;i<inventoryList.length;i++){
+
+      const distance = 1000*coordinateDistanceFinder(latitude,longitude,parseFloat(inventoryList[i].latitude),parseFloat(inventoryList[i].longitude));
+      if(distance<inventoryList[i].deliverable_distance){
+        distances_list.push(distance);
+        inventories.push(inventoryList[i].value)
+      }
+    }
+
+  if(distances_list.length===0 && inventories.length===0){
+    return false
+  }
+  else{
+    const min = Math.min(...distances_list);
+  const index = distances_list.indexOf(min);
+  const inventory = inventories[index];
+  const data = {
+    "inventory_id": inventory
+  }
+  if(inventory !== userInventory){
+    const response = await updateUserInventory(data)
+  }
+    return true
+  }
+}
 
   const removeItem = async (product) => {
     try {
@@ -334,6 +386,15 @@ export default function Checkout() {
   const placeOrder = async () => {
     setLoading(true);
     try {
+
+      const deliverable = await checkDeliverability();
+      console.log(deliverable,"deliverable");
+      if(!deliverable){
+        setLoading(false)
+        return toast.error("cannot order your location")
+        
+      }
+      
       const { cartitem = [] } = cartData;
       const modifiedCartItems = [...cartitem].map((i) => {
         return { product: i.id, quantity: i.quantity };
@@ -356,8 +417,7 @@ export default function Checkout() {
         order_list: modifiedCartItems,
         mode_of_payment: mode_of_payment,
       };
-     
-      
+
       try {
         fetchCartDetails()
         if (cartData.delivery_charge>cartData.default_delivery_charge){
