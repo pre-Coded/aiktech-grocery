@@ -37,7 +37,6 @@ const Auth = (props) => {
         if(location.coordinates){
             const inventory = getNearestInventory(inventoryList, location.coordinates.lat, location.coordinates.lng);
             setInventory(inventory)
-            console.log(inventory,"nearest inventory is===d")
         }
         location.error?<LocationPopUp/>:(<div></div>)        
     },[location])
