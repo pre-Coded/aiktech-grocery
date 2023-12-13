@@ -172,16 +172,23 @@ export const welcomeModalHandler = () => {
   return hidePopup && hidePopup === "true" ? true : false;
 };
 
-export const formatOptions = (options = [], key, val, act) => {
+
+export const formatOptions = (options = [], key, val, act, lat, long, delivery_distance) => {
   let formattedOptions = [];
   formattedOptions = options.map((element) => {
     let name = get(element, key, "");
     let value = get(element, val, "");
     let active = get(element, act, "");
+    let latitude = get(element, lat, "");
+    let longitude = get(element, long, "");
+    let deliverable_distance = get(element, delivery_distance, "")
     return {
       label: name,
       value: value,
-      active: active
+      active: active,
+      latitude: latitude,
+      longitude: longitude,
+      deliverable_distance: deliverable_distance
     };
   });
   return formattedOptions;
