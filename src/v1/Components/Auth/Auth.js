@@ -1,5 +1,3 @@
-import Button from '../Homepage/Button/Button'
-import InputField from '../InputField';
 import React, { useEffect, useState } from 'react'
 import './Auth.scss'
 import { authAPI } from '../../Api';
@@ -9,8 +7,11 @@ import { checkValidData, errorMsg, findError, isRequired, storeToken, validate }
 import get from 'lodash/get';
 import { toast } from 'react-toastify';
 import { DEFAULT_INPUT_ERROR } from '../../Assets/Constant';
-import { Login, Signup, Otp } from '../../Components';
+import { Login, Signup, Otp, LocationPopUp   } from '../../Components';
 import PasswordLogin from './Login/PasswordLogin';
+import { useSelector } from 'react-redux';
+import { getNearestInventory } from '../../Utils/general-utils'
+import useGeoLocation from '../../Hooks/useGeoLocation';
 
 const Auth = (props) => {
     const [username, setUserName] = useState('');
@@ -29,7 +30,16 @@ const Auth = (props) => {
     const [errors, setErrors] = useState(DEFAULT_INPUT_ERROR);
     const [login_option, setlogin_option] = useState('login');
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const location = useGeoLocation();
+
+    useEffect(()=>{
+        if(location.coordinates){
+            const inventory = getNearestInventory(inventoryList, location.coordinates.lat, location.coordinates.lng);
+            setInventory(inventory)
+        }
+        location.error?<LocationPopUp/>:(<div></div>)        
+    },[location])
 
     useEffect(() => {
         clearInputs();
@@ -63,10 +73,6 @@ const Auth = (props) => {
             case 'OTP':
                 setOtp(value);
                 validateInput(value, ['isRequired'], 'otp');
-                break;
-            case 'INVENTORY':
-                setInventory(value);
-                validateInput(value, ['isRequired'], 'inventory');
                 break;
         }
     }
@@ -103,6 +109,10 @@ const Auth = (props) => {
     const register = async () => {
         setLoading(true)
         try {
+            if(inventory===null){
+                toast.error("your location cannot be delivered");
+            }
+
             const payload = {
                 name: username,
                 password,
