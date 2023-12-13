@@ -54,7 +54,7 @@ function* fetchInventories(action) {
         const response = yield call(productAPI.fetchInventories, {});
         const data = get(response, 'data.results', []);
         // const formattedData = formatOptions(data, 'name', 'id', 'is_active');
-        const formattedData = formatOptions(response.data, 'name', 'id', 'is_active');
+        const formattedData = formatOptions(response.data, 'name', 'id', 'is_active','latitude', 'longitude',"delivery_distance");
         yield put(actionsCreator.SET_INVENTORY({ list: formattedData }));
     } catch (error) {
 
