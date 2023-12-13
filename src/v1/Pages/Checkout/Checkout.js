@@ -24,7 +24,7 @@ import logo from "../../Assets/Images/navbar/new_logo.svg";
 import {coordinateDistanceFinder, getCoordinates} from '../../Utils/general-utils'
 import { fetchUserDetails, updateUserInventory } from "../../Api/authAPI";
 
-const mapStateToProps = ({ cart, auth, payment }) => ({
+const mapStateToProps = ({ cart, auth, payment,inventory }) => ({
   cart,
   auth,
   inventory,
