@@ -13,7 +13,15 @@ import { useSelector } from 'react-redux';
 import { getNearestInventory } from '../../Utils/general-utils'
 import useGeoLocation from '../../Hooks/useGeoLocation';
 
+const mapStateToProps = ({ inventory }) => ({
+    inventory,
+  });
+
 const Auth = (props) => {
+    const {
+        inventory: { list: inventoryList },
+      } = useSelector(mapStateToProps);
+      
     const [username, setUserName] = useState('');
     const [otpScreen, setOtpScreen] = useState(false);
     const [phone_number, setPhone] = useState('');
