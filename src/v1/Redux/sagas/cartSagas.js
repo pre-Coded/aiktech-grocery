@@ -7,8 +7,15 @@ const extractCartDetails = ({ cart = {} }) => ({ cart });
 
 function* fetchCartDetails(action) {
     try {
+        if(action.payload){
+            yield put(actionsCreator.SET_CART_DATA(action.payload));
+        }
+        else{
         const response = yield call(cartAPI.fetchCartDetails, {});
         yield put(actionsCreator.SET_CART_DATA(response['data']));
+
+        }
+        
     } catch (error) {
         yield put(actionsCreator.RESET_CART_DATA({}));
     }

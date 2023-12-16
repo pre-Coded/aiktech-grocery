@@ -91,7 +91,7 @@ export default function AddToCartButton({ product }) {
                 toastId: 'success1',
             })
             dispatch(actionsCreator.SET_PREVIOUS_DELIVERY_CHARGE({previous_delivery_charge: cart.delivery_charge}))
-            dispatch(actionsCreator.FETCH_CART_DETAILS());
+            dispatch(actionsCreator.FETCH_CART_DETAILS(res.data["get_cart"]));
         } catch (error) {
 
             const msg = errorMsg(error);
