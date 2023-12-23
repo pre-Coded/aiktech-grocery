@@ -7,7 +7,7 @@ export default function PasswordLogin({ controls, submitHandler, onChange, error
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const clickHandler=()=>{
     setShowPasswordInput(true)
-   submitHandler();
+   password && submitHandler();
    }
   return (
     <div>

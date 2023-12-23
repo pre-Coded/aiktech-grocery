@@ -1,7 +1,7 @@
 import React from 'react'
 import Invoiceslip from './Invoiceslip'
 import './Invoice.scss'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 export default function Invoice(props) {
     const { orderid } = useParams();
