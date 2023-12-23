@@ -136,7 +136,7 @@ const Auth = (props) => {
             const msg = errorMsg(error);
             const status = get(error, 'response.status');
             if (status === 400) {
-                const messages = get(error, 'response.data.data', {});
+                const messages = get(error, 'response.data.data.data', {});
                 showErrors(messages);
             }
             else {
