@@ -19,6 +19,7 @@ const Foryou = (props) => {
   useEffect(() => {
     fetchProducts();
   }, []);
+  
   const scrollProduct = () => {
     const buttonRight = document.getElementById(`slideRightProduct${props.id}`);
     const buttonLeft = document.getElementById(`slideLeftProduct${props.id}`);
@@ -69,6 +70,7 @@ const Foryou = (props) => {
                   </div>
                 );
             })}
+
             {products.map((item, index) => {
               if (item.quantity_remaining < 1)
                 return (

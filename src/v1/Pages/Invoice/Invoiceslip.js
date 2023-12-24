@@ -27,31 +27,39 @@ export default function Invoiceslip({ id }) {
     }
     const { data: invoiceDetails = {}, items: invoiceitem = [], final_delivery_charge = 0, packaging_charge = 0, promotional_discount, default_delivery_charge = 0 } = invoice || {}
     const { invoice_id, final_price = 0 } = invoiceDetails || {};
+
+    
     return (
         <div className="invoice-details">
             <div className="item-details">
                 <h5 className="small_headline fill-color">GST-NO:- 29AAMCP1530D1ZK</h5>
                 <h5 className="small_headline fill-color">#{invoice_id}</h5>
                 <div className="b-top w-100 mt-4"></div>
-                <div className="table-responsive">
-                    <table className="product__details__table">
-                        <thead>
+
+                <div className="table-wrapper">
+                    <table className="table">
+                        <thead className='table-head'>
                             <th>Product</th>
                             <th>Qty</th>
                             <th>Price <small>(per unit)</small> </th>
                             <th>Total Price</th>
                             <th>Discount Price</th>
                         </thead>
-                        <tbody>
-                            {invoiceitem ?
-                                invoiceitem.map((i, index) => (
+                        <tbody className='table-row'>
+                            {invoiceDetails ?
+                                invoiceDetails.map((i, index) => (
                                     <>
                                         <tr key={index}>
                                             <td>{i.title ? i.title : "-"}{i.description ? ` (${i.description})` : ''}</td>
+
                                             <td>{parseFloat(i.quantity).toFixed(2)} {i.unit_id}</td>
+
                                             <td><span className="ruppe">₹</span>  {parseFloat(parseFloat(i.price)/i.quantity)!==0?parseFloat(parseFloat(i.price).toFixed(2)/i.quantity).toFixed(2): "pending"}</td>
+
                                             <td><span className="ruppe">₹</span>  {parseFloat(i.price)!==0? parseFloat(i.price).toFixed(2):"pending"}</td>
+
                                             <td><span className="ruppe">₹</span>  {parseFloat(i.final_price)!==0? parseFloat(i.final_price).toFixed(2): "pending"}</td>
+
                                         </tr>
                                     </>
                                 ))
@@ -60,6 +68,8 @@ export default function Invoiceslip({ id }) {
                         </tbody>
                     </table>
                 </div>
+
+
                 {(promotional_discount?.code && promotional_discount?.value) &&
                     <div className={"discount-card-invoice"}>
                     <React.Fragment>
@@ -76,6 +86,8 @@ export default function Invoiceslip({ id }) {
                     </React.Fragment>
                     </div>}
             </div>
+
+
             <div className="price-details">
                 <h5 className="small_headline fill-color">PRICE DETAILS</h5>
                 <div className="b-top w-100"></div>
