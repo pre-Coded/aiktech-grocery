@@ -67,7 +67,7 @@ export default function AddStock() {
   const inventoryHandler=(e)=>{
     setInventory(e.target.value)
     allInventories.map(i => {
-      if(i.name===e.target.value){
+      if(i.name===Number(e.target.value)){
         setInventoryname(i.name);
         const config={
             params:{

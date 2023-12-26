@@ -33,16 +33,16 @@ export default function Invoiceslip({ id }) {
                 <h5 className="small_headline fill-color">GST-NO:- 29AAMCP1530D1ZK</h5>
                 <h5 className="small_headline fill-color">#{invoice_id}</h5>
                 <div className="b-top w-100 mt-4"></div>
-                <div className="table-responsive">
-                    <table className="product__details__table">
-                        <thead>
+                <div className="table-wrapper">
+                    <table className="table">
+                        <thead className='table-head'>
                             <th>Product</th>
                             <th>Qty</th>
                             <th>Price <small>(per unit)</small> </th>
                             <th>Total Price</th>
                             <th>Discount Price</th>
                         </thead>
-                        <tbody>
+                        <tbody className='table-row'>
                             {invoiceitem ?
                                 invoiceitem.map((i, index) => (
                                     <>
