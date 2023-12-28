@@ -22,3 +22,9 @@ export const fetchInventorys=(data)=>{
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+export const fetchOrderDetails = (data)=>{
+    const url = `/shop/order/details/`
+    const params={ ...data }
+    const payload={}
+    return requestMaker(url,"get",{params,payload})
+}
