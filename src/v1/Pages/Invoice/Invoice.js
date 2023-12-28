@@ -54,10 +54,7 @@ export default function Invoice(props) {
     }
     
     
-    console.log(orderid, "order id");
-    console.log(auth.userDetails,"user details");
-    console.log(orderDetails,"order details usestate variable");
-    console.log(invoice,"invoice");
+    
     const doc = new jsPDF();
 
     const handleDownloadInvoice = () => {
