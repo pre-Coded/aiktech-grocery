@@ -1,4 +1,4 @@
-import './InvoicePdfTemplate.scss'
+import './InvoicepdfTemplate.scss'
 import logoImg from "../../Assets/Images/navbar/new_logo.svg";
 
 
