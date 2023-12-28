@@ -15,6 +15,7 @@ export default function Invoiceslip({ id, invoice }) {
                 <h5 className="small_headline fill-color">#{invoice_id}</h5>
                 <div className="b-top w-100 mt-4"></div>
                 <div className="table-wrapper">
+
                     <table className="table" id='invoice-table'>
                         <thead className='table-head'>
                             <th>Product</th>

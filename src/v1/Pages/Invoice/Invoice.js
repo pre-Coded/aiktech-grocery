@@ -15,6 +15,7 @@ import { cartAPI } from '../../Api';
 import Loader from '../../Components/Loader';
 import get from 'lodash/get';
 
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const mapStateToProps = ({  auth }) => ({
     auth

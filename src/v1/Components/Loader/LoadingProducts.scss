@@ -1,3 +1,4 @@
+@import "../../Assets/Styles/Variables.scss";
 .loading-cards{
     display: inline-flex;
     justify-content: center;
@@ -39,4 +40,20 @@
   .loading-card-para {
     height: 68px;
     width: 80%;
+  }
+  @media #{$media-mobile} {
+    .card {
+      margin: 0.5rem;
+      padding: 0 0.5rem 1rem 0.5rem;
+      width: 9.2rem;
+      height: 15rem;
+    }
+    .loading-card-heading {
+      height: 1.5rem;
+      width: 100%;
+    }
+    .loading-card-para {
+      height: 3rem;
+      width: 100%;
+    }
   }
