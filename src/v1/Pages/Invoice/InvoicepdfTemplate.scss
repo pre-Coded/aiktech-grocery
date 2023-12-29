@@ -1,0 +1,71 @@
+.invoice-wrapper{
+    background-color: white;
+    padding: 2rem 20px;
+}
+
+.invoice-wrapper *{
+    margin: 0;
+    padding: 0;
+}
+
+.ul-style-none{
+    list-style: none;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
+.justify-end{
+    justify-content: flex-end;
+}
+
+.items-between{
+    align-items: center;
+}
+
+.gap-10{
+    gap: 10px;
+}
+
+.gap-20{
+    gap: 20px;
+}
+
+table{
+    width: 100%;
+}
+
+.thead th{
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    width: 20%;
+}
+
+.trow{
+    min-height: 10rem;
+    min-width: 100%;
+}
+
+.trow td{
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-top: none;
+    width: 20%;
+}
+
+.font-bold{
+    font-weight: 500;
+}
