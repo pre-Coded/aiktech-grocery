@@ -184,3 +184,133 @@ table.product__details__table tbody td {
 select {
   border: none;
 }
+
+
+// utility classes
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.items-center{
+  align-items: center;
+}
+
+.gap-5{
+  gap : 5px;
+}
+
+.gap-10{
+  gap : 10px;
+}
+
+.gap-20{
+  gap : 20px;
+}
+
+
+.text-bold-md{
+  font-weight: 500;
+}
+
+.text-bold-sm{
+  font-weight: 400;
+}
+
+.no-wrap{
+  white-space: nowrap;
+}
+
+
+.text-large{
+  font-size: 1.2rem;
+}
+
+.text-medium{
+  font-size: 1rem;
+}
+
+.text-small{
+  font-size: 0.8rem;
+}
+
+.ul-style-none{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-none{
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.btn{
+  background-color: $tabcolor2;
+  max-width: 10rem;
+  max-height: 4rem;
+  letter-spacing: 2px;
+}
+
+.place-item-center{
+  align-items: center;
+  justify-content: center;
+}
+
+.responsive-flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.input-border{
+  border-radius: 10px;
+  border: 1px solid #999;
+  overflow: hidden;
+  padding: 5px 10px;
+}
+
+.relative{
+  position: relative;
+}
+
+.absolute{
+  position: absolute;
+}
+
+.nowrap{
+  white-space: nowrap;
+}
+
+.flex-1{
+  flex: 1;
+}
+
+.border-red{
+  border: 1px solid red;
+}
+
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.overflow-scroll{
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+@media #{$media-tablet} {
+  .responsive-flex-row{
+    flex-direction: column;
+  }
+}

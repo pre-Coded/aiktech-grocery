@@ -22,8 +22,6 @@ export default function Searchsuggestion(props) {
       id="search-container"
     >
       {props.productSuggestions.map((product, index) => (
-
-        
         <div
           key={index}
           className="suggestionList"

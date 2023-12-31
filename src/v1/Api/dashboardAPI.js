@@ -1,8 +1,6 @@
 import { method } from "lodash";
 import requestMaker from "../Lib";
 
-
-
 export const fetchAllOrders=(data)=>{
     const url = "/shop/tenant/orders/"
     const params={}
@@ -16,12 +14,14 @@ export const fetchTenantID=(data)=>{
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+
 export const fetchInventorys=(data)=>{
     const url='/shop/inventories/'
     const params={}
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+
 export const fetchOrderDetails = (data)=>{
     const url = `/shop/order/details/`
     const params={ ...data }

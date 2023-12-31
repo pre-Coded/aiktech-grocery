@@ -1,33 +1,23 @@
-.cards-dashboard{
-    
-    display: flex;
-    flex-wrap: wrap;
-    min-height:  100vh; 
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-}
-.dashboard-heading{
-    margin-left: 14%;
-    
-}
-.cards-dashboard-noOrders{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+@import "../../Assets/Styles/Variables.scss";
 
+.dashboard-content{
+    width: 100%;
 }
+
 .dashboard-heading-wrapper{
-    display: flex;
-    justify-content: space-between;
-    margin-right: 13%;
+    max-height: 3rem;
+    white-space: nowrap;
+    gap: 10px;
+
+    span{
+        font-weight: 400;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
 }
-.dashboard-notification-button{
-    border-radius: 5px;
-    
+
+.cards-dashboard-wrapper{
+    min-width: 100%;
+    border: 1px solid red;
 }
-.dashboard{
-    margin-top: 4%;
-    margin-left: 4%;
-}
+
