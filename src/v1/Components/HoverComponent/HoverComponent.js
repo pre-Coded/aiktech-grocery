@@ -26,11 +26,11 @@ const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, height, 
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{
-            minWidth: '10rem',
+            maxWidth: '10rem',
             // minHeight: '5rem',
             backgroundColor : '#f2f2f2',
             borderRadius : '5px',
-            padding : '10px',
+            padding : '4px',
             position: 'absolute',
             top: `${position.top}px`,
             right : '0px',

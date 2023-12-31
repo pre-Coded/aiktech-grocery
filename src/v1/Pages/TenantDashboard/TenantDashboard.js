@@ -20,25 +20,34 @@ import AddContent from "../AddContent/AddProdcut/AddProduct";
 
 import HoverComponent from "../../Components/HoverComponent/HoverComponent";
 
+import DummyData from '../../Assets/DummyData.json'
+
 const TenantDashboard = () => {
 
-    const [activeComponent, setActiveComponent] = useState("dashboard")
+    const [activeComponent, setActiveComponent] = useState("addProduct")
+
     const userInfoRef = useRef(null);
 
     const history = useHistory();
     const [tenant_id, setTenantID] = useState(0);
     console.log(tenant_id);
-    const [products, setProducts] = useState([])
-    const [categories, setCategories] = useState([]);
-    console.log(categories,"cat");
-    useEffect(async ()=>{
-        const response = await dashboardAPI.fetchTenantProducts();
-        setProducts(response.data);
-        const res = await dashboardAPI.fetchTenantCategories();
-        console.log(res,"response");
-        setCategories(res.data)
 
-    },[])
+    // const [products, setProducts] = useState([])
+    // const [categories, setCategories] = useState([]);
+
+    const [products, setProducts] = useState(DummyData.products)
+    const [categories, setCategories] = useState(DummyData.categories);
+
+
+    // console.log(categories,"cat");
+
+    // useEffect(async ()=>{
+    //     const response = await dashboardAPI.fetchTenantProducts();
+    //     setProducts(response.data);
+    //     const res = await dashboardAPI.fetchTenantCategories();
+    //     console.log(res,"response");
+    //     setCategories(res.data)
+    // },[])
 
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
@@ -105,10 +114,11 @@ const TenantDashboard = () => {
                                 />
                             </div>
                             <button 
-                                className="btn-none"
+                                className="btn-none nowrap"
                                 style={{
                                     color : 'black',
                                     letterSpacing : '2px',
+                                    padding : '4px'
                                 }}
 
                                 onClick={LOGOUT_USER}

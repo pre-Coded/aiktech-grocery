@@ -1,141 +1,106 @@
-import React, { useState,useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import './AddCategory.scss'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { ContentCard } from '../AddProdcut/AddProduct';
-
-const CategoryCard = (props) => {
-  const editRef = useRef(null);
- 
-
-  const [showEditBtn, toggleEditBtn] = useState(false);
-  
-
-  return (
-      <div 
-          className='content-card-container'       
-      >
-          <div className='content-card-wrapper flex-column' onClick={props.onClick} >
-
-              <button
-                  className='content-card-edit btn-none'
-                  onMouseEnter={() => toggleEditBtn(true)}
-                  onMouseLeave={() => toggleEditBtn(false)}
-                  ref={editRef}
-              >
-                  <BsThreeDotsVertical fontSize={'1.5rem'} color={"black"} />
-                  {
-                      showEditBtn &&
-                      <HoverComponent
-                          hoverRef={editRef}
-                      >
-                          <div className='flex-column gap-10'>
-                              <button
-                                  className='btn-none nowrap'
-                              >
-                                  Edit
-                              </button>
-                              <button
-                                  className='btn-none nowrap'
-                              >
-                                  Delete
-                              </button>
-                          </div>
-                      </HoverComponent>
-                  }
-              </button>
-
-              {/* <div className='content-card-img'>
-
-              </div> */}
-
-              <div className='content-card-details'>
-
-                  <ul className='content-card-ul ul-style-none flex-column'>
-                      <li className='flex-row gap-10 text-bold-md text-medium'>
-                          <span className='content-card-img'>
-
-                          </span>
-
-                          <div className='flex-column'>
-                              <span
-                                  className='product-title text-bold-md text-medium'
-                                  style={{
-                                      maxHeight: '2rem',
-                                  }}
-                              >
-                                  {props.category && props.category.name}
-                              </span>
-                             
+import { Modal } from '../../../Components';
 
 
-                              {/* <span className='text-bold-sm text-small'>Unit :</span>
-                              <span className='text-bold-sm text-small'>Packaging : </span>
-                              <span className='text-bold-sm text-small'>Sku :</span>
+const AddCategory = ({ categories }) => {
 
-                              <span className='flex-row justify-between'>
-                                  <span className='text-bold-sm text-small'> Activate Product : </span> <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
-                              </span>
-                              <span className='flex-row'>
-                                  <span className='text-bold-sm text-small'> Activate Description : </span>  <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
-                              </span>
-                              <span className='flex-row'>
-                                  <span className='text-bold-sm text-small'> Has Variation : </span> <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
-                              </span> */}
-                          </div>
-                      </li>
-                  </ul>
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
-              </div>
-          </div>
+  const [productList, setProductList] = useState({
+    subCategoryName : null,
+    data : null,
+  });
 
-          {
-               props.category && (props.category.id === props.categoryId) ? 
-                  <div className='subcategory-container border' style={{minHeight : '20rem'}}>
-                    {
-                      props.category.sub_categories.length!==0 && 
-                      props.category.sub_categories.map((sub_category)=>(
-                        <CategoryCard category={sub_category} key={sub_category.id}
-                        categoryId={props.categoryId}
-                        setproductId={props.setproductId}
-                        setCategoryId={props.setCategoryId}
-                        onClick={()=>{
-                          props.setproductId(sub_category.id)
-                        }}
-                        />
-                      ))
-                    }
-                      
-                  </div>
-              : 
 
-              <div>
-              </div>
-          }
-      </div>
-  )
-}
+  const handleProductChange = (event, data) => {
+    event.stopPropagation();
+    
+    console.log("clicked", data)
 
-const AddCategory = ({categories}) => {
-  const [categoryId, setCategoryId] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [productId, setproductId] = useState(null);
-  console.log(productId,"product id");
-  
-  console.log(products,"products of categories");
-  useEffect(()=>{
-    if(productId){
-      console.log(categories.filter((cat)=>{return cat.id===productId})[0]);
-      setProducts(categories.filter((cat)=>{return cat.id===productId})[0]?
-      categories.filter((cat)=>{return cat.id===productId})[0].products:
-      [])
+    if(data.data?.length === 0){
+      setProductList({
+        subCategoryName : data.name, 
+        data : null,
+      })
+
+      return;
     }
 
-  },[productId])
+    setProductList({
+      subCategoryName : data.name,
+      data : data.data
+    });
+
+  }
+  
+  const [searchText, setSearchText] = useState("")
+
+  const originalCategories = categories;
+
+  // handling searchPart
+
+  categories = useMemo(() => {
+      if (searchText === null || searchText.length === 0 || searchText === "") {
+          return originalCategories;
+      }
+
+      return originalCategories.filter((item) => {
+          return item?.name.toLowerCase().includes(searchText.toLowerCase());
+      })
+
+  }, [searchText])
+
+  const [addOrEditModal, toggleAddOrEditModal] = useState(false);
+
+  const [productForm, setProductForm] = useState({
+      id : "",
+      password : "",
+  })
+
+  // Modal View and toggleEdit Button
+  const handleToggleModal = () => {
+    toggleAddOrEditModal(prev => !prev);
+  }
+
+  const handleEditButton = (data) => {
+      console.log("clicked edit", data)
+
+      setProductForm({
+          id : data.id,
+          password : data.product_name || data.name,
+      })
+
+      handleToggleModal();
+  }
+
+  const handleFormInput = (e) => {
+      setProductForm( prev => ({
+          ...prev, 
+          [e.target.name] : e.target.value
+      }))
+  }
 
 
   return (
     <div className='add-category-container flex-column flex-1'>
+
+      {
+        addOrEditModal && 
+        <Modal 
+            show={addOrEditModal}
+            onClick={handleToggleModal}
+        >
+            <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
+            <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
+            <input type={'button'} value="Submit"/>
+
+            <button className='btn-none' onClick={handleToggleModal}>Discard</button>
+        </Modal>
+      }
 
       <div className='add-category-wrapper flex-column'>
 
@@ -145,54 +110,71 @@ const AddCategory = ({categories}) => {
             <input
               type={'search'}
               placeholder="Search Category..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
 
-          <button className='add-btn btn-none btn'>
-            {`Add Category`}
+          <button className='add-btn btn-none btn' onClick={handleToggleModal}>
+            {`Add More`}
           </button>
 
         </div>
 
-        <section className='category-product flex-row gap-10 flex-1' style={{ minHeight: '100%' }}>
+        <section className='category-product flex-row gap-10 flex-1'>
 
-          <div className='category-subcategory flex-column gap-10 overflow-scroll flex-1 relative' style={{height : '40rem', padding : '0 10px', paddingBottom : '4rem'}}>
+          <div className='category-subcategory flex-column gap-10 overflow-scroll flex-1 relative' style={{ height: '40rem', padding: '0 10px', paddingBottom: '4rem', minWidth : '60%' }}>
 
-            <div style={{position: 'sticky', top : '0', backgroundColor : 'white', zIndex : '100'}}>
+            <div className='text-large text-bold-md'>
               All Category and SubCategory
             </div>
 
-          {
-            
-            categories.length!==0 && categories.map((category)=>(
-              <CategoryCard 
-              category={category}
-              key={category.id}
-              categoryId={categoryId}
-              setproductId={setproductId}
-              setCategoryId={setCategoryId}
-              onClick={()=>{
-                setproductId(category.id);
-                setCategoryId(category.id)
-              }}
-            />
-
-
-            ))
-          }
-            
-          </div>
-
-          <div className='product flex-1 flex-column gap-10 overflow-scroll' style={{padding : '0 10px', height : '40rem'}}>
-            <div style={{position: 'sticky', top : '0', backgroundColor : 'white', zIndex : '100'}}>
-              All Product
-            </div>
             {
-              products && products.map((product, index)=>(
-                <ContentCard product={product} key={index}/>
+
+              categories.length !== 0 && categories.map( (category) => (
+                <ContentCard
+                  key={category.id}
+                  cardId={category.id}
+                  selectedCardId={selectedCardId}
+                  data={category}
+                  onClick={ (e) => {
+                      e.stopPropagation();
+                      setSelectedCardId(category.id);
+                  }}
+
+                  editFunction={handleEditButton}
+                  selectSubCategory={handleProductChange}
+                  categoryCard
+                />
               ))
             }
-           
+
+          </div>
+
+          <div className='product flex-1 flex-column gap-10 overflow-scroll' style={{ padding: '0 10px', height: '40rem' }}>
+            <div className='flex-row items-center justify-between'>
+              <span className='text-large text-bold-md'>
+                {productList.subCategoryName || "Choose A Category"}
+              </span>
+            </div>
+            {
+              productList.data?.length > 0 ?
+              
+              productList.data.map((product, index) => (
+                <ContentCard 
+                  key={index} 
+                  cardId={product.id}
+                  data={product} 
+                  editFunction={handleEditButton}
+                  categoryCard
+                />
+              ))
+
+              :
+
+              <span className='text-medium text-bold-sm'>No Products To Show</span>
+            }
+
           </div>
         </section>
 

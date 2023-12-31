@@ -309,6 +309,10 @@ select {
   scroll-behavior: smooth;
 }
 
+.btn-hover:hover{
+  opacity: 0.7;
+}
+
 @media #{$media-tablet} {
   .responsive-flex-row{
     flex-direction: column;
