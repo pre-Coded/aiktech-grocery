@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import './Dashboard.scss';
+import '../../../index.scss'
 import requestMaker from "../../Lib/NetworkHandler";
 import sound from './Message notification.mp3'
 import axios from "axios";

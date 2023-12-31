@@ -22,22 +22,33 @@ import HoverComponent from "../../Components/HoverComponent/HoverComponent";
 
 const TenantDashboard = () => {
 
-    const [activeComponent, setActiveComponent] = useState("addCategory")
+    const [activeComponent, setActiveComponent] = useState("dashboard")
     const userInfoRef = useRef(null);
 
     const history = useHistory();
     const [tenant_id, setTenantID] = useState(0);
     console.log(tenant_id);
+    const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([]);
+    console.log(categories,"cat");
+    useEffect(async ()=>{
+        const response = await dashboardAPI.fetchTenantProducts();
+        setProducts(response.data);
+        const res = await dashboardAPI.fetchTenantCategories();
+        console.log(res,"response");
+        setCategories(res.data)
+
+    },[])
 
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
             return <Dashboard />
         }
         else if(activeComponent === "addProduct"){
-            return <AddProduct />
+            return products && <AddProduct products={products}/>
         }
         else if(activeComponent === "addCategory"){
-            return <AddCategory />
+            return categories && <AddCategory categories={categories} />
         }
         else if (activeComponent === 'addStock') {
             return <AddStock />
@@ -46,7 +57,9 @@ const TenantDashboard = () => {
         }
     }, [activeComponent])
 
-    const [userInformation, setUserInformation] = useState(false)
+    const [userInformation, setUserInformation] = useState(false);
+    
+    
 
     return (
         <div className="tenant-dashboard-container overflow-hidden flex-column">

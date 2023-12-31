@@ -28,3 +28,15 @@ export const fetchOrderDetails = (data)=>{
     const payload={}
     return requestMaker(url,"get",{params,payload})
 }
+export const fetchTenantProducts = (data)=>{
+    const url = `/shop/tenant/products/`
+    const params = { ...data }
+    const payload = {}
+    return requestMaker(url, "get", {params,payload})
+}
+export const fetchTenantCategories = (data)=>{
+    const url = `/shop/tenant/categories/`
+    const params = { ...data }
+    const payload = {}
+    return requestMaker(url, "get", {params,payload})
+}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './AddProduct.scss'
 
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -6,6 +6,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiSolidCheckboxChecked } from "react-icons/bi";
 import { ImCheckboxUnchecked } from "react-icons/im";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
+import { debounce } from "../../../Utils";
+import { dashboardAPI } from '../../../Api';
 
 const DropDownModel = () => {
     return (
@@ -17,6 +19,7 @@ const DropDownModel = () => {
 
 const ContentCard = (props) => {
     const editRef = useRef(null);
+    console.log(props.product,"product");
 
     const [showEditBtn, toggleEditBtn] = useState(false);
 
@@ -75,10 +78,10 @@ const ContentCard = (props) => {
                                         maxHeight: '2rem',
                                     }}
                                 >
-                                    Grocery Item
+                                    {props.product && props.product.product_name}
                                 </span>
                                 <span className='product-description text-bold-sm text-small'>
-                                    lajkd lak al ald fla kajf lka djfal kk jkl ajkl jkadfj lkj klajdfk kj kdjfka kfjk dfjf kfajlk falkf jakld kl lk saklf lkj akdjf akdjkl adkl aalkfj akla dfjalk
+                                    {props.product && props.product.description}
                                 </span>
 
 
@@ -104,7 +107,7 @@ const ContentCard = (props) => {
 
             {
                 props.cardId !== null && props.categoryId !== null  &&  (props.cardId === props.categoryId) ? 
-                    <div className='subcategory-container border' style={{minHeight : '20rem'}}>
+                    <div className='subcategory-container border' >
                         
                     </div>
                 : 
@@ -117,9 +120,12 @@ const ContentCard = (props) => {
 }
 
 
-const AddProduct = () => {
+const AddProduct = ({products}) => {
+    
     const handleSearch = () => {
-
+        // debounce((event) => {
+        //     props.search(event.target.value);
+        //   }, 400)
     }
 
     return (
@@ -145,12 +151,13 @@ const AddProduct = () => {
 
                 <section className='all-products-list-wrapper flex-1'>
                     <div className='all-products-list overflow-scroll' style={{height : '40rem', paddingBottom : '5rem'}}>
-                        <ContentCard cardId="1"/>
-                        <ContentCard cardId="1"/>
-                        <ContentCard cardId="1"/>
-                        <ContentCard cardId="1"/>
-                        <ContentCard cardId="1"/>
-                        <ContentCard cardId="1"/>
+                        {
+                            products.length!==0 && products.map((product, index)=>(
+                                <ContentCard cardId="1" product={product} key={index}/>
+
+                            ))
+                        }
+                             
                     </div>
                 </section>
             </div>

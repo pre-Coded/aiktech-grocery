@@ -1,9 +1,126 @@
-import React, { useState } from 'react'
-import { ContentCard } from '../AddProdcut/AddProduct'
+import React, { useState,useRef, useEffect } from 'react'
 import './AddCategory.scss'
+import { BsThreeDotsVertical } from "react-icons/bs";
+import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
+import { ContentCard } from '../AddProdcut/AddProduct';
 
-const AddCategory = () => {
+const CategoryCard = (props) => {
+  const editRef = useRef(null);
+  console.log(props.product,"product");
+
+  const [showEditBtn, toggleEditBtn] = useState(false);
+
+  return (
+      <div 
+
+          className='content-card-container'
+          onClick={props.onClick}    
+      >
+          <div className='content-card-wrapper flex-column'>
+
+              <button
+                  className='content-card-edit btn-none'
+                  onMouseEnter={() => toggleEditBtn(true)}
+                  onMouseLeave={() => toggleEditBtn(false)}
+                  ref={editRef}
+              >
+                  <BsThreeDotsVertical fontSize={'1.5rem'} color={"black"} />
+                  {
+                      showEditBtn &&
+                      <HoverComponent
+                          hoverRef={editRef}
+                      >
+                          <div className='flex-column gap-10'>
+                              <button
+                                  className='btn-none nowrap'
+                              >
+                                  Edit
+                              </button>
+                              <button
+                                  className='btn-none nowrap'
+                              >
+                                  Delete
+                              </button>
+                          </div>
+                      </HoverComponent>
+                  }
+              </button>
+
+              {/* <div className='content-card-img'>
+
+              </div> */}
+
+              <div className='content-card-details'>
+
+                  <ul className='content-card-ul ul-style-none flex-column'>
+                      <li className='flex-row gap-10 text-bold-md text-medium'>
+                          <span className='content-card-img'>
+
+                          </span>
+
+                          <div className='flex-column'>
+                              <span
+                                  className='product-title text-bold-md text-medium'
+                                  style={{
+                                      maxHeight: '2rem',
+                                  }}
+                              >
+                                  {props.category && props.category.name}
+                              </span>
+                             
+
+
+                              {/* <span className='text-bold-sm text-small'>Unit :</span>
+                              <span className='text-bold-sm text-small'>Packaging : </span>
+                              <span className='text-bold-sm text-small'>Sku :</span>
+
+                              <span className='flex-row justify-between'>
+                                  <span className='text-bold-sm text-small'> Activate Product : </span> <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
+                              </span>
+                              <span className='flex-row'>
+                                  <span className='text-bold-sm text-small'> Activate Description : </span>  <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
+                              </span>
+                              <span className='flex-row'>
+                                  <span className='text-bold-sm text-small'> Has Variation : </span> <ImCheckboxUnchecked style={{ maxWidth: '2rem' }} />
+                              </span> */}
+                          </div>
+                      </li>
+                  </ul>
+
+              </div>
+          </div>
+
+          {
+               props.category && (props.category.id === props.categoryId) ? 
+                  <div className='subcategory-container border' style={{minHeight : '20rem'}}>
+                    {
+                      props.category.sub_categories.map((sub_category, index)=>(
+                        <CategoryCard category={sub_category} key={index} />
+                      ))
+                    }
+                      
+                  </div>
+              : 
+
+              <div>
+              </div>
+          }
+      </div>
+  )
+}
+
+const AddCategory = ({categories}) => {
   const [categoryId, setCategoryId] = useState(null);
+  const [products, setProducts] = useState([])
+  console.log(products,"products of categories");
+  useEffect(()=>{
+    if(categoryId){
+      console.log(categories.filter((cat)=>{return cat.id===categoryId})[0]);
+      setProducts(categories.filter((cat)=>{return cat.id===categoryId})[0].products)
+    }
+
+  },[categoryId])
+
 
   return (
     <div className='add-category-container flex-column flex-1'>
@@ -33,55 +150,35 @@ const AddCategory = () => {
               All Category and SubCategory
             </div>
 
-
-            <ContentCard 
-              cardId = {1}
-              categoryId = {categoryId}
+          {
+            
+            categories.length!==0 && categories.map((category)=>(
+              <CategoryCard 
+              category={category}
+              categoryId={categoryId}
               onClick={() => {
-                if(categoryId === 1) setCategoryId(null);
-                else setCategoryId(1)
+                categoryId===null?setCategoryId(category.id):
+                (categoryId===category.id)?setCategoryId(null):
+                setCategoryId(category.id)
               }}
             />
-            <ContentCard 
-              cardId = {2}
-              categoryId = {categoryId}
-              onClick={() => {
-                if(categoryId === 2) setCategoryId(null);
-                else setCategoryId(2)
-              }}
-            />
-            <ContentCard 
-              cardId = {3}
-              categoryId = {categoryId}
-              onClick={() => {
 
 
-                if(categoryId === 3) setCategoryId(null);
-              
-                else setCategoryId(3)
-              }}
-            />
-            <ContentCard 
-              cardId = {4}
-              categoryId = {categoryId}
-              onClick={() => {
-
-                if(categoryId === 4) setCategoryId(null);
-                else setCategoryId(4)
-              }}
-            />
+            ))
+          }
+            
           </div>
 
           <div className='product flex-1 flex-column gap-10 overflow-scroll' style={{padding : '0 10px', height : '40rem'}}>
             <div style={{position: 'sticky', top : '0', backgroundColor : 'white', zIndex : '100'}}>
               All Product
             </div>
-            <ContentCard 
-              cardId={323}
-            />
-            <ContentCard 
-              cardId={323}
-            />
+            {
+              products && products.map((product, index)=>(
+                <ContentCard product={product} key={index}/>
+              ))
+            }
+           
           </div>
         </section>
 
