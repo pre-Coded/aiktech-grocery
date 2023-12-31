@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './AddProduct.scss'
-
 import { BsThreeDotsVertical } from "react-icons/bs";
-
-import { BiSolidCheckboxChecked } from "react-icons/bi";
-import { ImCheckboxUnchecked } from "react-icons/im";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
-import { debounce } from "../../../Utils";
-import { dashboardAPI } from '../../../Api';
+
 
 const DropDownModel = () => {
     return (

@@ -6,17 +6,16 @@ import { ContentCard } from '../AddProdcut/AddProduct';
 
 const CategoryCard = (props) => {
   const editRef = useRef(null);
-  console.log(props.product,"product");
+ 
 
   const [showEditBtn, toggleEditBtn] = useState(false);
+  
 
   return (
       <div 
-
-          className='content-card-container'
-          onClick={props.onClick}    
+          className='content-card-container'       
       >
-          <div className='content-card-wrapper flex-column'>
+          <div className='content-card-wrapper flex-column' onClick={props.onClick} >
 
               <button
                   className='content-card-edit btn-none'
@@ -94,8 +93,16 @@ const CategoryCard = (props) => {
                props.category && (props.category.id === props.categoryId) ? 
                   <div className='subcategory-container border' style={{minHeight : '20rem'}}>
                     {
-                      props.category.sub_categories.map((sub_category, index)=>(
-                        <CategoryCard category={sub_category} key={index} />
+                      props.category.sub_categories.length!==0 && 
+                      props.category.sub_categories.map((sub_category)=>(
+                        <CategoryCard category={sub_category} key={sub_category.id}
+                        categoryId={props.categoryId}
+                        setproductId={props.setproductId}
+                        setCategoryId={props.setCategoryId}
+                        onClick={()=>{
+                          props.setproductId(sub_category.id)
+                        }}
+                        />
                       ))
                     }
                       
@@ -111,15 +118,20 @@ const CategoryCard = (props) => {
 
 const AddCategory = ({categories}) => {
   const [categoryId, setCategoryId] = useState(null);
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
+  const [productId, setproductId] = useState(null);
+  console.log(productId,"product id");
+  
   console.log(products,"products of categories");
   useEffect(()=>{
-    if(categoryId){
-      console.log(categories.filter((cat)=>{return cat.id===categoryId})[0]);
-      setProducts(categories.filter((cat)=>{return cat.id===categoryId})[0].products)
+    if(productId){
+      console.log(categories.filter((cat)=>{return cat.id===productId})[0]);
+      setProducts(categories.filter((cat)=>{return cat.id===productId})[0]?
+      categories.filter((cat)=>{return cat.id===productId})[0].products:
+      [])
     }
 
-  },[categoryId])
+  },[productId])
 
 
   return (
@@ -155,10 +167,12 @@ const AddCategory = ({categories}) => {
             categories.length!==0 && categories.map((category)=>(
               <CategoryCard 
               category={category}
+              key={category.id}
               categoryId={categoryId}
-              onClick={() => {
-                categoryId===null?setCategoryId(category.id):
-                (categoryId===category.id)?setCategoryId(null):
+              setproductId={setproductId}
+              setCategoryId={setCategoryId}
+              onClick={()=>{
+                setproductId(category.id);
                 setCategoryId(category.id)
               }}
             />
