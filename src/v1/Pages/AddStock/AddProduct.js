@@ -73,8 +73,9 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
           setProduct(res.data.data[0].id);
-          productsearch.push(res.data.data? res.data.data[0]: {})
+          productsearch.push(res.data.data? res.data.data[0]: {});
           closeModal(false);
+
         
         } else if (res.data.status === 400) {
           toast.success("Please fill values correctly.");

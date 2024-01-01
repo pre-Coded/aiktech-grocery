@@ -4,6 +4,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { ContentCard } from '../AddProdcut/AddProduct';
 import { Modal } from '../../../Components';
+import Select from "react-select";
+
 
 
 const AddCategory = ({ categories }) => {
@@ -40,6 +42,7 @@ const AddCategory = ({ categories }) => {
   const [searchText, setSearchText] = useState("")
 
   const originalCategories = categories;
+  
 
   // handling searchPart
 
@@ -70,8 +73,10 @@ const AddCategory = ({ categories }) => {
       console.log("clicked edit", data)
 
       setProductForm({
-          id : data.id,
-          password : data.product_name || data.name,
+          
+          name : data.product_name || data.name,
+          description: data.description,
+          home_page: data.home_page,
       })
 
       handleToggleModal();
@@ -94,8 +99,13 @@ const AddCategory = ({ categories }) => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-            <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
-            <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
+            
+            <input placeholder='Enter name' name="name" value={productForm.name} onChange={handleFormInput}/>
+            <input placeholder='Enter description' name="description" value={productForm.description} onChange={handleFormInput}/>
+            <label htmlFor='home_page'>show this on home page</label>
+            <input placeholder='show this on home page' type='checkbox' id='home_page' name="home_page" value={productForm.home_page} onChange={handleFormInput}/>
+            
+           
             <input type={'button'} value="Submit"/>
 
             <button className='btn-none' onClick={handleToggleModal}>Discard</button>

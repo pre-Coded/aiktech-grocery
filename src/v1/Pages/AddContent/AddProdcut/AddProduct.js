@@ -6,7 +6,8 @@ import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import { Modal } from '../../../Components';
+import { InputField, Modal } from '../../../Components';
+import AddProductForm from '../../AddStock/AddProduct';
 
 const ContentCard = (props) => {
 
@@ -193,8 +194,9 @@ const AddProduct = ({ products }) => {
         console.log("clicked edit", data)
 
         setProductForm({
-            id : data.id,
-            password : data.product_name,
+            product_name : data.product_name,
+            packaging_price: data.packaging_price,
+            description: data.description
         })
 
         handleToggleModal();
@@ -215,10 +217,11 @@ const AddProduct = ({ products }) => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
+                    {/* <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
                     <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
-                    <input type={'button'} value="Submit"/>
-
+                    <input type={'button'} value="Submit"/> */}
+                    
+                    <AddProductForm closeModal={handleToggleModal}/>
                     <button className='btn-none' onClick={handleToggleModal}>Discard</button>
                 </Modal>
             }

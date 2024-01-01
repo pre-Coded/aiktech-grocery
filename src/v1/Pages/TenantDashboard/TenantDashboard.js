@@ -32,22 +32,22 @@ const TenantDashboard = () => {
     const [tenant_id, setTenantID] = useState(0);
     console.log(tenant_id);
 
-    // const [products, setProducts] = useState([])
-    // const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([]);
 
-    const [products, setProducts] = useState(DummyData.products)
-    const [categories, setCategories] = useState(DummyData.categories);
+    // const [products, setProducts] = useState(DummyData.products)
+    // const [categories, setCategories] = useState(DummyData.categories);
 
 
     // console.log(categories,"cat");
 
-    // useEffect(async ()=>{
-    //     const response = await dashboardAPI.fetchTenantProducts();
-    //     setProducts(response.data);
-    //     const res = await dashboardAPI.fetchTenantCategories();
-    //     console.log(res,"response");
-    //     setCategories(res.data)
-    // },[])
+    useEffect(async ()=>{
+        const response = await dashboardAPI.fetchTenantProducts();
+        setProducts(response.data);
+        const res = await dashboardAPI.fetchTenantCategories();
+        console.log(res,"response");
+        setCategories(res.data)
+    },[])
 
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
