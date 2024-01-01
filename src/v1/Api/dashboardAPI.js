@@ -40,3 +40,29 @@ export const fetchTenantCategories = (data)=>{
     const payload = {}
     return requestMaker(url, "get", {params,payload})
 }
+
+//  deleteProduct and delete Categories, subCategories
+export const deleteProduct = (data)=>{
+    const url = `/shop/tenant/products/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "delete", {params, payload})
+}
+export const deleteCategory = (data)=>{
+    const url = `/shop/tenant/categories/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "delete", {params, payload})
+}
+export const deleteProductFromCategory = (data)=>{
+    const url = `/shop/category/product/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "delete", {params, payload})
+}
+export const deleteSubCategoryFromCategory = (data)=>{
+    const url = `/shop/category/subcategory/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "delete", {params, payload})
+}

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
 import './AddCategory.scss'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
-import { ContentCard } from '../AddProdcut/AddProduct';
 import { Modal } from '../../../Components';
+import ContentCard from '../ContentCards';
 
 
 const AddCategory = ({ categories }) => {
@@ -31,6 +31,7 @@ const AddCategory = ({ categories }) => {
     }
 
     setProductList({
+      subCategoryId : data.id,
       subCategoryName : data.name,
       data : data.data
     });
@@ -82,6 +83,10 @@ const AddCategory = ({ categories }) => {
           ...prev, 
           [e.target.name] : e.target.value
       }))
+  }
+
+  const handleDelete = (data) => {
+    console.log(data);
   }
 
 
@@ -137,13 +142,21 @@ const AddCategory = ({ categories }) => {
                   cardId={category.id}
                   selectedCardId={selectedCardId}
                   data={category}
+
                   onClick={ (e) => {
                       e.stopPropagation();
                       setSelectedCardId(category.id);
                   }}
 
                   editFunction={handleEditButton}
+
+                  deleteCard ={ {
+                    itemName : 'category',
+                    response : handleDelete,
+                  } }
+
                   selectSubCategory={handleProductChange}
+
                   categoryCard
                 />
               ))
@@ -166,6 +179,13 @@ const AddCategory = ({ categories }) => {
                   cardId={product.id}
                   data={product} 
                   editFunction={handleEditButton}
+
+                  deleteCard ={ {
+                    itemName : 'productFromSubCat',
+                    response : handleDelete,
+                  } }
+
+                  subCategoryId ={ productList.id }
                   categoryCard
                 />
               ))
