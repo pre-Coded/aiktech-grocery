@@ -8,6 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { InputField, Modal } from '../../../Components';
 import AddProductForm from '../../AddStock/AddProduct';
+import AddProductModal from './AddProductModal';
 
 const ContentCard = (props) => {
 
@@ -54,10 +55,8 @@ const ContentCard = (props) => {
                             <div className='flex-column gap-10'>
                                 <button
                                     onClick={ (e) => {
+                                        
                                         e.stopPropagation();
-
-                                        console.log("Clicked Edit");
-
                                         props.editFunction && props.editFunction(props.data)
                                     }}
                                     className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
@@ -126,7 +125,6 @@ const ContentCard = (props) => {
                                         key={item.id}
                                         cardId={item.id}
                                         data={item}
-
                                         selectSubCategory={props.selectSubCategory}
 
                                     />
@@ -181,8 +179,12 @@ const AddProduct = ({ products }) => {
     const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
     const [productForm, setProductForm] = useState({
-        id : "",
-        password : "",
+        product_name : "",
+        packaging_price: "",
+        description: "",
+        sku: "",
+        category: null,
+        id:null
     })
 
     // Modal View and toggleEdit Button
@@ -194,9 +196,12 @@ const AddProduct = ({ products }) => {
         console.log("clicked edit", data)
 
         setProductForm({
+            id: data.id,
             product_name : data.product_name,
             packaging_price: data.packaging_price,
-            description: data.description
+            description: data.description,
+            category: data.category,
+            barcode: data.barcode
         })
 
         handleToggleModal();
@@ -221,7 +226,7 @@ const AddProduct = ({ products }) => {
                     <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
                     <input type={'button'} value="Submit"/> */}
                     
-                    <AddProductForm closeModal={handleToggleModal}/>
+                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm}/>
                     <button className='btn-none' onClick={handleToggleModal}>Discard</button>
                 </Modal>
             }
@@ -240,7 +245,10 @@ const AddProduct = ({ products }) => {
                         />
                     </div>
 
-                    <button onClick={handleToggleModal} className='add-btn btn-none btn'>
+                    <button onClick={()=>{
+                        handleToggleModal();
+                        setProductForm(null)
+                    }} className='add-btn btn-none btn'>
                         {`Add Product`}
                     </button>
 

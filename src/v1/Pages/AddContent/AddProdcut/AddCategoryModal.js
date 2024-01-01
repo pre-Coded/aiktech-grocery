@@ -3,14 +3,13 @@ import {
   addProduct,
   fetchCategories,
   fetchleafcategory,
-} from "../../Api/productAPI";
-import "./form.scss";
+} from "../../../Api/productAPI";
+import '../../AddStock/form.scss'
 import { toast } from "react-toastify";
-import InputField from "../../Components/InputField";
+import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionsCreator } from "../../Redux/actions/actionsCreator";
-import { Dropdown } from "../../Components";
+
 import Select from "react-select";
 
 import {
@@ -18,7 +17,7 @@ import {
   errorMsg,
   isNewLine,
   removeNewLine,
-} from "../../Utils/general-utils";
+} from "../../../Utils/general-utils";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
@@ -27,7 +26,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 });
 
 ////
-function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
+function AddProductModal({ closeModal, setBarcode, product}) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -35,6 +34,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
   } = useSelector(mapStateToProps);
   
   const dispatch = useDispatch();
+  
 
   const [item, setItem] = useState({
     product_name: "",
@@ -43,11 +43,26 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
     sku: "",
     category: null,
   });
+  useEffect(()=>{
+    console.log(product,"prod in props");
+    if(product){
+        setItem({
+        product_name: product.product_name,
+        price: product.price,
+        description: product.description,
+        category: product.category.id,
+        barcode: product.barcode
+        }) 
+      }
 
+  },[])
+  console.log(item,"item");
+  
   const [product_barcode, setProductBarcode] = useState("");
   const [leafCategories, setLeafCategories] = useState(null);
   const [data, setData] = useState(null);
   const [categories, setCategories] = useState([]);
+  
 
   // console.log(productsearch)
 
@@ -73,7 +88,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
           closeModal(false);
-          setProduct(res.data.data[0].id);
+        
           productsearch.push(res.data.data? res.data.data[0]: {});
           
         
@@ -82,7 +97,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         }
         const code = data["barcode"] + "\n";
         setBarcode(code);
-        setTempProduct(data["product_name"]);
+        
       })
       .catch((error) => {
         const msg = errorMsg(error);
@@ -142,7 +157,9 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         <h4 onClick={() => closeModal(false)}>✕</h4>
       </div>
       <h3>Add Product:</h3>
-      <textarea
+      {
+        !product &&
+        <textarea
         style={{
           height: "40px",
           width: "95%",
@@ -162,6 +179,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         }}
         required
       />
+    }
       <InputField
         type="text"
         className="input mt-2"
@@ -209,4 +227,4 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
   );
 }
 
-export default AddProductForm;
+export default AddProductModal;
