@@ -89,10 +89,10 @@ function AddProductModal({ closeModal, setBarcode, product }) {
     }
 
     product ? editProduct(data).then((res) => {
-      if (res.data.status === 201) {
-        toast.success("Product added successfully.");
+      if (res.status === 200) {
+        toast.success("Product updated successfully.");
         closeModal(false);
-      } else if (res.data.status === 400) {
+      } else if (res.status === 400) {
         toast.success("Please fill values correctly.");
       }
 
