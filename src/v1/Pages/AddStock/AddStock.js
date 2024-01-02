@@ -498,7 +498,7 @@ export default function AddStock() {
 
   //qwert
   return (
-    <div className="add-stock-container flex-1 flex-column">
+    <div className="add-stock-container flex-1 overflow-scroll">
 
       <Modal show={load}>
         <Loader message={"Please Wait. Products are being fetched!"}></Loader>
@@ -695,8 +695,8 @@ export default function AddStock() {
 
                     <div className="responsive-flex-row gap-10">
 
-                      <div className="flex-row input-border smaller-input-padding flex-1">
-                        <div className="suggestionHandle">
+                      <div className="flex-row justify-between input-border smaller-input-padding flex-1">
+                        <div className="suggestionHandle relative">
                           <input
                             id="product_name"
                             className="suggestion_input"
@@ -742,7 +742,7 @@ export default function AddStock() {
                         </button>
                       </div>
 
-                      <div className="flex-row input-border smaller-input-padding flex-1">
+                      <div className="flex-row justify-between input-border smaller-input-padding flex-1">
 
                         <div className="flex-row place-item-center">
                           <select

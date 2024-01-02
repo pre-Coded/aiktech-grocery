@@ -19,6 +19,7 @@ import {
   removeNewLine,
 } from "../../../Utils/general-utils";
 import { addCategory } from "../../../Api/dashboardAPI";
+import { actionsCreator } from "../../../Redux/actions/actionsCreator";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
@@ -80,6 +81,7 @@ function AddCategoryModal({ closeModal, setBarcode, category}) {
       home_page: item.home_page
 
     };
+
     console.log(data)
     if(category){
       data["id"] = item.id
@@ -123,30 +125,19 @@ function AddCategoryModal({ closeModal, setBarcode, category}) {
 
 
 
+  const fetchCategories = async () => {
+    dispatch(actionsCreator.FETCH_CATEGORIES_GLOBAL());
+  };
 
 
-
-
-
-
-  // const fetchCategories = async () => {
-  //   dispatch(actionsCreator.FETCH_CATEGORIES_GLOBAL());
-  // };
-
-
-
-  //qwert
   return (
-    <form className="add-product-wrapper" encType="multipart/form-data">
-      <div className="flex-right">
-        <h4 onClick={() => closeModal(false)}>✕</h4>
-      </div>
-      <h3>Add Category:</h3>
-     
-    
-      <InputField
-        type="text"
-        className="input mt-2"
+    <form className="add-product-wrapper flex-column gap-10">
+      <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add Category</div>
+
+      <input 
+        className="input-border"
+        type={"text"}
+
         name="category_name"
         id="category_name"
         placeholder="category name"
@@ -154,10 +145,18 @@ function AddCategoryModal({ closeModal, setBarcode, category}) {
         onChange={handleAddItem}
         required
       />
-      
-      <InputField
-        type="text"
-        className="input mt-2"
+
+      <textarea
+
+        style={{
+          minHeight : '10rem', 
+          resize : 'none',
+          backgroundColor : 'transparent'
+        }}
+
+        className="input-border"
+        type={"text"}
+
         name="description"
         id="description"
         placeholder="Description"
@@ -165,22 +164,28 @@ function AddCategoryModal({ closeModal, setBarcode, category}) {
         onChange={handleAddItem}
         required
       />
-      {/* <input type="file" name="image" onChange={handleAddItem}/> */}
-      <label htmlFor="home_page">Show this category on home page</label>
-      <input
-        type="checkbox"
-        className="input mt-2"
-        name="home_page"
-        id="honme_page"
-        placeholder="show this on home page"
-        value={item.home_page}
-        onChange={handleAddItem}
-        checked={item.home_page}
-      />
 
-      
+      <div className="flex-row justify-between items-center nowrap input-border" style={{width : '100%'}}>
+        <label htmlFor="home_page">Display on homepage</label>
+        <input
+          type="checkbox"
+          name="home_page"
+          id="honme_page"
+          placeholder="show this on home page"
+          value={item.home_page}
+          onChange={handleAddItem}
+          checked={item.home_page}
+          style={{
+            width : '1rem',
+          }}
+        />
+      </div>
+
       <div className="option-buttons save-changes-buttons">
-        <button onClick={handleSubmit}>Save</button>
+        <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
+          Discard
+        </button>
+        <button className="btn-none btn-primary" onClick={handleSubmit}>Save</button>
       </div>
     </form>
   );

@@ -258,9 +258,32 @@ select {
 
 .btn{
   background-color: $tabcolor2;
+
   max-width: 10rem;
   max-height: 4rem;
+
   letter-spacing: 2px;
+  font-size: 0.8rem;
+}
+
+.btn-primary{
+  background-color: $tabcolor2;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  height: 2rem;
+  color : white;
+}
+
+.btn-outline{
+  border: 1px solid $tabcolor2;
+  height: 2rem;
+
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  color: $tabcolor2;
+  background-color: white;
+
+  border-radius: 10px;
 }
 
 .place-item-center{
@@ -311,6 +334,11 @@ select {
 
 .btn-hover:hover{
   opacity: 0.7;
+}
+
+.overflow-scroll::-webkit-scrollbar{
+  width: 2px;
+  
 }
 
 @media #{$media-tablet} {

@@ -48,30 +48,35 @@ export const deleteProduct = (data)=>{
     const payload = { ...data }
     return requestMaker(url, "delete", {params, payload})
 }
+
 export const deleteCategory = (data)=>{
     const url = `/shop/tenant/categories/`
     const params = {  }
     const payload = { ...data }
     return requestMaker(url, "delete", {params, payload})
 }
+
 export const deleteProductFromCategory = (data)=>{
     const url = `/shop/category/product/`
     const params = {  }
     const payload = { ...data }
     return requestMaker(url, "delete", {params, payload})
 }
+
 export const deleteSubCategoryFromCategory = (data)=>{
     const url = `/shop/category/subcategory/`
     const params = {  }
     const payload = { ...data }
     return requestMaker(url, "delete", {params, payload})
-    
+}
+
 export const addCategory = (data)=>{
     const url = `/shop/post/add_category/`
     const params = {  }
     const payload = { ...data }
     return requestMaker(url, "post", {params,payload})
 }
+
 export const editCategory = (data)=>{
     const url = `/shop/tenant/categories/`
     const params = {  }

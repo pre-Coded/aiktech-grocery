@@ -4,24 +4,55 @@ import './AddProduct.scss'
 import { Modal } from '../../../Components';
 import ContentCard from '../ContentCards';
 
+import AddProductModal from './AddProductModal';
+import { useAsyncError } from 'react-router';
 
-const AddProduct = ({ products }) => {
+import { dashboardAPI } from "../../../Api/index.js";
 
-    const [searchText, setSearchText] = useState("")
+import data from '../../../Assets/DummyData.json'
 
-    const originalProduct = products;
+import Loader from '../../../Components/Loader';
+import { toast } from 'react-toastify';
 
-    // handling searchPart
-    products = useMemo(() => {
-        if (searchText === null || searchText.length === 0 || searchText === "") {
-            return originalProduct;
+
+const AddProduct = () => {
+    const [products, setProducts] = useState([])
+    const [fullProductList, setFullProductList] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+
+    const fetchItem = async () => {
+        try{
+            const response = await dashboardAPI.fetchTenantProducts();
+            setProducts(response.data);
+            setFullProductList(response.data)
+        }catch(e){
+            toast.error("Failed in fetching product.", 1000)
         }
 
-        return originalProduct.filter((item) => {
-            return item?.product_name.toLowerCase().includes(searchText.toLowerCase());
+        setLoading(false);
+    }
+
+    useEffect(async ()=>{
+        fetchItem();
+    },[])
+
+
+    // handling searchPart
+    const handleChange = (e) => {
+        const searchText = e.target.value;
+
+        if (searchText === null || searchText.length === 0 || searchText === "") {
+            setProducts(fullProductList);
+            return;
+        }
+
+        const filterItem = fullProductList.filter((item) => {
+            return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
         })
 
-    }, [searchText])
+        setProducts(filterItem);
+    }
 
     const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
@@ -31,8 +62,8 @@ const AddProduct = ({ products }) => {
         description: "",
         sku: "",
         category: null,
-        id:null
-    })
+        id: null
+    })  
 
     // Modal View and toggleEdit Button
     const handleToggleModal = () => {
@@ -54,15 +85,11 @@ const AddProduct = ({ products }) => {
         handleToggleModal();
     }
 
-    const handleFormInput = (e) => {
-        setProductForm( prev => ({
-            ...prev, 
-            [e.target.name] : e.target.value
-        }))
-    }
-
     const handleDelete = (data) => {
-        console.log(data);
+        if(data.id === "product"){
+            setProducts(data?.data);
+            setFullProductList(data?.data);
+        }
     }
 
 
@@ -74,63 +101,71 @@ const AddProduct = ({ products }) => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    {/* <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
-                    <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
-                    <input type={'button'} value="Submit"/> */}
-                    
-                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm}/>
-                    <button className='btn-none' onClick={handleToggleModal}>Discard</button>
+                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} />
                 </Modal>
             }
 
+            {
+                loading ? 
 
-            <div className='add-content-wrapper flex-column'>
+                <div className="flex-1 flex-row place-item-center">
+                    <Loader />
+                </div> : 
 
-                <section className='flex-row gap-10 flex-1'>
+                <div className='add-content-wrapper flex-column'>
 
-                    <div className='search-tab input-border smaller-input-padding flex-1'>
-                        <input
-                            type={'search'}
-                            placeholder="Search Your Product..."
-                            onChange={(e) => setSearchText(e.target.value)}
-                            value={searchText}
-                        />
-                    </div>
+                    <section className='flex-row items-center gap-10 flex-1'>
 
-                    <button onClick={()=>{
-                        handleToggleModal();
-                        setProductForm(null)
-                    }} className='add-btn btn-none btn'>
-                        {`Add Product`}
-                    </button>
+                        <div className='search-tab input-border flex-1'>
+                            <input
+                                type={'search'}
+                                placeholder="Search Your Product..."
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                </section>
+                        <button onClick={()=>{
+                            handleToggleModal();
+                            setProductForm(null)
+                        }} className='add-btn btn-none btn-outline'>
+                            {`Add Product`}
+                        </button>
 
-                <section className='all-products-list-wrapper flex-row flex-1'>
-                    <div className='all-products-list overflow-scroll flex-1'>
-                        {
-                            products.length !== 0 && products.map((product, index) =>
-                            (
-                                <ContentCard
-                                    key={product.id}
-                                    cardId={product.id}
-                                    data={product}
-                                    
-                                    editFunction={handleEditButton}
+                    </section>
 
-                                    deleteCard={{
-                                        itemName : 'product',
-                                        response : handleDelete,
-                                    }}
+                    <section className='all-products-list-wrapper flex-row flex-1'>
+                        <div className='all-products-list overflow-scroll flex-1'>
+                            {
+                                products.length !== 0 ? 
+                                products.map((product, index) =>
+                                (
+                                    <ContentCard
+                                        key={product.id}
+                                        cardId={product.id}
+                                        data={product}
+                                        
+                                        editFunction={handleEditButton}
 
-                                    productCard
-                                />
-                            )
-                            )
-                        }
-                    </div>
-                </section>
-            </div>
+                                        deleteCard={{
+                                            itemName : 'product',
+                                            response : handleDelete,
+                                        }}
+
+                                        width ={"32%"}
+                                    />
+                                )
+                                ) 
+                                :
+                                <div className='text-medium text-bold-sm flex-1 flex-row place-item-center'>
+                                    No Product to show
+                                </div>
+                            }
+                        </div>
+                    </section>
+                </div>
+            }
+
+
         </div>
     )
 }

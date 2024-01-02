@@ -7,13 +7,19 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { BsCartCheck, BsThreeDotsVertical } from "react-icons/bs";
 
+import defaultImg from '../../Assets/Images/default-image.png'
+
 const ContentCard = (props) => {
 
     const editRef = useRef(null);
     const [showEditBtn, toggleEditBtn] = useState(false);
 
+    const [deleteLoader, setDeleteLoader] = useState(false);
+
     const handleDelete = async (e) => {
         e.stopPropagation();
+
+        setDeleteLoader(true);
 
         if(props.deleteCard?.itemName === "product"){
             try{
@@ -25,7 +31,7 @@ const ContentCard = (props) => {
                 });
 
             }catch(e){
-                toast.error("Error in deleting product.")
+                toast.error("Error in deleting product.", {autoClose : 1000})
             }
         }
 
@@ -39,7 +45,7 @@ const ContentCard = (props) => {
                 });
 
             }catch(e){
-                toast.error("Error in deleting product.")
+                toast.error("Error in deleting product.",  {autoClose : 1000})
             }
         }
 
@@ -53,7 +59,7 @@ const ContentCard = (props) => {
                 });
 
             }catch(e){
-                toast.error("Error in deleting product.")
+                toast.error("Error in deleting product.",  {autoClose : 1000})
             }
         }
 
@@ -67,7 +73,7 @@ const ContentCard = (props) => {
                     data : response.data
                 });
             }catch(e){
-                toast.error("Error in deleting category.")
+                toast.error("Error in deleting category.",  {autoClose : 1000})
             }
         }
 
@@ -80,12 +86,11 @@ const ContentCard = (props) => {
                     data : response.data
                 });
             }catch(e){
-                toast.error("Error in deleting subcategory.")
+                toast.error("Error in deleting subcategory.",  {autoClose : 1000})
             }   
         }
 
-
-
+        setDeleteLoader(false);
     }
 
     return (
@@ -93,8 +98,12 @@ const ContentCard = (props) => {
             className='content-card-container border'
 
             style={{
-                maxHeight: (props.productCard && "10rem") || (props.categoryCard && "30rem"),
-                width: (props.productCard && "32%") || (props.categoryCard && "100%"),
+
+                width: props.width,
+                maxHeight : '40rem',
+
+                minHeight : '4rem',
+                minWidth : "32%",
                 padding: "5px"
             }}
 
@@ -127,24 +136,33 @@ const ContentCard = (props) => {
                             hoverRef={editRef}
                         >
                             <div className='flex-column gap-10'>
-                                <button
-                                    onClick={ (e) => {
-                                        e.stopPropagation();
+                                {
+                                    props.editFunction && 
+                                    <button
+                                        onClick={ (e) => {
+                                            e.stopPropagation();
 
-                                        console.log("Clicked Edit");
+                                            console.log("Clicked Edit");
 
-                                        props.editFunction && props.editFunction(props.data)
-                                    }}
-                                    className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
-                                >
-                                    <CiEdit fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/> Edit
-                                </button>
+                                            props.editFunction && props.editFunction(props.data)
+                                        }}
+                                        className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
+                                    >
+                                        <CiEdit fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/> Edit
+                                    </button>
+                                }
                                 <button
                                     className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
 
                                     onClick={ handleDelete }
                                 >
-                                    <MdDeleteOutline fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/> Delete
+                                    <MdDeleteOutline fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
+                                    {
+                                        deleteLoader ? 
+                                        <span>Deleting...</span>
+                                        :
+                                        <span>Delete</span>
+                                    }
                                 </button>
                             </div>
                         </HoverComponent>
@@ -155,14 +173,17 @@ const ContentCard = (props) => {
 
                     <ul className='content-card-ul ul-style-none flex-row gap-10'>
 
-                        <li className='content-card-img overflow-hidden' style={{ maxHeight : '3.8rem', aspectRatio : '1'}}>
+                        <li className='content-card-img overflow-hidden' style={{ maxHeight : '3.8rem', minHeight : '3.8rem' ,aspectRatio : '1'}}>
                             <img
-                                src={props.data?.image || props.data?.photo} alt={"ImageError"}
+                                src={props.data?.image || props.data?.photo || defaultImg} 
+                                alt={"Img"}
 
                                 style={{
                                     objectFit: 'contain',
-                                    height : '100%',
+                                    maxHeight : '100%',
                                     aspectRatio: '1',
+                                    overflow : 'hidden',
+                                    fontSize : '12px'
                                 }}
                             />
                         </li>
@@ -176,7 +197,7 @@ const ContentCard = (props) => {
                                         maxHeight: '2rem',
                                     }}
                                 >
-                                    {props.data?.product_name || props.data?.name || "Title"}
+                                    {props.data?.product_name?.toUpperCase() || props.data?.name?.toUpperCase() || "Title"}
                                 </span>
                                 <span className='product-description text-bold-sm text-small'>
                                     {props.data?.description.substring(0, 43) || ""}
@@ -190,25 +211,34 @@ const ContentCard = (props) => {
                 </div>
             </div>
 
+
             {
                 props.cardId !== null && 
                 props.selectedCardId !== null &&
                 (props.cardId === props.selectedCardId) &&
-                    <div className='subcategory-container flex-column' >
+                    <div className='subcategory-container overflow-scroll' >
                         {
                             props.data?.sub_categories.length > 0 ?
-                            props.data?.sub_categories?.map((item, index) => {
-                                return (
-                                    <SubContentCard
-                                        key={item.id}
-                                        cardId={item.id}
-                                        data={item}
+                            <>
+                            <span className="text-small text-bold-md" style={{marginBottom : '5px'}}>Sub-Categories</span>
+                            {
+                                props.data?.sub_categories?.map((item, index) => {
+                                    return (
+                                        <SubContentCard
+                                            key={item.id}
+                                            cardId={item.id}
+                                            data={item}
 
-                                        categoryId = {props.cardId}
-                                        selectSubCategory={props.selectSubCategory}
-                                    />
-                                )
-                            }) :
+                                            categoryId = {props.cardId}
+                                            selectSubCategory={props.selectSubCategory}
+
+                                            width={"100%"}
+                                        />
+                                    )
+                                }) 
+                            }
+                            </>
+                            :
 
                             <span className='text-small text-bold-sm'>
                                 No SubCategory to show.
@@ -224,14 +254,7 @@ const ContentCard = (props) => {
 const SubContentCard = (props) => {
     return (
         <ContentCard 
-            key={props.cardId}
-            cardId={props.cardId}
-            data={props.data}
-            
-            categoryId={props.categoryId}
-            selectSubCategory={props.selectSubCategory}
-
-            categoryCard
+            {...props}
         />
     )
 }

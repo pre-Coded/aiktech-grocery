@@ -5,7 +5,9 @@ import {
   fetchCategories,
   fetchleafcategory,
 } from "../../../Api/productAPI";
-import '../../AddStock/form.scss'
+
+// import '../../AddStock/form.scss'
+
 import { toast } from "react-toastify";
 import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
@@ -19,22 +21,22 @@ import {
   removeNewLine,
 } from "../../../Utils/general-utils";
 
-const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
+const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] }) => ({
   stockdropdown,
   categories,
   productsearch
 });
 
 ////
-function AddProductModal({ closeModal, setBarcode, product}) {
+function AddProductModal({ closeModal, setBarcode, product }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
-    productsearch: {results: productsearch=[]},
+    productsearch: { results: productsearch = [] },
   } = useSelector(mapStateToProps);
-  
+
   const dispatch = useDispatch();
-  
+
 
   const [item, setItem] = useState({
     product_name: "",
@@ -43,27 +45,27 @@ function AddProductModal({ closeModal, setBarcode, product}) {
     sku: "",
     category: null,
   });
-  useEffect(()=>{
 
-    if(product){
-        setItem({
+  useEffect(() => {
+
+    if (product) {
+      setItem({
         id: product.id,
         product_name: product.product_name,
         price: product.price,
-        description: product.description,
-        category: product.category.id,
+        description: product?.description,
+        category: product.category?.id,
         barcode: product.barcode
-        }) 
-      }
+      })
+    }
 
-  },[])
-  console.log(item,"item");
-  
+  }, [])
+
   const [product_barcode, setProductBarcode] = useState("");
   const [leafCategories, setLeafCategories] = useState(null);
   const [data, setData] = useState(null);
   const [categories, setCategories] = useState([]);
-  
+
 
   // console.log(productsearch)
 
@@ -74,29 +76,29 @@ function AddProductModal({ closeModal, setBarcode, product}) {
   //////
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data = { 
+    let data = {
       barcode: product_barcode,
       product_name: item.product_name,
       price: item.price,
       description: item.description,
       sku: item.sku,
-    //   category: categories,
+      //   category: categories,
     };
-    if(product){
-        data["id"] = item.id
+    if (product) {
+      data["id"] = item.id
     }
 
-    product ? editProduct(data).then((res)=>{
-        if (res.data.status === 201) {
-            toast.success("Product added successfully.");
-            closeModal(false);
-        } else if (res.data.status === 400) {
-            toast.success("Please fill values correctly.");
-          }
+    product ? editProduct(data).then((res) => {
+      if (res.data.status === 201) {
+        toast.success("Product added successfully.");
+        closeModal(false);
+      } else if (res.data.status === 400) {
+        toast.success("Please fill values correctly.");
+      }
 
-    }).catch((err)=>{
-        const msg = errorMsg(err);
-        toast.error(msg);
+    }).catch((err) => {
+      const msg = errorMsg(err);
+      toast.error(msg);
 
     }) : addProduct(data)
       .then((res) => {
@@ -104,16 +106,16 @@ function AddProductModal({ closeModal, setBarcode, product}) {
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
           closeModal(false);
-        
-          productsearch.push(res.data.data? res.data.data[0]: {});
-          
-        
+
+          productsearch.push(res.data.data ? res.data.data[0] : {});
+
+
         } else if (res.data.status === 400) {
           toast.success("Please fill values correctly.");
         }
         const code = data["barcode"] + "\n";
         setBarcode(code);
-        
+
       })
       .catch((error) => {
         const msg = errorMsg(error);
@@ -168,37 +170,29 @@ function AddProductModal({ closeModal, setBarcode, product}) {
 
   //qwert
   return (
-    <form className="add-product-wrapper">
-      <div className="flex-right">
-        <h4 onClick={() => closeModal(false)}>✕</h4>
-      </div>
-      <h3>Add Product:</h3>
-      {
-        !product &&
-        <textarea
-        style={{
-          height: "40px",
-          width: "95%",
-          marginLeft: "10px",
-          padding: "10px",
-          overflowY: "hidden",
-          resize: "none",
-        }}
-        type="text"
-        className="input mt-2"
-        name="product_barcode"
-        id="product_barcode"
-        placeholder="Barcode"
-        value={product_barcode}
-        onChange={(e) => {
-          setProductBarcode(e.target.value);
-        }}
-        required
-      />
-    }
-      <InputField
-        type="text"
-        className="input mt-2"
+    <form className="add-product-wrapper flex-column gap-10">
+      <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add Product</div>
+
+      {!product &&
+        <input
+          className="input-border"
+
+          type={"text"}
+          name="product_barcode"
+          id="product_barcode"
+          placeholder="Barcode"
+          value={product_barcode}
+          onChange={(e) => {
+            setProductBarcode(e.target.value);
+          }}
+          required
+        />
+      }
+
+      <input 
+        className="input-border"
+        type={"text"}
+
         name="product_name"
         id="product_name"
         placeholder="Product name"
@@ -206,9 +200,11 @@ function AddProductModal({ closeModal, setBarcode, product}) {
         onChange={handleAddItem}
         required
       />
-      <InputField
-        type="number"
-        className="input mt-2"
+
+      <input 
+        className="input-border"
+        type={"text"}
+
         name="price"
         id="price"
         placeholder="Price"
@@ -216,9 +212,18 @@ function AddProductModal({ closeModal, setBarcode, product}) {
         onChange={handleAddItem}
         required
       />
-      <InputField
-        type="text"
-        className="input mt-2"
+
+      <textarea
+
+        style={{
+          minHeight : '10rem', 
+          resize : 'none',
+          backgroundColor : 'transparent'
+        }}
+
+        className="input-border"
+        type={"text"}
+
         name="description"
         id="description"
         placeholder="Description"
@@ -226,18 +231,12 @@ function AddProductModal({ closeModal, setBarcode, product}) {
         onChange={handleAddItem}
         required
       />
-      {/* <div className="input-container">
-        <Select
-          className="dropdown"
-          placeholder={"Category"}
-          options={data}
-          onChange={handleCategoryChange}
-          isMulti
-          isClearable
-        />
-      </div> */}
+
       <div className="option-buttons save-changes-buttons">
-        <button onClick={handleSubmit}>Save</button>
+        <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
+          Discard
+        </button>
+        <button className="btn-none btn-primary" onClick={handleSubmit}>Save</button>
       </div>
     </form>
   );

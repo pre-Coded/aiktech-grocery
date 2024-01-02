@@ -4,25 +4,46 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { Modal } from '../../../Components';
 import ContentCard from '../ContentCards';
-import Select from "react-select";
 import AddCategoryModal from '../AddProdcut/AddCategoryModal';
+import { dashboardAPI } from "../../../Api/index.js";
+import Loader from '../../../Components/Loader';
+import { toast } from 'react-toastify';
+
+import AddProductModal from '../AddProdcut/AddProductModal';
 
 
-
-const AddCategory = ({ categories }) => {
-
+const AddCategory = () => {
+  const [categories, setCategories] = useState([])
+  const [fullCategoryList, setFullCategoryList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [productList, setProductList] = useState({
+    subCategoryId : null, 
     subCategoryName : null,
     data : null,
   });
+
+  const fetchItem = async () => {
+    try{
+        const response = await dashboardAPI.fetchTenantCategories();
+        setCategories(response.data);
+        setFullCategoryList(response.data)
+    }catch(e){
+        toast.error("Failed in fetching categories.", 1000)
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(async ()=>{
+    fetchItem();
+  },[])
 
 
   const handleProductChange = (event, data) => {
     event.stopPropagation();
     
-    console.log("clicked", data)
 
     if(data.data?.length === 0){
       setProductList({
@@ -40,26 +61,26 @@ const AddCategory = ({ categories }) => {
     });
 
   }
-  
-  const [searchText, setSearchText] = useState("")
-
-  const originalCategories = categories;
-  
 
   // handling searchPart
+  const handleChange = (e) => {
+    const searchText = e.target.value;
 
-  categories = useMemo(() => {
-      if (searchText === null || searchText.length === 0 || searchText === "") {
-          return originalCategories;
-      }
+    if (searchText === null || searchText.length === 0 || searchText === "") {
+        setCategories(fullCategoryList);
+        return;
+    }
 
-      return originalCategories.filter((item) => {
-          return item?.name.toLowerCase().includes(searchText.toLowerCase());
-      })
+    const filterItem = fullCategoryList.filter((item) => {
+        return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+    })
 
-  }, [searchText])
+    setCategories(filterItem);
+  }
+
 
   const [addOrEditModal, toggleAddOrEditModal] = useState(false);
+  const [addProductModal, toggleAddProductModal] = useState(false);
 
   const [categoryForm, setCategoryForm] = useState({
       id : "",
@@ -84,16 +105,29 @@ const AddCategory = ({ categories }) => {
       handleToggleModal();
   }
 
-  const handleFormInput = (e) => {
-      setCategoryForm( prev => ({
-          ...prev, 
-          [e.target.name] : e.target.value
+  const handleDelete = (data) => {
+    if(data?.id === "category"){
+      setCategories(data?.data)
+      setFullCategoryList(data?.data)
+    }
+
+    if(data?.id === "productFromSub"){
+      setProductList(prev => ({
+        ...prev,
+        data : data?.data
       }))
+    }
+
   }
 
-  const handleDelete = (data) => {
-    console.log(data);
-  }
+  const [productForm, setProductForm] = useState({
+    product_name : "",
+    packaging_price: "",
+    description: "",
+    sku: "",
+    category: null,
+    id: null,
+  })
 
 
   return (
@@ -105,106 +139,140 @@ const AddCategory = ({ categories }) => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-            
-            <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} />
-            
+          <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} />
         </Modal>
       }
 
-      <div className='add-category-wrapper flex-column'>
+      {
+        addProductModal && 
+        <Modal 
+          show={addProductModal}
+          onClick={() => toggleAddProductModal(false)}
+        >
+          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm}/>
+        </Modal>
+      }
 
-        <div className='flex-row gap-10 flex-1'>
+      {
+        loading ? 
 
-          <div className='search-tab input-border smaller-input-padding flex-1'>
-            <input
-              type={'search'}
-              placeholder="Search Category..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </div>
+        <div className="flex-1 flex-row place-item-center">
+            <Loader />
+        </div> 
+        
+        :  
 
-          <button className='add-btn btn-none btn' onClick={handleToggleModal}>
-            {`Add More`}
-          </button>
+        <div className='add-category-wrapper flex-column'>
 
-        </div>
+            <div className='flex-row gap-10 flex-1'>
 
-        <section className='category-product flex-row gap-10 flex-1'>
-
-          <div className='category-subcategory flex-column gap-10 overflow-scroll flex-1 relative' style={{ height: '40rem', padding: '0 10px', paddingBottom: '4rem', minWidth : '60%' }}>
-
-            <div className='text-large text-bold-md'>
-              All Category and SubCategory
-            </div>
-
-            {
-
-              categories.length !== 0 && categories.map( (category) => (
-                <ContentCard
-                  key={category.id}
-                  cardId={category.id}
-                  selectedCardId={selectedCardId}
-                  data={category}
-
-                  onClick={ (e) => {
-                      e.stopPropagation();
-                      setSelectedCardId(category.id);
-                  }}
-
-                  editFunction={handleEditButton}
-
-                  deleteCard ={ {
-                    itemName : 'category',
-                    response : handleDelete,
-                  } }
-
-                  selectSubCategory={handleProductChange}
-
-                  categoryCard
+              <div className='search-tab input-border small-input-padding flex-1'>
+                <input
+                  type={'search'}
+                  placeholder="Search Category..."
+                  onChange={handleChange}
                 />
-              ))
-            }
-
-          </div>
-
-          <div className='product flex-1 flex-column gap-10 overflow-scroll' style={{ padding: '0 10px', height: '40rem' }}>
-            <div className='flex-row items-center justify-between'>
-              <span className='text-large text-bold-md'>
-                {productList.subCategoryName || "Choose A Category"}
-              </span>
+              </div>
             </div>
-            {
-              productList.data?.length > 0 ?
+
+          <section className='category-product flex-row gap-10 flex-1'>
+
+            <div 
+              className='category-subcategory flex-1 overflow-scroll' 
               
-              productList.data.map((product, index) => (
-                <ContentCard 
-                  key={index} 
-                  cardId={product.id}
-                  data={product} 
-                  editFunction={handleEditButton}
+              style={{ 
+                  height: '40rem',
+                  padding: '0 10px', 
+                  paddingBottom: '4rem', 
+                  minWidth : '60%' 
+              }}>
 
-                  deleteCard ={ {
-                    itemName : 'productFromSubCat',
-                    response : handleDelete,
-                  } }
+              <div className='flex-row justify-between' style={{paddingBottom : '1rem'}}>
+                <span className='text-large text-bold-md flex-row'>
+                  Category and Subcategory
+                </span>
+                <button className='add-btn btn-none btn-outline' onClick={handleToggleModal}>
+                  {`Add More`}
+                </button>
+              </div>
 
-                  subCategoryId ={ productList.id }
-                  categoryCard
-                />
-              ))
+              {
 
-              :
+                categories.length !== 0 ?
+                categories.map( (category) => (
+                  <ContentCard
+                    key={category.id}
+                    cardId={category.id}
+                    selectedCardId={selectedCardId}
+                    data={category}
 
-              <span className='text-medium text-bold-sm'>No Products To Show</span>
-            }
+                    onClick={ (e) => {
+                        e.stopPropagation();
+                        setSelectedCardId(category.id);
+                    }}
 
-          </div>
-        </section>
+                    editFunction={handleEditButton}
 
-      </div>
+                    deleteCard ={ {
+                      itemName : 'category',
+                      response : handleDelete,
+                    } }
+
+                    selectSubCategory={handleProductChange}
+
+                    width={"100%"}
+                  />
+                )) : 
+                <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>
+                    No Categories to show
+                </div>
+              }
+
+            </div>
+
+            <div className='cat-sub-product flex-1 overflow-scroll' style={{ padding: '0 10px', height: '40rem', }}>
+
+              <div className='flex-row justify-between items-center' style={{paddingBottom : '1rem'}}>
+                <span className='text-large text-bold-md'>
+                  {productList.subCategoryName?.toUpperCase() || "Product"}
+                </span>
+
+                <button className='btn-none btn-outline' onClick={() => toggleAddProductModal(true)}>
+                  Add Product
+                </button>
+              </div>
+
+              {
+                productList.data?.length > 0 ?
+                
+                (
+                  productList.data.map((product, index) => (
+                    <ContentCard 
+                      key={index} 
+                      cardId={product.id}
+                      data={product} 
+
+                      deleteCard ={ {
+                        itemName : 'productFromSubCat',
+                        response : handleDelete,
+                      } }
+
+                      subCategoryId ={ productList.subCategoryId }
+
+                      width ={"100%"}
+                    /> 
+                  ))
+                )
+                :
+                <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>No Products To Show</div>
+              }
+
+            </div>
+          </section>
+        </div>
+      }
     </div>
   )
 }
 
-export default AddCategory
+export default AddCategory;

@@ -2,9 +2,9 @@
 
 
 .add-stock-container{
-  min-height: 100%;
-  min-width: 100%;
-  max-width: 100%;
+  min-height: 80rem;
+  // min-width: 100%;
+//   max-width: 100%;
 }
 
 .inventory-select-wrapper{
@@ -337,35 +337,36 @@ input::placeholder{
 //   background-color: white;
 //   border-radius: 10px;
 // }
-// .search-suggestion-container {
-//   display: flex;
-//   flex-direction: column;
-//   position: absolute;
-//   z-index: 3;
-//   overflow-y: scroll;
-//   max-height: 150px;
-//   min-width: 10rem;
 
-//   .search-dropdown {
-//     cursor: pointer;
-//     background-color: $white;
-//   }
-//   .search-dropdown:hover {
-//     background-color: $platinum;
-//   }
-// }
+.search-suggestion-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 3;
+  overflow-y: scroll;
+  max-height: 150px;
+  min-width: 10rem;
 
-// .search-suggestion-container-show {
-//   display: flex;
-// }
+  .search-dropdown {
+    cursor: pointer;
+    background-color: $white;
+  }
+  .search-dropdown:hover {
+    background-color: $platinum;
+  }
+}
 
-// .suggestionHandle {
-//   width: 90%;
-//   position: relative;
-// }
-// .search-suggestion-container {
-//   width: 100%;
-// }
+.search-suggestion-container-show {
+  display: flex;
+}
+
+.suggestionHandle {
+  width: 90%;
+  position: relative;
+}
+.search-suggestion-container {
+  width: 100%;
+}
 
 // .product_quantity {
 //   max-width: 4rem !important;

@@ -16,7 +16,7 @@
             "id": 532,
             "product_name": "curd",
             "category": {},
-            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "photo": "",
             "market_price": null,
             "price": null,
             "sku": "SKU00000002",
@@ -397,6 +397,245 @@
             "colour": null,
             "home_page": false,
             "tenant": 2
+        }
+    ], 
+    "dashboardOrders" : [
+        {
+            "id": 58,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T15:31:24.366520+05:30",
+            "updated_on": "2023-12-31T15:31:24.392571+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": null,
+            "delivery_time": null,
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "60.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 53,
+            "inventory": 1
+        },
+        {
+            "id": 57,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T15:26:40.156541+05:30",
+            "updated_on": "2023-12-31T15:26:40.190784+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": null,
+            "delivery_time": null,
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "60.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 52,
+            "inventory": 1
+        },
+        {
+            "id": 56,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T00:10:10.046674+05:30",
+            "updated_on": "2023-12-31T00:10:10.078307+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": "2024-01-01",
+            "delivery_time": "00:01:00",
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "30.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 51,
+            "inventory": 1
         }
     ]
 }

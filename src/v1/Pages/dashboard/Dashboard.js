@@ -9,13 +9,16 @@ import CardOrders from "../../Components/cardOrders/CardOrders";
 import { IoMdNotificationsOff, IoIosNotifications } from 'react-icons/io'
 import { toast } from "react-toastify";
 
+
 const Dashboard = () => {
+
     const [orders, setOrders] = useState([]);
     const [notifications, setNotifications] = useState(false)
     const [loading, setLoading] = useState(true);
     const [load, setLoad] = useState(false);
     const [display, setDisplay] = useState([]);
     const [firstRender, setFirstRender] = useState(true);
+
 
     const notificationHandler = () => {
         if (notifications) {
@@ -40,7 +43,6 @@ const Dashboard = () => {
                     }
                 }
                 setDisplay(orders.slice(0, 20))
-
             }
             )
         }
@@ -57,8 +59,8 @@ const Dashboard = () => {
 
         const intervalId = setInterval(() => {
             setLoad(!load);
-
         }, 1000)
+
         setLoading(false);
         return () => clearInterval(intervalId);
     }, [load])
@@ -67,7 +69,13 @@ const Dashboard = () => {
         <div className="dashboard-container flex-row flex-1" >
 
             {
-                loading === true ? ( <Loader /> ) : 
+                loading === true ? 
+                (
+                    <div className="flex-1 flex-row place-item-center">
+                         <Loader />
+                    </div>
+                ) 
+                : 
                 (
                     <div className="dashboard-content flex-column">
 
@@ -90,7 +98,7 @@ const Dashboard = () => {
                             </button>
                         </div>
 
-                        <div className="flex-1 flex-row place-item-center">
+                        <div className="flex-1 flex-row place-item-center" style={{marginTop : '1rem'}}>
                             {
                                 orders.length === 0 && firstRender === false ? 
                                 (
@@ -98,8 +106,7 @@ const Dashboard = () => {
                                 ) 
                                 : 
                                 (
-                                    <div className="cards-dashboard flex-1">
-
+                                    <div className="cards-dashboard flex-1 overflow-scroll">
                                         {
                                             display.length !== 0 ?
                                                 display.map((order, index) => {

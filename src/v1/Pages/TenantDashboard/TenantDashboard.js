@@ -1,72 +1,43 @@
 import React, { useCallback, useRef } from "react";
 import './TenantDashboard.scss';
 import SideBar, { SideBarComponent } from "../../Components/SideBar/SideBar";
-import { Switch } from "react-router-dom/cjs/react-router-dom.min";
-import { Route, Router, Routes } from "react-router";
 import Dashboard from "../dashboard/Dashboard.js";
-import { useLocation } from "react-router";
 import { useState } from "react";
 import AddStock from "../AddStock/AddStock.js";
 import { useHistory } from 'react-router-dom'
-import { dashboardAPI } from "../../Api/index.js";
-import { useEffect } from "react";
-import { set } from "lodash";
 import { actionsCreator } from "../../Redux/actions/actionsCreator.js";
 import { toast } from "react-toastify";
 
 import AddCategory from "../AddContent/AddCategory/AddCategory";
 import AddProduct from "../AddContent/AddProdcut/AddProduct";
-import AddContent from "../AddContent/AddProdcut/AddProduct";
 
 import HoverComponent from "../../Components/HoverComponent/HoverComponent";
-
-import DummyData from '../../Assets/DummyData.json'
 import { useDispatch } from "react-redux";
 
 const TenantDashboard = () => {
 
-    const [activeComponent, setActiveComponent] = useState("addProduct")
-
+    const [activeComponent, setActiveComponent] = useState("dashboard");
+    const [userInformation, setUserInformation] = useState(false);
     const userInfoRef = useRef(null);
-
     const history = useHistory();
-    const [tenant_id, setTenantID] = useState(0);
-    console.log(tenant_id);
 
-    const [products, setProducts] = useState([])
-    const [categories, setCategories] = useState([]);
     const dispatch = useDispatch()
-
-    // const [products, setProducts] = useState(DummyData.products)
-    // const [categories, setCategories] = useState(DummyData.categories);
-
-
-    // console.log(categories,"cat");
-
-    useEffect(async ()=>{
-        const response = await dashboardAPI.fetchTenantProducts();
-        setProducts(response.data);
-        const res = await dashboardAPI.fetchTenantCategories();
-        console.log(res,"response");
-        setCategories(res.data)
-    },[])
     
     const logout = () => {
         dispatch(actionsCreator.LOGOUT_USER());
-        toast.error("User is logged out successfully");
+        toast.error("User is logged out successfully", {autoClose : 1000});
         history.push('/')
-        
-      };
+    };
 
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
             return <Dashboard />
         }
         else if(activeComponent === "addProduct"){
-            return products && <AddProduct products={products}/>
+            return <AddProduct />
         }
         else if(activeComponent === "addCategory"){
-            return categories && <AddCategory categories={categories} />
+            return <AddCategory />
         }
         else if (activeComponent === 'addStock') {
             return <AddStock />
@@ -74,11 +45,8 @@ const TenantDashboard = () => {
             return <></>;
         }
     }, [activeComponent])
-
-    const [userInformation, setUserInformation] = useState(false);
     
     
-
     return (
         <div className="tenant-dashboard-container overflow-hidden flex-column">
 
