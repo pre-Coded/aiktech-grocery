@@ -65,4 +65,16 @@ export const deleteSubCategoryFromCategory = (data)=>{
     const params = {  }
     const payload = { ...data }
     return requestMaker(url, "delete", {params, payload})
+    
+export const addCategory = (data)=>{
+    const url = `/shop/post/add_category/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "post", {params,payload})
+}
+export const editCategory = (data)=>{
+    const url = `/shop/tenant/categories/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "put", {params,payload})
 }

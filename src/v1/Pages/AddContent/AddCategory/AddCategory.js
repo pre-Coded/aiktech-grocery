@@ -4,6 +4,9 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { Modal } from '../../../Components';
 import ContentCard from '../ContentCards';
+import Select from "react-select";
+import AddCategoryModal from '../AddProdcut/AddCategoryModal';
+
 
 
 const AddCategory = ({ categories }) => {
@@ -41,6 +44,7 @@ const AddCategory = ({ categories }) => {
   const [searchText, setSearchText] = useState("")
 
   const originalCategories = categories;
+  
 
   // handling searchPart
 
@@ -57,7 +61,7 @@ const AddCategory = ({ categories }) => {
 
   const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
-  const [productForm, setProductForm] = useState({
+  const [categoryForm, setCategoryForm] = useState({
       id : "",
       password : "",
   })
@@ -70,16 +74,18 @@ const AddCategory = ({ categories }) => {
   const handleEditButton = (data) => {
       console.log("clicked edit", data)
 
-      setProductForm({
-          id : data.id,
-          password : data.product_name || data.name,
+      setCategoryForm({
+          name :  data.name,
+          description: data.description,
+          home_page: data.home_page,
+          id: data.id
       })
 
       handleToggleModal();
   }
 
   const handleFormInput = (e) => {
-      setProductForm( prev => ({
+      setCategoryForm( prev => ({
           ...prev, 
           [e.target.name] : e.target.value
       }))
@@ -99,11 +105,9 @@ const AddCategory = ({ categories }) => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-            <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
-            <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
-            <input type={'button'} value="Submit"/>
-
-            <button className='btn-none' onClick={handleToggleModal}>Discard</button>
+            
+            <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} />
+            
         </Modal>
       }
 

@@ -26,8 +26,12 @@ const AddProduct = ({ products }) => {
     const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
     const [productForm, setProductForm] = useState({
-        id : "",
-        password : "",
+        product_name : "",
+        packaging_price: "",
+        description: "",
+        sku: "",
+        category: null,
+        id:null
     })
 
     // Modal View and toggleEdit Button
@@ -39,8 +43,12 @@ const AddProduct = ({ products }) => {
         console.log("clicked edit", data)
 
         setProductForm({
-            id : data.id,
-            password : data.product_name,
+            id: data.id,
+            product_name : data.product_name,
+            packaging_price: data.packaging_price,
+            description: data.description,
+            category: data.category,
+            barcode: data.barcode
         })
 
         handleToggleModal();
@@ -66,10 +74,11 @@ const AddProduct = ({ products }) => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
+                    {/* <input placeholder='Enter id' name="id" value={productForm.id} onChange={handleFormInput}/>
                     <input placeholder='Enter password' name="password" value={productForm.password} onChange={handleFormInput}/>
-                    <input type={'button'} value="Submit"/>
-
+                    <input type={'button'} value="Submit"/> */}
+                    
+                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm}/>
                     <button className='btn-none' onClick={handleToggleModal}>Discard</button>
                 </Modal>
             }
@@ -88,7 +97,10 @@ const AddProduct = ({ products }) => {
                         />
                     </div>
 
-                    <button onClick={handleToggleModal} className='add-btn btn-none btn'>
+                    <button onClick={()=>{
+                        handleToggleModal();
+                        setProductForm(null)
+                    }} className='add-btn btn-none btn'>
                         {`Add Product`}
                     </button>
 

@@ -126,3 +126,10 @@ export const fetchPagedProducts = (data) => {
   const payload = {};
   return requestMaker(url, "get", { params, payload });
 }
+
+export const editProduct = (data) => {
+  const url = `/shop/tenant/products/`;
+  const params = {};
+  const payload = { ...data };
+  return requestMaker(url, "put", { params, payload });
+};

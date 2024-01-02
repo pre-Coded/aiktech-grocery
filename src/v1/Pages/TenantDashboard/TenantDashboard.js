@@ -11,8 +11,8 @@ import { useHistory } from 'react-router-dom'
 import { dashboardAPI } from "../../Api/index.js";
 import { useEffect } from "react";
 import { set } from "lodash";
-
-import { LOGOUT_USER } from "../../Redux/actions/actionTypes";
+import { actionsCreator } from "../../Redux/actions/actionsCreator.js";
+import { toast } from "react-toastify";
 
 import AddCategory from "../AddContent/AddCategory/AddCategory";
 import AddProduct from "../AddContent/AddProdcut/AddProduct";
@@ -21,6 +21,7 @@ import AddContent from "../AddContent/AddProdcut/AddProduct";
 import HoverComponent from "../../Components/HoverComponent/HoverComponent";
 
 import DummyData from '../../Assets/DummyData.json'
+import { useDispatch } from "react-redux";
 
 const TenantDashboard = () => {
 
@@ -34,6 +35,7 @@ const TenantDashboard = () => {
 
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([]);
+    const dispatch = useDispatch()
 
     // const [products, setProducts] = useState(DummyData.products)
     // const [categories, setCategories] = useState(DummyData.categories);
@@ -48,6 +50,13 @@ const TenantDashboard = () => {
         console.log(res,"response");
         setCategories(res.data)
     },[])
+    
+    const logout = () => {
+        dispatch(actionsCreator.LOGOUT_USER());
+        toast.error("User is logged out successfully");
+        history.push('/')
+        
+      };
 
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
@@ -121,7 +130,7 @@ const TenantDashboard = () => {
                                     padding : '4px'
                                 }}
 
-                                onClick={LOGOUT_USER}
+                                onClick={logout}
                             >
                                 Log Out
                             </button>
