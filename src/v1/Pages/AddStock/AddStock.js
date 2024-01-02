@@ -391,6 +391,7 @@ export default function AddStock() {
       inventory !== "" &&
       pricePerProduct !== ""
     ) {
+      console.log(product,"product");
       let temp = {
         added_by: addedBy,
         stock_quantity: quantity,
