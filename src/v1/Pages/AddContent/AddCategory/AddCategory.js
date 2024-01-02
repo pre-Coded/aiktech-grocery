@@ -191,7 +191,10 @@ const AddCategory = () => {
                 <span className='text-large text-bold-md flex-row'>
                   Category and Subcategory
                 </span>
-                <button className='add-btn btn-none btn-outline' onClick={handleToggleModal}>
+                <button className='add-btn btn-none btn-outline' onClick={()=>{
+                  handleToggleModal();
+                  setCategoryForm(null)
+                }}>
                   {`Add More`}
                 </button>
               </div>

@@ -105,16 +105,13 @@ function AddCategoryModal({ closeModal, setBarcode, category}) {
     }) : addCategory(data)
       .then((res) => {
         // console.log(res);
-        if (res.data.status === 201) {
+        if (res.status === 201) {
           toast.success("category added successfully.");
-          closeModal();
-          
-        
-        } else if (res.data.status === 400) {
+          closeModal(false);
+        } else if (res.status === 400) {
           toast.success("Please fill values correctly.");
         }
-        const code = data["barcode"] + "\n";
-        setBarcode(code);
+    
         
       })
       .catch((error) => {
