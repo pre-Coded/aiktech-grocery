@@ -33,7 +33,7 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './v1/Components/ScrollToTop/ScrollToTop';
-import { AuthWrapper } from './v1/Wrapper/'
+import { AuthWrapper, AdminWrapper } from './v1/Wrapper/'
 import Carditems from './v1/Components/cardItems/CardItems';
 import TenantDashboard from './v1/Pages/TenantDashboard/TenantDashboard';
 
@@ -47,7 +47,7 @@ function App() {
     <div className="AppRoot">
       <Provider store={store}>
           <Switch>
-          <Route path='/cms' render={()=>(<TenantDashboard/>)}/> 
+          <Route path='/cms' render={()=>(<AdminWrapper><TenantDashboard/></AdminWrapper>)}/> 
             <Route path="/">
               <Navigation />
               <ScrollToTop />

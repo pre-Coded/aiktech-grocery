@@ -58,3 +58,10 @@ export const updateUserInventory = (data) => {
     const payload = {};
     return requestMaker(url, 'get', { params, payload });
 };
+export const checkAdmin = (data) => {
+    const url = `/account/user/admin/`;
+    const params = {};
+    const payload = { ...data };
+    return requestMaker(url, 'get', { params, payload });
+};
+
