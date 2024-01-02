@@ -539,3 +539,8 @@ input::placeholder{
 // .product__details__table tr{
 //   width: 100%;
 // }
+.suggestionHandle{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

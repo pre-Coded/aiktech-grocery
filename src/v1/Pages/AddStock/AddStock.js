@@ -697,7 +697,7 @@ export default function AddStock() {
                     <div className="responsive-flex-row gap-10">
 
                       <div className="flex-row justify-between input-border smaller-input-padding flex-1">
-                        <div className="suggestionHandle relative">
+                        <div className="suggestionHandle">
                           <input
                             id="product_name"
                             className="suggestion_input"
@@ -716,14 +716,16 @@ export default function AddStock() {
                               }
                             }}
                           />
-
-                          <Searchsuggestion
+                        
+                        <Searchsuggestion
                             inventory={inventory}
                             productSuggestions={productSuggestions}
                             handleSuggestion={handleSuggestion}
                             showsuggestions={showSuggestions}
                           />
 
+                      
+                        
                         </div>
 
                         <button

@@ -12,11 +12,15 @@ export default function Searchsuggestion(props) {
         height:
           props.productSuggestions &&
           props.productSuggestions.length > 0 &&
-          "150px",
+          "200px",
         overflowY:
           props.productSuggestions &&
           props.productSuggestions.length > 0 &&
           "scroll",
+        position:
+        props.productSuggestions &&
+          props.productSuggestions.length > 0 &&
+          "static",
       }}
       className="search-suggestion-container"
       id="search-container"
@@ -36,7 +40,6 @@ export default function Searchsuggestion(props) {
           data-product-remaining={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.product_remaining: null))}
           data-product-address={product.remaining_products && product.remaining_products.map(i => (i.inventory_id==props.inventory? i.address: null))}
         >
-          {console.log(product)}
           
           {product.product_name}({product.description})
           <p className="category_name_addstock">
