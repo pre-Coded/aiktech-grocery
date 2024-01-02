@@ -149,7 +149,7 @@ const AddCategory = () => {
           show={addProductModal}
           onClick={() => toggleAddProductModal(false)}
         >
-          <AddCategoryModal closeModal={() => toggleAddProductModal(false)} product={productForm}/>
+          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} />
         </Modal>
       }
 

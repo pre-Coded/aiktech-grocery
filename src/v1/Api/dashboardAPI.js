@@ -83,3 +83,9 @@ export const editCategory = (data)=>{
     const payload = { ...data }
     return requestMaker(url, "put", {params,payload})
 }
+export const addProductToCategory = (data)=>{
+    const url = `/shop/category/product/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "put", {params,payload})
+}
