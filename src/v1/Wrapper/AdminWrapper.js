@@ -23,7 +23,7 @@ export default function AdminWrapper({ children }) {
         }
 
         if (!isLoggedin) {
-            
+            history.push('/');
             dispatch(actionsCreator.SHOW_LOGIN());
         }
     }, [])
