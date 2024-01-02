@@ -5,6 +5,7 @@ import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { ContentCard } from '../AddProdcut/AddProduct';
 import { Modal } from '../../../Components';
 import Select from "react-select";
+import AddCategoryModal from '../AddProdcut/AddCategoryModal';
 
 
 
@@ -59,7 +60,7 @@ const AddCategory = ({ categories }) => {
 
   const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
-  const [productForm, setProductForm] = useState({
+  const [categoryForm, setCategoryForm] = useState({
       id : "",
       password : "",
   })
@@ -72,18 +73,18 @@ const AddCategory = ({ categories }) => {
   const handleEditButton = (data) => {
       console.log("clicked edit", data)
 
-      setProductForm({
-          
-          name : data.product_name || data.name,
+      setCategoryForm({
+          name :  data.name,
           description: data.description,
           home_page: data.home_page,
+          id: data.id
       })
 
       handleToggleModal();
   }
 
   const handleFormInput = (e) => {
-      setProductForm( prev => ({
+      setCategoryForm( prev => ({
           ...prev, 
           [e.target.name] : e.target.value
       }))
@@ -100,15 +101,8 @@ const AddCategory = ({ categories }) => {
             onClick={handleToggleModal}
         >
             
-            <input placeholder='Enter name' name="name" value={productForm.name} onChange={handleFormInput}/>
-            <input placeholder='Enter description' name="description" value={productForm.description} onChange={handleFormInput}/>
-            <label htmlFor='home_page'>show this on home page</label>
-            <input placeholder='show this on home page' type='checkbox' id='home_page' name="home_page" value={productForm.home_page} onChange={handleFormInput}/>
+            <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} />
             
-           
-            <input type={'button'} value="Submit"/>
-
-            <button className='btn-none' onClick={handleToggleModal}>Discard</button>
         </Modal>
       }
 

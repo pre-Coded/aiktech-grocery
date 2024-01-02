@@ -11,7 +11,6 @@ import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Select from "react-select";
 
 import {
   formatOptions,
@@ -45,7 +44,7 @@ function AddProductModal({ closeModal, setBarcode, product}) {
     category: null,
   });
   useEffect(()=>{
-    console.log(product,"prod in props");
+
     if(product){
         setItem({
         id: product.id,

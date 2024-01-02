@@ -10,7 +10,7 @@ import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Select from "react-select";
+import { editCategory } from "../../../Api/dashboardAPI";
 
 import {
   formatOptions,
@@ -18,6 +18,7 @@ import {
   isNewLine,
   removeNewLine,
 } from "../../../Utils/general-utils";
+import { addCategory } from "../../../Api/dashboardAPI";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
@@ -26,7 +27,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 });
 
 ////
-function AddProductModal({ closeModal, setBarcode, product}) {
+function AddCategoryModal({ closeModal, setBarcode, category}) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -37,59 +38,74 @@ function AddProductModal({ closeModal, setBarcode, product}) {
   
 
   const [item, setItem] = useState({
-    product_name: "",
-    price: "",
+    category_name: "",
     description: "",
-    sku: "",
-    category: null,
+    home_page:false
   });
+  console.log(item,"item");
   useEffect(()=>{
-    console.log(product,"prod in props");
-    if(product){
+    if(category){
+      console.log(category,"catgor in  props");
         setItem({
-        product_name: product.product_name,
-        price: product.price,
-        description: product.description,
-        category: product.category.id,
-        barcode: product.barcode
+        id:category.id,
+        category_name: category.name,
+        description: category.description,
+        home_page: category.home_page,
         }) 
       }
 
   },[])
-  console.log(item,"item");
-  
-  const [product_barcode, setProductBarcode] = useState("");
-  const [leafCategories, setLeafCategories] = useState(null);
-  const [data, setData] = useState(null);
-  const [categories, setCategories] = useState([]);
-  
+  const handleAddItem = (e) =>{
+    if(e.target.name === "image"){
+     setItem({ ...item, image: e.target.files[0] })
+    }
+    else if(e.target.name === "home_page"){
+      setItem({ ...item, home_page: e.target.checked })
 
-  // console.log(productsearch)
-
-  /////
-  const handleAddItem = (e) =>
-    setItem({ ...item, [e.target.name]: e.target.value });
+    }
+    else{
+      setItem({ ...item, [e.target.name]: e.target.value });
+    }
+  }
+    
 
   //////
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      barcode: product_barcode,
-      product_name: item.product_name,
-      price: item.price,
-      description: item.description,
-      sku: item.sku,
-      categories: categories,
-    };
 
-    addProduct(data)
+      name: item.category_name,
+      description: item.description,
+      image: item.image,
+      home_page: item.home_page
+
+    };
+    console.log(data)
+    if(category){
+      data["id"] = item.id
+
+    }
+
+    category ? editCategory(data).then((res)=>{
+      if (res.status === 200) {
+        toast.success("category updated successfully.");
+        closeModal();
+        
+      
+      } else if (res.status === 400) {
+        toast.success("Please fill values correctly.");
+      }
+
+    }).catch((err)=>{
+      const msg = errorMsg(err);
+        toast.error(msg);
+
+    }) : addCategory(data)
       .then((res) => {
         // console.log(res);
         if (res.data.status === 201) {
-          toast.success("Product added successfully.");
-          closeModal(false);
-        
-          productsearch.push(res.data.data? res.data.data[0]: {});
+          toast.success("category added successfully.");
+          closeModal();
           
         
         } else if (res.data.status === 400) {
@@ -105,101 +121,40 @@ function AddProductModal({ closeModal, setBarcode, product}) {
       });
   };
 
-  const fetchCategories = async () => {
-    const cate = await fetchleafcategory({ leaf: "leaf" });
-    setLeafCategories(cate.data.data);
-  };
 
-  useEffect(() => {
-    if (leafCategories) {
-      setData(formatOptions(leafCategories, "name", "id"));
-    }
-  }, [leafCategories]);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
-  useEffect(() => {
-    let element = document.querySelector("#product_barcode");
-    if (element) {
-      element.focus();
-    }
-  }, []);
 
-  const handleCategoryChange = (e) => {
-    console.log(e);
-    if (Array.isArray(e)) {
-      const temp = e.map((x) => x.value);
-      setCategories(temp);
-    }
-  };
+
+
+
 
   // const fetchCategories = async () => {
   //   dispatch(actionsCreator.FETCH_CATEGORIES_GLOBAL());
   // };
 
-  useEffect(() => {
-    if (
-      product_barcode !== "" &&
-      product_barcode &&
-      isNewLine(product_barcode)
-    ) {
-      let changedBarcode = removeNewLine(product_barcode);
-      setProductBarcode(changedBarcode);
-    }
-  }, [product_barcode]);
+
 
   //qwert
   return (
-    <form className="add-product-wrapper">
+    <form className="add-product-wrapper" encType="multipart/form-data">
       <div className="flex-right">
         <h4 onClick={() => closeModal(false)}>✕</h4>
       </div>
-      <h3>Add Product:</h3>
-      {
-        !product &&
-        <textarea
-        style={{
-          height: "40px",
-          width: "95%",
-          marginLeft: "10px",
-          padding: "10px",
-          overflowY: "hidden",
-          resize: "none",
-        }}
-        type="text"
-        className="input mt-2"
-        name="product_barcode"
-        id="product_barcode"
-        placeholder="Barcode"
-        value={product_barcode}
-        onChange={(e) => {
-          setProductBarcode(e.target.value);
-        }}
-        required
-      />
-    }
+      <h3>Add Category:</h3>
+     
+    
       <InputField
         type="text"
         className="input mt-2"
-        name="product_name"
-        id="product_name"
-        placeholder="Product name"
-        value={item.product_name}
+        name="category_name"
+        id="category_name"
+        placeholder="category name"
+        value={item.category_name}
         onChange={handleAddItem}
         required
       />
-      <InputField
-        type="number"
-        className="input mt-2"
-        name="price"
-        id="price"
-        placeholder="Price"
-        value={item.price}
-        onChange={handleAddItem}
-        required
-      />
+      
       <InputField
         type="text"
         className="input mt-2"
@@ -210,16 +165,20 @@ function AddProductModal({ closeModal, setBarcode, product}) {
         onChange={handleAddItem}
         required
       />
-      <div className="input-container">
-        <Select
-          className="dropdown"
-          placeholder={"Category"}
-          options={data}
-          onChange={handleCategoryChange}
-          isMulti
-          isClearable
-        />
-      </div>
+      {/* <input type="file" name="image" onChange={handleAddItem}/> */}
+      <label htmlFor="home_page">Show this category on home page</label>
+      <input
+        type="checkbox"
+        className="input mt-2"
+        name="home_page"
+        id="honme_page"
+        placeholder="show this on home page"
+        value={item.home_page}
+        onChange={handleAddItem}
+        checked={item.home_page}
+      />
+
+      
       <div className="option-buttons save-changes-buttons">
         <button onClick={handleSubmit}>Save</button>
       </div>
@@ -227,4 +186,4 @@ function AddProductModal({ closeModal, setBarcode, product}) {
   );
 }
 
-export default AddProductModal;
+export default AddCategoryModal;
