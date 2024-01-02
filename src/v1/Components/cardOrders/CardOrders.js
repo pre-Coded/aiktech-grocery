@@ -19,8 +19,7 @@ const CardOrders = ({ order }) => {
         return `${formattedDate} ${formattedTime}`
     }
     const orderItemsDisplay = () => {
-        console.log("localstorage");
-        console.log(localStorage);
+
         const config = {
             params: {
                 "id": order.id

@@ -10,12 +10,12 @@ export  default function Carditems(){
     const data=location.state
     
     if(Object.is(data,undefined)){
-        history.push('/dashboard');
+        history.push('/cms');
         window.location.reload(true)
     }
     
     function clickHandler(){
-        history.push('/dashboard');
+        history.push('/cms');
 
     }
     return(
