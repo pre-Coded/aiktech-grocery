@@ -30,7 +30,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
 });
 
 ////
-function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat }) {
+function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat, categoryId }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -60,6 +60,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         barcode: product.barcode
       })
     }
+    
 
   }, [])
 
@@ -84,32 +85,17 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       price: item.price,
       description: item.description,
       sku: item.sku,
-      category_id : product.categoryId, 
+      
     };
 
     if (product) {
       data["id"] = item.id
     }
+    if(categoryId){
+      data["category_id"]=categoryId
+    }
 
-    addProductToCat && 
-    addProductToCategory(data)
-    .then( (res) => {
-      if(res.status === 200){
-        toast.status("Product Added Successfully");
 
-        handleResponse({ id : "product", data : res.data });
-        closeModal(false);
-      }else if(res.status === 400){
-        toast.error("Please fill values correctly.")
-      }
-
-      return;
-    })
-    .catch((err) => {
-      toast.error(errorMsg(err))
-
-      return;
-    })
 
     product ?
     editProduct(data)
@@ -127,7 +113,26 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }).catch((err) => {
       const msg = errorMsg(err);
       toast.error(msg);
-    }) : 
+    }) : addProductToCat ?  addProductToCategory(data)
+    .then( (res) => {
+      console.log(res,"add to category result");
+      if(res.status === 201){
+        console.log(201);
+        toast.success("Product Added Successfully");
+
+        handleResponse({ id : "category", data : res.data });
+        closeModal(false);
+      }else if(res.status === 400){
+        toast.error("Please fill values correctly.")
+      }
+
+      return;
+    })
+    .catch((err) => {
+      toast.error(errorMsg(err))
+
+      return;
+    }) :
     addProduct(data)
     .then((res) => {
       // console.log(res);

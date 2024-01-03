@@ -161,7 +161,9 @@ const AddCategory = () => {
           show={addProductModal}
           onClick={() => toggleAddProductModal(false)}
         >
-          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} handleResponse ={ handleEditSuccess } addProductToCat={true}/>
+          {console.log(productForm,"product form ")}
+          <AddProductModal closeModal={() => toggleAddProductModal(false)}  handleResponse ={ handleEditSuccess }
+          categoryId={selectedCardId} addProductToCat={true} />
         </Modal>
       }
 

@@ -92,12 +92,11 @@ function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
       if (res.status === 200) {
         toast.success("category updated successfully.");
 
-        handleResponse({data : res.data, id : "category"})
+        handleResponse({data : res.data, id : "product"})
 
         closeModal();
         
         
-
       } else if (res.status === 400) {
         toast.success("Please fill values correctly.");
       }
