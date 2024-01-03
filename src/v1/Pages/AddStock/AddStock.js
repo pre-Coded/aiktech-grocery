@@ -25,6 +25,9 @@ import Loader from "../../Components/Loader";
 import fuzzysort from 'fuzzysort'
 import axios from "axios";
 import { getBaseUrl } from "../../Lib/NetworkHandler";
+import { FaEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
 
 const mapStateToProps = ({ stockdropdown, productsearch }) => ({
   stockdropdown,
@@ -499,7 +502,7 @@ export default function AddStock() {
 
   //qwert
   return (
-    <div className="add-stock-container flex-1 overflow-scroll">
+    <div className="add-stock-container flex-1">
 
       <Modal show={load}>
         <Loader message={"Please Wait. Products are being fetched!"}></Loader>
@@ -880,49 +883,34 @@ export default function AddStock() {
                               }
 
                               <td>
-                                <div onClick={() => deleteItem(index)}>
-                                  <img
-                                    src={deleteIcon}
-                                    className="cursor"
-                                    alt="Delete"
-                                  />
-                                </div>
+                                <button onClick={() => deleteItem(index)} className="btn-none flex-row place-item-center">
+                                    <MdDelete fontSize={'1.2rem'} width={'2rem'} color={'red'}/>
+                                </button>
                               </td>
                               <td>
-                                <div
+                                <button
                                   onClick={() => {
                                     setEditModal(true);
                                     setEditIndex(index);
                                     setValues(index);
                                   }}
+
+                                  className={'btn-none flex-row place-item-center'}
                                 >
-                                  <img
-                                    src={editIcon}
-                                    className="cursor edit"
-                                    alt="Edit"
-                                  />
-                                </div>
+                                  <FaEdit fontSize={'1.2rem'} width={'2rem'}/>
+                                </button>
                               </td>
                             </tr>
                           );
                         })}
+
                     </tbody>
                   </table>
                 </div> 
-              
-              {/* */} 
-
-
               </div>
-          </div>
-
-          <div className="checkout-button">
-            <Button
-              className="btn btn-none"
-              text="Add Stock"
-              clicker={handleSubmit}
-              type="submit"
-            />
+              <div className="flex-row place-item-center">
+                <button className="btn-none btn" onClick={handleSubmit} type={'submit'}>Add Stock</button>
+              </div>
           </div>
         </form>
       </div>
@@ -969,7 +957,7 @@ export default function AddStock() {
                 </div>
 
                 <div className="responsive__wrapper searchWrapper">
-                  <div className="suggestionHandle">
+                  <div className="">
                     <input
                       className="suggestion_input"
                       type="text"

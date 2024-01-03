@@ -2,9 +2,13 @@
 
 
 .add-stock-container{
-  min-height: 80rem;
-  // min-width: 100%;
-//   max-width: 100%;
+  min-width: 10rem;
+  max-width: 100%;
+  width: 100%;
+
+  min-height: 10rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .inventory-select-wrapper{
@@ -90,7 +94,7 @@ input::placeholder{
 }
 
 .table-stock thead{
-  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   background-color: rgba(226,231,255,.4392156862745098);
@@ -98,7 +102,8 @@ input::placeholder{
 }
 
 .table-stock thead th{
-  flex: 1;
+  // flex: 1;
+  width: 8rem;
   padding: 0 10px;
   display: flex;
   align-items: center;
@@ -106,6 +111,35 @@ input::placeholder{
 }
 
 .table-stock thead th:first-child{
+  min-width: 20rem;
+}
+
+.table-stock tbody{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+}
+
+.table-stock tbody tr{
+  padding: 0;
+  margin : 0;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.table-stock tbody tr td{
+  // flex: 1;
+  width: 8rem;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(226,231,255,.4392156862745098);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.table-stock tbody tr td:first-child{
   min-width: 20rem;
 }
 

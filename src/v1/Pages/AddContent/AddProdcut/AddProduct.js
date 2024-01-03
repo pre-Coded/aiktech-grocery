@@ -92,6 +92,12 @@ const AddProduct = () => {
         }
     }
 
+    const handleEditSuccess = (data) =>{
+        if(data.id === "product"){
+            setProducts(data.data);
+            setFullProductList(data.data)
+        }
+    }
 
     return (
         <div className='add-content-container flex-column flex-1'>
@@ -101,7 +107,7 @@ const AddProduct = () => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} />
+                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} handleResponse={ handleEditSuccess }/>
                 </Modal>
             }
 

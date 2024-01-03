@@ -47,9 +47,9 @@ const CardOrders = ({ order }) => {
 
                 style={
                     (localStorage.getItem(`${order.id}`) === "1") ?
-                        { color: 'rgb(248,222,197)' } :
+                        { backgroundColor: 'rgb(248,222,197)', color : 'black' } :
                         {
-                            color: "rgb(215,234,215)",
+                            backgroundColor: "rgb(215,234,215)", color : 'black',
                         }}>
                 <span>{order.status}</span>
 
@@ -73,7 +73,7 @@ const CardOrders = ({ order }) => {
                 </li>
 
                 <li className="" style={{whiteSpace : 'normal'}}>
-                    <span className="text-bold-md"> Address : </span> aldjfal jlka jflka lkfa jlkfja lkdfj alkdsjfal kdjflka jflka f
+                    <span className="text-bold-md"> Address : </span> {order.customer.address}
                 </li>
             </ul>
         </div>

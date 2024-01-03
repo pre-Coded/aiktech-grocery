@@ -129,6 +129,17 @@ const AddCategory = () => {
     id: null,
   })
 
+  const handleEditSuccess = (data) => {
+    if(data.id === "category"){
+      setCategories(data.data);
+      setFullCategoryList(data.data);
+    }
+
+    if(data.id === "product"){
+      setProductList((prev) => ({...prev, data : data.data}))
+    }
+  }
+
 
   return (
     <div className='add-category-container flex-column flex-1'>
@@ -139,7 +150,7 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-          <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} />
+          <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} handleResponse ={ handleEditSuccess }/>
         </Modal>
       }
 
@@ -149,7 +160,7 @@ const AddCategory = () => {
           show={addProductModal}
           onClick={() => toggleAddProductModal(false)}
         >
-          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} />
+          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} handleResponse ={ handleEditSuccess }/>
         </Modal>
       }
 

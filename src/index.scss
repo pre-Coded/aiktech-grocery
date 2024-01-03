@@ -256,15 +256,6 @@ select {
   background-color: transparent;
 }
 
-.btn{
-  background-color: $tabcolor2;
-
-  max-width: 10rem;
-  max-height: 4rem;
-
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-}
 
 .btn-primary{
   background-color: $tabcolor2;
@@ -338,7 +329,7 @@ select {
 
 .overflow-scroll::-webkit-scrollbar{
   width: 2px;
-  
+  margin-left: 5px;
 }
 
 @media #{$media-tablet} {

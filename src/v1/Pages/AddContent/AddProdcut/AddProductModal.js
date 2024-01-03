@@ -28,7 +28,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
 });
 
 ////
-function AddProductModal({ closeModal, setBarcode, product }) {
+function AddProductModal({ closeModal, setBarcode, product, handleResponse }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -91,6 +91,9 @@ function AddProductModal({ closeModal, setBarcode, product }) {
     product ? editProduct(data).then((res) => {
       if (res.status === 200) {
         toast.success("Product updated successfully.");
+
+        handleResponse({id : "product", data : res.data})
+
         closeModal(false);
       } else if (res.status === 400) {
         toast.success("Please fill values correctly.");
@@ -105,6 +108,9 @@ function AddProductModal({ closeModal, setBarcode, product }) {
         // console.log(res);
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
+
+          handleResponse({id : "product", data : res.data})
+          
           closeModal(false);
 
           productsearch.push(res.data.data ? res.data.data[0] : {});
