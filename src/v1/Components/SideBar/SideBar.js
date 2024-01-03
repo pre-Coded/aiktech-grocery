@@ -113,7 +113,6 @@ const SideBarComponent = ({ setActiveComponent, activeComponent }) => {
                 >
                     <button 
                         onClick={() => {
-                            setActiveComponent("addProduct")
                             toggleDropDownModal(prev => !prev)
                         }}
                         className="btn-none flex-row gap-10"

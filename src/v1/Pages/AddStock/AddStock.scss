@@ -376,10 +376,14 @@ input::placeholder{
   display: flex;
   flex-direction: column;
   position: absolute;
-  z-index: 3;
+
+  bottom: 0;
+  z-index: 100;
+
   overflow-y: scroll;
+
   max-height: 150px;
-  min-width: 10rem;
+  width: 100%;
 
   .search-dropdown {
     cursor: pointer;
@@ -388,16 +392,13 @@ input::placeholder{
   .search-dropdown:hover {
     background-color: $platinum;
   }
+
 }
 
 .search-suggestion-container-show {
   display: flex;
 }
 
-.suggestionHandle {
-  width: 90%;
-  position: relative;
-}
 .search-suggestion-container {
   width: 100%;
 }

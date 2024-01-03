@@ -13,6 +13,7 @@ import data from '../../../Assets/DummyData.json'
 
 import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
+import { productList } from '../../../../api/request.api';
 
 
 const AddProduct = () => {
@@ -62,7 +63,7 @@ const AddProduct = () => {
         description: "",
         sku: "",
         category: null,
-        id: null
+        id: null, 
     })  
 
     // Modal View and toggleEdit Button

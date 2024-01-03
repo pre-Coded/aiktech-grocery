@@ -72,7 +72,7 @@ const AddCategory = () => {
     }
 
     const filterItem = fullCategoryList.filter((item) => {
-        return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+        return item?.name.toLowerCase().includes(searchText.toLowerCase())
     })
 
     setCategories(filterItem);
@@ -127,6 +127,7 @@ const AddCategory = () => {
     sku: "",
     category: null,
     id: null,
+    categoryId : productList.subCategoryId, 
   })
 
   const handleEditSuccess = (data) => {
@@ -160,7 +161,7 @@ const AddCategory = () => {
           show={addProductModal}
           onClick={() => toggleAddProductModal(false)}
         >
-          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} handleResponse ={ handleEditSuccess }/>
+          <AddProductModal closeModal={() => toggleAddProductModal(false)} product={productForm} handleResponse ={ handleEditSuccess } addProductToCat={true}/>
         </Modal>
       }
 

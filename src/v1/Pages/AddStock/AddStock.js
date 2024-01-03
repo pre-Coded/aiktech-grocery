@@ -699,8 +699,9 @@ export default function AddStock() {
 
                     <div className="responsive-flex-row gap-10">
 
-                      <div className="flex-row justify-between input-border smaller-input-padding flex-1">
-                        <div className="suggestionHandle">
+                      <div className="flex-row justify-between input-border smaller-input-padding flex-1 relative">
+
+                        <div className="">
                           <input
                             id="product_name"
                             className="suggestion_input"
@@ -719,16 +720,6 @@ export default function AddStock() {
                               }
                             }}
                           />
-                        
-                        <Searchsuggestion
-                            inventory={inventory}
-                            productSuggestions={productSuggestions}
-                            handleSuggestion={handleSuggestion}
-                            showsuggestions={showSuggestions}
-                          />
-
-                      
-                        
                         </div>
 
                         <button
@@ -746,6 +737,14 @@ export default function AddStock() {
                         >
                           +
                         </button>
+
+                        <Searchsuggestion
+                            inventory={inventory}
+                            productSuggestions={productSuggestions}
+                            handleSuggestion={handleSuggestion}
+                            showsuggestions={showSuggestions}
+                        />
+                        
                       </div>
 
                       <div className="flex-row justify-between input-border smaller-input-padding flex-1">
@@ -978,11 +977,13 @@ export default function AddStock() {
                         }
                       }}
                     />
+
                     <Searchsuggestion
                       productSuggestions={productSuggestions}
                       handleSuggestion={handleSuggestion}
                       showsuggestions={showSuggestions}
                     />
+
                   </div>
                 </div>
 

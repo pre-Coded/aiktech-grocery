@@ -116,7 +116,11 @@ const Dashboard = () => {
                                                 }
                                                 ) 
                                                 : 
-                                                ( <Loader /> )
+                                                ( 
+                                                <div className="flex-1 flex-row place-item-center border-red">
+                                                    <Loader />
+                                                </div> 
+                                                )
                                         }
                                     </div>
                                 )

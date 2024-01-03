@@ -21,6 +21,8 @@ import {
   removeNewLine,
 } from "../../../Utils/general-utils";
 
+import { addProductToCategory } from "../../../Api/dashboardAPI";
+
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] }) => ({
   stockdropdown,
   categories,
@@ -28,7 +30,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
 });
 
 ////
-function AddProductModal({ closeModal, setBarcode, product, handleResponse }) {
+function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -82,16 +84,39 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse }) {
       price: item.price,
       description: item.description,
       sku: item.sku,
-      //   category: categories,
+      category_id : product.categoryId, 
     };
+
     if (product) {
       data["id"] = item.id
     }
 
-    product ? editProduct(data).then((res) => {
-      if (res.status === 200) {
-        toast.success("Product updated successfully.");
+    addProductToCat && 
+    addProductToCategory(data)
+    .then( (res) => {
+      if(res.status === 200){
+        toast.status("Product Added Successfully");
 
+        handleResponse({ id : "product", data : res.data });
+        closeModal(false);
+      }else if(res.status === 400){
+        toast.error("Please fill values correctly.")
+      }
+
+      return;
+    })
+    .catch((err) => {
+      toast.error(errorMsg(err))
+
+      return;
+    })
+
+    product ?
+    editProduct(data)
+    .then((res) => {
+      if (res.status === 200) {
+
+        toast.success("Product updated successfully.");
         handleResponse({id : "product", data : res.data})
 
         closeModal(false);
@@ -102,26 +127,25 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse }) {
     }).catch((err) => {
       const msg = errorMsg(err);
       toast.error(msg);
+    }) : 
+    addProduct(data)
+    .then((res) => {
+      // console.log(res);
+      if (res.status === 201) {
+        toast.success("Product added successfully.");
+        handleResponse({id : "product", data : res.data})         
+        closeModal(false); 
 
-    }) : addProduct(data)
-      .then((res) => {
-        // console.log(res);
-        if (res.status === 201) {
-          toast.success("Product added successfully.");
-          handleResponse({id : "product", data : res.data})         
-          closeModal(false); 
-
-        } else if (res.status === 400) {
-          toast.success("Please fill values correctly.");
-        }
-        const code = data["barcode"] + "\n";
-        setBarcode(code);
-
-      })
-      .catch((error) => {
-        const msg = errorMsg(error);
-        toast.error(msg);
-      });
+      } else if (res.status === 400) {
+        toast.success("Please fill values correctly.");
+      }
+      const code = data["barcode"] + "\n";
+      setBarcode(code);
+    })
+    .catch((error) => {
+      const msg = errorMsg(error);
+      toast.error(msg);
+    });
   };
 
   const fetchCategories = async () => {
