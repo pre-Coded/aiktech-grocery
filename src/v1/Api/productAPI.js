@@ -131,5 +131,5 @@ export const editProduct = (data) => {
   const url = `/shop/tenant/products/`;
   const params = {};
   const payload = { ...data };
-  return requestMaker(url, "put", { params, payload });
+  return requestMaker(url, "patch", { params, payload });
 };

@@ -106,17 +106,12 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse }) {
     }) : addProduct(data)
       .then((res) => {
         // console.log(res);
-        if (res.data.status === 201) {
+        if (res.status === 201) {
           toast.success("Product added successfully.");
+          handleResponse({id : "product", data : res.data})         
+          closeModal(false); 
 
-          handleResponse({id : "product", data : res.data})
-          
-          closeModal(false);
-
-          productsearch.push(res.data.data ? res.data.data[0] : {});
-
-
-        } else if (res.data.status === 400) {
+        } else if (res.status === 400) {
           toast.success("Please fill values correctly.");
         }
         const code = data["barcode"] + "\n";
