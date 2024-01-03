@@ -120,7 +120,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         console.log(201);
         toast.success("Product Added Successfully");
 
-        handleResponse({ id : "category", data : res.data });
+        handleResponse({ id : "product", data : res.data });
         closeModal(false);
       }else if(res.status === 400){
         toast.error("Please fill values correctly.")

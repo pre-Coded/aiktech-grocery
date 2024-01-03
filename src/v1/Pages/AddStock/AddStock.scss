@@ -384,6 +384,7 @@ input::placeholder{
 
   max-height: 150px;
   width: 100%;
+  flex: 1;
 
   .search-dropdown {
     cursor: pointer;
@@ -574,8 +575,3 @@ input::placeholder{
 // .product__details__table tr{
 //   width: 100%;
 // }
-.suggestionHandle{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}

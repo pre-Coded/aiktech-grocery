@@ -737,15 +737,17 @@ export default function AddStock() {
                         >
                           +
                         </button>
-
+                        
+                          
                         <Searchsuggestion
                             inventory={inventory}
                             productSuggestions={productSuggestions}
                             handleSuggestion={handleSuggestion}
                             showsuggestions={showSuggestions}
                         />
+                        </div>
                         
-                      </div>
+                      
 
                       <div className="flex-row justify-between input-border smaller-input-padding flex-1">
 

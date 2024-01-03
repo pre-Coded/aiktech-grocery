@@ -45,15 +45,16 @@ const AddCategory = () => {
     event.stopPropagation();
     
 
+   
     if(data.data?.length === 0){
       setProductList({
-        subCategoryName : data.name, 
-        data : null,
+        subCategoryId : data.id,
+        subCategoryName : data.name,
+        data : []
       })
 
       return;
     }
-
     setProductList({
       subCategoryId : data.id,
       subCategoryName : data.name,
@@ -129,6 +130,7 @@ const AddCategory = () => {
     id: null,
     categoryId : productList.subCategoryId, 
   })
+  console.log(productList,"product list");
 
   const handleEditSuccess = (data) => {
     if(data.id === "category"){
@@ -137,7 +139,28 @@ const AddCategory = () => {
     }
 
     if(data.id === "product"){
-      setProductList((prev) => ({...prev, data : data.data}))
+
+      const catOrSubCatID = productList.subCategoryId;
+      const categoryList = data.data;
+      setCategories(data.data);
+      setFullCategoryList(data.data);
+
+      const filterProductList = categoryList.reduce((filteredCategories, category) => {
+        if (category.id === catOrSubCatID) {
+          setProductList( (prev) => ({...prev, ["data"] : category.products }) )
+
+        } else {
+          const subCategory = category.sub_categories;
+          subCategory.some(subCat => {
+            if (subCat.id === catOrSubCatID) {
+              setProductList( (prev) => ({...prev, ["data"] : subCat.products }) )
+            }
+          });
+        }
+      
+        return filteredCategories;
+      }, []);
+      
     }
   }
 
@@ -163,7 +186,7 @@ const AddCategory = () => {
         >
           {console.log(productForm,"product form ")}
           <AddProductModal closeModal={() => toggleAddProductModal(false)}  handleResponse ={ handleEditSuccess }
-          categoryId={selectedCardId} addProductToCat={true} />
+          categoryId={productList.subCategoryId} addProductToCat={true} />
         </Modal>
       }
 

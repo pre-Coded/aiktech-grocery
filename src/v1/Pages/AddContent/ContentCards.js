@@ -200,7 +200,7 @@ const ContentCard = (props) => {
                                     {props.data?.product_name?.toUpperCase() || props.data?.name?.toUpperCase() || "Title"}
                                 </span>
                                 <span className='product-description text-bold-sm text-small'>
-                                    {props.data?.description.substring(0, 43) || ""}
+                                    {props.data?.description?.substring(0, 43) || ""}
                                 </span>
 
                             </div>
@@ -218,7 +218,7 @@ const ContentCard = (props) => {
                 (props.cardId === props.selectedCardId) &&
                     <div className='subcategory-container overflow-scroll' >
                         {
-                            props.data?.sub_categories.length > 0 ?
+                            props.data?.sub_categories?.length > 0 ?
                             <>
                             <span className="text-small text-bold-md" style={{marginBottom : '5px'}}>Sub-Categories</span>
                             {

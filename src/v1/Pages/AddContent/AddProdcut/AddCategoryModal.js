@@ -29,6 +29,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 
 ////
 function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
+  
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
