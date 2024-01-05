@@ -155,6 +155,9 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
   return (
     <form className="add-product-wrapper flex-column gap-10">
       <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add Category</div>
+      <form encType="multipart/form-data">
+
+      
 
       <input 
         className="input-border"
@@ -230,6 +233,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
         />
         
       </div>
+      </form>
 
       <div className="option-buttons save-changes-buttons">
         <button className="btn-none btn-outline" onClick={() => closeModal(false)}>

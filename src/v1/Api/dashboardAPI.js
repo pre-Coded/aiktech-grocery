@@ -74,7 +74,9 @@ export const addCategory = (data)=>{
     const url = `/shop/post/add_category/`
     const params = {  }
     const payload = { ...data }
-    return requestMaker(url, "post", {params,payload})
+    return requestMaker(url, "post", {params,payload},{
+        'Content-Type': 'multipart/form-data'
+    })
 }
 
 export const editCategory = (data)=>{

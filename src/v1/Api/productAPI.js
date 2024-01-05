@@ -69,8 +69,7 @@ export const addProduct = (data) => {
   const params = {};
   const payload = { ...data };
   return requestMaker(url, "post", { params, payload },  {
-    'Content-Type': 'multipart/form-data',
-    'Accept': '*/*'
+    'Content-Type': 'multipart/form-data'
   });
 };
 

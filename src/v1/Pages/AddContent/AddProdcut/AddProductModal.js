@@ -77,7 +77,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
 
 
   // console.log(productsearch)
-  console.log(data,"category data");
 
   /////
   const handleAddItem = (e) =>

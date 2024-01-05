@@ -163,9 +163,9 @@ const ContentCard = (props) => {
                                     <MdDeleteOutline fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
                                     {
                                         deleteLoader ? 
-                                        <span>Deleting...</span>
+                                        <span>Unlinking...</span>
                                         :
-                                        <span>Delete</span>
+                                        <span>Unlink</span>
                                     }
                                 </button>
                                 
