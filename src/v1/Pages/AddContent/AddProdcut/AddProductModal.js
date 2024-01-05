@@ -52,14 +52,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     category: null,
     photo: null
   });
-  // const addProduct = async (data)=>{
-  //   const response = await axios.post(`${getBaseUrl()}/api/shop/post/add_product/`,
-  //   data,{ headers: {
-  //     'Content-type': 'multipart/form-data',
-  //     'Accept': '*/*'
-  //   }})
-  //   return response
-  // }
 
   useEffect(() => {
 
@@ -204,9 +196,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }
   };
 
-  // const fetchCategories = async () => {
-  //   dispatch(actionsCreator.FETCH_CATEGORIES_GLOBAL());
-  // };
+
 
   useEffect(() => {
     if (
