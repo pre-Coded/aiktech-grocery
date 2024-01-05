@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 
 const TenantDashboard = () => {
 
-    const [activeComponent, setActiveComponent] = useState("addStock");
+    const [activeComponent, setActiveComponent] = useState("dashboard");
     const [userInformation, setUserInformation] = useState(false);
     const userInfoRef = useRef(null);
     const history = useHistory();

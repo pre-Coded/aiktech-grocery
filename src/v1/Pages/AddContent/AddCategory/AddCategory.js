@@ -106,17 +106,36 @@ const AddCategory = () => {
   }
 
   const handleDelete = (data) => {
-    if(data?.id === "category"){
+    if(data?.id === "category" || data?.id === "subcategory"){
       setCategories(data?.data)
       setFullCategoryList(data?.data)
     }
 
-    if(data?.id === "productFromSub"){
-      setProductList(prev => ({
-        ...prev,
-        data : data?.data
-      }))
+    if(data?.id === "productFromSub" || data?.id === "productFromCat"){
+
+      const catOrSubCatID = data.catOrSubCatId;
+      const categoryList = data.data;
+
+      categoryList.reduce((filteredCategories, category) => {
+
+        if (category.id === catOrSubCatID) {
+          setProductList( (prev) => ({...prev, ["data"] : category.products }) )
+        } else {
+          const subCategory = category.sub_categories;
+          subCategory.some(subCat => {
+            if (subCat.id === catOrSubCatID) {
+              setProductList( (prev) => ({...prev, ["data"] : subCat.products }) )
+            }
+          });
+        }
+  
+      }, []);
+
+      setCategories(data?.data)
+      setFullCategoryList(data?.data)
     }
+
+
 
   }
 
@@ -129,9 +148,11 @@ const AddCategory = () => {
     id: null,
     categoryId : productList.subCategoryId, 
   })
+
   console.log(productList,"product list");
 
   const handleEditSuccess = (data) => {
+
     if(data.id === "category"){
       setCategories(data.data);
       setFullCategoryList(data.data);
@@ -270,6 +291,11 @@ const AddCategory = () => {
                       response : handleDelete,
                     } }
 
+                    deleteSubCategory ={{
+                      itemName : 'subcategory',
+                      response : handleDelete
+                    }}
+
                     addSubcategory = {addSubcategory}
 
                     selectSubCategory={handleProductChange}
@@ -302,6 +328,7 @@ const AddCategory = () => {
                 (
                   productList.data.map((product, index) => (
                     <ContentCard 
+
                       key={index} 
                       cardId={product.id}
                       data={product} 
