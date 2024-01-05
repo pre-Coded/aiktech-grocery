@@ -42,7 +42,8 @@ const ContentCard = (props) => {
                 const response = await deleteProductFromCategory({ category_id : props.categoryId, id : props.cardId})
 
                 response && props.deleteCard?.response({
-                    id : props.deleteCard?.itemName, 
+                    id : props.deleteCard?.itemName,
+                    catOrSubCatId : props.categoryId, 
                     data : response.data
                 });
 
@@ -57,6 +58,7 @@ const ContentCard = (props) => {
 
                 response && props.deleteCard?.response({
                     id : props.deleteCard?.itemName, 
+                    catOrSubCatId : props.subCategoryId,
                     data : response.data
                 });
 
@@ -79,14 +81,13 @@ const ContentCard = (props) => {
             }
         }
 
-        if(props.deleteCard?.itemName === "subcateogory"){
+        if(props.deleteCard?.itemName === "subcategory"){
             try{
                 const response = await deleteSubCategoryFromCategory({ category_id : props.categoryId, id : props.cardId})
 
                 response && props.deleteCard?.reponse({
                     id : props.deleteCard?.itemName, 
-                    data : props.cardId,
-                    response: response
+                    data : response.data
                 });
             }catch(e){
                 toast.error("Error in deleting subcategory.",  {autoClose : 1000})
@@ -211,7 +212,8 @@ const ContentCard = (props) => {
 
                         <li className='flex-column gap-10 text-bold-md text-medium flex-1'>
 
-                            <div className='flex-column'>
+                            <div className='flex-column' style={{paddingTop: '10px'}}>
+
                                 <span
                                     className='product-title text-bold-md text-medium'
                                     style={{
@@ -224,7 +226,13 @@ const ContentCard = (props) => {
                                     {props.data?.description?.substring(0, 43) || ""}
                                 </span>
 
+                                <span className='product-description text-bold-sm text-small flex-row gap-10 items-center'>
+                                    {props.data?.market_price && `Market Price : ${props.data?.market_price}` }
+                                    {props.data?.price && `Market Price : ${props.data?.price}` }
+                                </span>
+                                
                             </div>
+
                         </li>
 
                     </ul>
@@ -252,6 +260,8 @@ const ContentCard = (props) => {
 
                                             categoryId = {props.cardId}
                                             selectSubCategory={props.selectSubCategory}
+
+                                            deleteCard={props.deleteSubCategory}
 
                                             width={"100%"}
                                         />
