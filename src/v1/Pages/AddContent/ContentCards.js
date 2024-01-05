@@ -11,6 +11,7 @@ import { IoMdAdd } from "react-icons/io";
 import defaultImg from '../../Assets/Images/default-image.png'
 
 const ContentCard = (props) => {
+    console.log(props,"props");
 
     const editRef = useRef(null);
     const [showEditBtn, toggleEditBtn] = useState(false);
@@ -52,7 +53,7 @@ const ContentCard = (props) => {
 
         if(props.deleteCard?.itemName === "productFromSubCat"){
             try{
-                const response = await deleteProduct({ category_id : props.subCategoryId , id : props.cardId})
+                const response = await deleteProductFromCategory({ category_id : props.subCategoryId , id : props.cardId})
 
                 response && props.deleteCard?.response({
                     id : props.deleteCard?.itemName, 
@@ -84,7 +85,8 @@ const ContentCard = (props) => {
 
                 response && props.deleteCard?.reponse({
                     id : props.deleteCard?.itemName, 
-                    data : response.data
+                    data : props.cardId,
+                    response: response
                 });
             }catch(e){
                 toast.error("Error in deleting subcategory.",  {autoClose : 1000})
