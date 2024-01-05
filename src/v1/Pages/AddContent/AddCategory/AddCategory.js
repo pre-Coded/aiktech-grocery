@@ -139,8 +139,6 @@ const AddCategory = () => {
 
       const catOrSubCatID = productList.subCategoryId;
       const categoryList = data.data;
-      setCategories(data.data);
-      setFullCategoryList(data.data);
 
       const filterProductList = categoryList.reduce((filteredCategories, category) => {
         if (category.id === catOrSubCatID) {
@@ -159,6 +157,8 @@ const AddCategory = () => {
       }, []);
       
     }
+
+
   }
 
   const addSubcategory = (data) => {

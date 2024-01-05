@@ -14,7 +14,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Select from 'react-select'
-import { addProduct } from "../../../Api/productAPI";
 
 import {
   formatOptions,
@@ -52,6 +51,14 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     category: null,
     photo: null
   });
+  const addProduct = async (data)=>{
+    const response = await axios.post(`${getBaseUrl}/api/shop/post/add_product/`,
+    data,{ headers: {
+      'Content-type': 'multipart/form-data',
+      'Accept': '*/*'
+    }})
+    return response
+  }
 
   useEffect(() => {
 
@@ -86,17 +93,21 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   const formData = new FormData();
   const handleSubmit = (e) => {
     e.preventDefault();
+
     let data = {
       barcode: product_barcode,
       product_name: item.product_name,
       price: item.price,
       description: item.description,
       sku: item.sku,
+      photo: image
     };
+
 
     if (product) {
       data["id"] = item.id
     }
+
     if(categoryId){
       data["category_id"]=categoryId
     }
@@ -107,63 +118,75 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     formData.append('image', image, image.name);
     formData.append('data', data);
 
-    console.log(formData,"form data");
+    if(image){
+      data["photo"] = image
+    }
+    
+    const formData = new FormData();
+    console.log(image)
+    console.log(product_barcode) 
+
+    formData.append('image', image);
+    formData.append("product_barcode", product_barcode)
+    
+    console.log(formData.get('image'),"form data");
     console.log(data);
-    data["photo"] = formData.get('image')
 
 
-    product ?
-    editProduct(data)
-    .then((res) => {
-      if (res.status === 200) {
+    // product ?
+    // editProduct(data)
+    // .then((res) => {
+    //   if (res.status === 200) {
 
-        toast.success("Product updated successfully.");
-        handleResponse({id : "product", data : res.data})
+    //     toast.success("Product updated successfully.");
+    //     handleResponse({id : "product", data : res.data})
 
-        closeModal(false);
-      } else if (res.status === 400) {
-        toast.success("Please fill values correctly.");
-      }
+    //     closeModal(false);
+    //   } else if (res.status === 400) {
+    //     toast.success("Please fill values correctly.");
+    //   }
 
-    }).catch((err) => {
-      const msg = errorMsg(err);
-      toast.error(msg);
-    }) : addProductToCat ?  addProductToCategory(data)
-    .then( (res) => {
-      console.log(res,"add to category result");
-      if(res.status === 201){
-        console.log(201);
-        toast.success("Product Added Successfully");
+    // }).catch((err) => {
+    //   const msg = errorMsg(err);
+    //   toast.error(msg);
+    // }) : addProductToCat ?  addProductToCategory(data)
+    // .then( (res) => {
+    //   console.log(res,"add to category result");
+    //   if(res.status === 201){
+    //     console.log(201);
+    //     toast.success("Product Added Successfully");
 
-        handleResponse({ id : "product", data : res.data });
-        closeModal(false);
-      }else if(res.status === 400){
-        toast.error("Please fill values correctly.")
-      }
+    //     handleResponse({ id : "product", data : res.data });
+    //     closeModal(false);
+    //   }else if(res.status === 400){
+    //     toast.error("Please fill values correctly.")
+    //   }
 
-      return;
-    })
-    .catch((err) => {
-      toast.error(errorMsg(err))
+    //   return;
+    // })
+    // .catch((err) => {
+    //   toast.error(errorMsg(err))
 
-      return;
-    }) :
-    addProduct(data)
-    .then((res) => {
-      // console.log(res);
-      if (res.status === 201) {
-        toast.success("Product added successfully.");
-        handleResponse({id : "product", data : res.data})         
-        closeModal(false); 
+    //   return;
+    // }) :
+    // addProduct(data)
+    // .then((res) => {
+    //   // console.log(res);
+    //   if (res.status === 201) {
+    //     toast.success("Product added successfully.");
+    //     handleResponse({id : "product", data : res.data})         
+    //     closeModal(false); 
 
-      } else if (res.status === 400) {
-        toast.success("Please fill values correctly.");
-      }
-    })
-    .catch((error) => {
-      const msg = errorMsg(error);
-      toast.error(msg);
-    });
+    //   } else if (res.status === 400) {
+    //     toast.success("Please fill values correctly.");
+    //   }
+    // })
+    // .catch((error) => {
+    //   const msg = errorMsg(error);
+    //   toast.error(msg);
+    // });
+
+
   };
 
   const fetchCategories = async () => {
@@ -269,6 +292,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
           <img
             src={image ? URL.createObjectURL(image) : defaultImg} 
             alt="Selected"
+            name={'image'}
             style={{
               height: '100%',
               aspectRatio: '1',
@@ -282,7 +306,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
           name="photo"
           onChange={(event) => {
             const selectedImage = event.target.files[0];
-            console.log(selectedImage,"image");
             setImage(selectedImage);
           }}
           required

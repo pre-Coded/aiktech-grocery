@@ -260,17 +260,21 @@ select {
 .btn-primary{
   background-color: $tabcolor2;
   letter-spacing: 2px;
-  font-size: 0.8rem;
-  height: 2rem;
+  font-size: 0.9rem;
+  min-height: 2rem;
+  min-width: 8rem;
   color : white;
+
+  border-radius: 10px;
 }
 
 .btn-outline{
   border: 1px solid $tabcolor2;
-  height: 2rem;
+  min-height: 2rem;
+  min-width: 8rem;
 
   letter-spacing: 2px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: $tabcolor2;
   background-color: white;
 

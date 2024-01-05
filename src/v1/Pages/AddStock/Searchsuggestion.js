@@ -21,10 +21,6 @@ export default function Searchsuggestion(props) {
         // props.productSuggestions &&
         //   props.productSuggestions.length > 0 &&
         //   "static",
-        top:
-        props.productSuggestions &&
-          props.productSuggestions.length > 0 &&
-          '4rem',
       }}
       className="search-suggestion-container"
       id="search-container"
