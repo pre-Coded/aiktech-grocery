@@ -85,6 +85,7 @@ textarea {
   height: 28px;
 }
 
+
 .table-responsive {
   width: 100%;
 }
@@ -99,11 +100,13 @@ table.product__details__table {
   border-collapse: collapse;
   margin-top: 20px;
 }
+
 table.product__details__table td,
 table.product__details__table th {
   border: 1px solid #ffffff;
   padding: 15px;
 }
+
 table.product__details__table tbody td {
   font-size: 13px;
 }
@@ -180,4 +183,161 @@ table.product__details__table tbody td {
 
 select {
   border: none;
+}
+
+
+// utility classes
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.items-center{
+  align-items: center;
+}
+
+.gap-5{
+  gap : 5px;
+}
+
+.gap-10{
+  gap : 10px;
+}
+
+.gap-20{
+  gap : 20px;
+}
+
+
+.text-bold-md{
+  font-weight: 500;
+}
+
+.text-bold-sm{
+  font-weight: 400;
+}
+
+.no-wrap{
+  white-space: nowrap;
+}
+
+
+.text-large{
+  font-size: 1.2rem;
+}
+
+.text-medium{
+  font-size: 1rem;
+}
+
+.text-small{
+  font-size: 0.8rem;
+}
+
+.ul-style-none{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-none{
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+
+.btn-primary{
+  background-color: $tabcolor2;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  min-height: 2rem;
+  min-width: 8rem;
+  color : white;
+
+  border-radius: 10px;
+}
+
+.btn-outline{
+  border: 1px solid $tabcolor2;
+  min-height: 2rem;
+  min-width: 8rem;
+
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  color: $tabcolor2;
+  background-color: white;
+
+  border-radius: 10px;
+}
+
+.place-item-center{
+  align-items: center;
+  justify-content: center;
+}
+
+.responsive-flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.input-border{
+  border-radius: 10px;
+  border: 1px solid #999;
+ 
+  padding: 5px 10px;
+}
+
+.relative{
+  position: relative;
+}
+
+.absolute{
+  position: absolute;
+}
+
+.nowrap{
+  white-space: nowrap;
+}
+
+.flex-1{
+  flex: 1;
+}
+
+.border-red{
+  border: 1px solid red;
+}
+
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.overflow-scroll{
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.btn-hover:hover{
+  opacity: 0.7;
+}
+
+.overflow-scroll::-webkit-scrollbar{
+  width: 2px;
+  margin-left: 5px;
+}
+
+@media #{$media-tablet} {
+  .responsive-flex-row{
+    flex-direction: column;
+  }
 }

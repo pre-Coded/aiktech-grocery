@@ -4,7 +4,9 @@ import {
   fetchCategories,
   fetchleafcategory,
 } from "../../Api/productAPI";
+
 import "./form.scss";
+
 import { toast } from "react-toastify";
 import InputField from "../../Components/InputField";
 import { useEffect } from "react";
@@ -72,9 +74,10 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         // console.log(res);
         if (res.data.status === 201) {
           toast.success("Product added successfully.");
-          setProduct(res.data.data[0].id);
-          productsearch.push(res.data.data? res.data.data[0]: {})
           closeModal(false);
+          setProduct(res.data.data[0].id);
+          productsearch.push(res.data.data? res.data.data[0]: {});
+          
         
         } else if (res.data.status === 400) {
           toast.success("Please fill values correctly.");
@@ -191,6 +194,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         onChange={handleAddItem}
         required
       />
+
       <div className="input-container">
         <Select
           className="dropdown"
@@ -201,9 +205,11 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
           isClearable
         />
       </div>
+
       <div className="option-buttons save-changes-buttons">
         <button onClick={handleSubmit}>Save</button>
       </div>
+      
     </form>
   );
 }

@@ -6,12 +6,12 @@ import deleteIcon from "../../Assets/Icons/delete.svg";
 import editIcon from "../../Assets/Icons/edit.svg";
 import Modal from "../../Components/Modal";
 import { addStock, searchProduct } from "../../Api/productAPI";
-import { fetchProductsearch } from "../../Redux/sagas/productSaga"; 
+import { fetchProductsearch } from "../../Redux/sagas/productSaga";
 import { useDispatch, useSelector } from "react-redux";
 import { actionsCreator } from "../../Redux/actions/actionsCreator";
 import { debounce } from "../../Utils/debounce-utils";
 import get from "lodash/get";
-import {filter} from "lodash"
+import { filter } from "lodash"
 import Searchsuggestion from "./Searchsuggestion";
 import { set } from "lodash";
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
@@ -25,20 +25,25 @@ import Loader from "../../Components/Loader";
 import fuzzysort from 'fuzzysort'
 import axios from "axios";
 import { getBaseUrl } from "../../Lib/NetworkHandler";
+import { FaEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
 
-const mapStateToProps = ({ stockdropdown,  productsearch}) => ({
+const mapStateToProps = ({ stockdropdown, productsearch }) => ({
   stockdropdown,
   productsearch
 });
 
+
+
 export default function AddStock() {
-  
+
 
   const {
     stockdropdown: { list: stockdropdownList },
-    productsearch: {results: productsearch=[], loading: load, state: api_state},
+    productsearch: { results: productsearch = [], loading: load, state: api_state },
   } = useSelector(mapStateToProps);
-  const [inventory_id,setInventoryId]=useState(null);
+  const [inventory_id, setInventoryId] = useState(null);
   const [cartData, setCartData] = useState([]);
   const [quantity, setQuantity] = useState("");
   const [barcode, setBarcode] = useState("");
@@ -56,65 +61,62 @@ export default function AddStock() {
   const [showModal, setshowModal] = useState(false)
   const [productRemaining, setProductRemaining] = useState("NA")
   const [productAddress, setProductAddress] = useState("NA");
-  const [expiry,setExpiry]=useState(null);
-  const [batch_number,setBatchNumber]=useState(null)
-  const [allInventories,SetAllInventories]=useState(null);
-  const [allproducts,setAllProducts]=useState([])
+  const [expiry, setExpiry] = useState(null);
+  const [batch_number, setBatchNumber] = useState(null)
+  const [allInventories, SetAllInventories] = useState(null);
+  const [allproducts, setAllProducts] = useState([])
+  const [addStockModal, toggleAddStockModal] = useState(false);
 
 
-  console.log(allproducts,"all products");
 
-  const inventoryHandler=(e)=>{
+  const inventoryHandler = (e) => {
     setInventory(e.target.value)
     allInventories.map(i => {
-      if(i.name===Number(e.target.value)){
+      if (i.id === Number(e.target.value)) {
         setInventoryname(i.name);
-        const config={
-            params:{
-            "name":i.name
+        const config = {
+          params: {
+            "name": i.name
           },
           headers: {
-            'Content-Type': 'application/json', 
-        },
+            'Content-Type': 'application/json',
+          },
         }
-        axios.get(`${getBaseUrl()}/api/shop/inventory/id/`,config)
-        .then((response)=>{
-         
-          setInventoryId(response.data.data);
-          console.log(response.data.data);
-          const config={
-            params:{
-              "inv":response.data.data
+        axios.get(`${getBaseUrl()}/api/shop/inventory/id/`, config)
+          .then((response) => {
+
+            setInventoryId(response.data.data);
+            const config = {
+              params: {
+                "inv": response.data.data
+              }
             }
-          }
-          axios.get(`${getBaseUrl()}/api/shop/products/data/`,config)
-          .then((response)=>{
-            console.log(response.data.data,"products");
-            setAllProducts(response.data.data);
-          }).catch((err)=>{
+            axios.get(`${getBaseUrl()}/api/shop/products/data/`, config)
+              .then((response) => {
+                setAllProducts(response.data.data);
+              }).catch((err) => {
+                console.log(err.message);
+              })
+
+          }).catch((err) => {
             console.log(err.message);
           })
-          console.log(productsearch);
-          
-        }).catch((err)=>{
-          console.log(err.message);
-        }) 
-        
+
         return 0
       }
     })
   }
-  useEffect(()=>{
-    const invenrorys_promise=dashboardAPI.fetchInventorys();
-    invenrorys_promise.then((response)=>{
-     SetAllInventories(response.data.message);
-    }).catch((err)=>{
+  useEffect(() => {
+    const invenrorys_promise = dashboardAPI.fetchInventorys();
+    invenrorys_promise.then((response) => {
+      SetAllInventories(response.data.message);
+    }).catch((err) => {
       console.log(err.message);
     });
 
-  },[])
-  useEffect(()=>{
-    if (inventory==null){
+  }, [])
+  useEffect(() => {
+    if (inventory == null) {
       // alert("Inventory Not Found!")
       setInventoryname("NOT FOUND")
       setshowModal(true)
@@ -147,11 +149,11 @@ export default function AddStock() {
   }, [dropdown]);
 
   useEffect(() => {
-    fetchStockDropdown();  
+    fetchStockDropdown();
   }, []);
 
 
-  
+
   const onChangeHandler = (e, key) => {
     const value = e.target.value;
     if (key === "PRODUCT") {
@@ -169,12 +171,11 @@ export default function AddStock() {
     } else if (key === "BARCODE") {
       setBarcode(value);
     }
-    console.log(e.target.value);
   };
   const isEqual = (item, id, inventory_id) => item.id === id && item.inventory_id === inventory_id;
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
   const addItem = () => {
-    
+
     if (
       product === "" ||
       pricePerProduct === "" ||
@@ -183,15 +184,13 @@ export default function AddStock() {
       inventory === "" ||
       addedBy === ""
     ) {
-     
+
       toast.error("Please add detail correctly.");
     } else {
 
       if (product && quantity) {
-        console.log(allproducts,"all products");
-        const entered_product=allproducts.find(item => isEqual(item, parseInt(product), inventory_id));
-       
-        console.log(entered_product);
+        const entered_product = allproducts.find(item => isEqual(item, parseInt(product), inventory_id));
+
         let payload = {
           stock_product: product,
           stock_quantity: quantity,
@@ -201,15 +200,15 @@ export default function AddStock() {
           added_by: addedBy,
           temp_stock_product: tempProduct,
           description: productDescription,
-          barcode: barcode?(barcode):(entered_product?entered_product.barcode:null),
-          product_remaining: entered_product?entered_product.quantity_remaining:null,
-          product_address: entered_product?entered_product.address:null,
-          batch_number:batch_number
+          barcode: barcode ? (barcode) : (entered_product ? entered_product.barcode : null),
+          product_remaining: entered_product ? entered_product.quantity_remaining : null,
+          product_address: entered_product ? entered_product.address : null,
+          batch_number: batch_number
         };
-        
-      if(!Object.is(expiry,null)){
-        payload["expiry"]=expiry
-      }
+
+        if (!Object.is(expiry, null)) {
+          payload["expiry"] = expiry
+        }
 
         let cartObj = [...cartData];
         cartObj.push(payload);
@@ -305,18 +304,15 @@ export default function AddStock() {
     try {
       let product_name = e.target.value;
       let barcode = e.target.barcode;
-      
+
       if (product_name || barcode) {
 
         if (product_name) {
-          console.log(allproducts,"for suggestions");
           setShowSuggestions(true);
           let regex = new RegExp(`${product_name}`, 'i');
           let suggestion = allproducts.filter(o => regex.test(o.product_name));
-          console.log(suggestion);
-          let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, {key:'product_name'})
+          let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, { key: 'product_name' })
           suggestion = sortedSuggestion.map(i => i.obj);
-          console.log(suggestion);
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
@@ -324,8 +320,7 @@ export default function AddStock() {
           // console.log(searchResults);
         } else if (barcode) {
 
-          let product_from_barcode = allproducts.filter(i => i.barcode===barcode.replace("\n", ""));
-          console.log(product_from_barcode,"product_from_barcode");
+          let product_from_barcode = allproducts.filter(i => i.barcode === barcode.replace("\n", ""));
           if (product_from_barcode.length > 0) {
             setTempProduct(product_from_barcode[0].product_name);
             setProduct(product_from_barcode[0].id);
@@ -334,10 +329,10 @@ export default function AddStock() {
             setProductDescription(product_from_barcode[0].description);
             setBarcodeQuery(product_from_barcode[0].product_name);
             setImage(product_from_barcode[0].photo);
-            setProductRemaining(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id==inventory? i.product_remaining: null)))
+            setProductRemaining(product_from_barcode[0].remaining_products && product_from_barcode[0].remaining_products.map(i => (i.inventory_id == inventory ? i.product_remaining : null)))
             // setProductAddress(product_from_barcode[0].remaining_products && product_from_barcode[0].map(i => (i.inventory_id==inventory? i.address: null)));
-            setProductAddress(product_from_barcode[0].inventory_id===inventory ? product_from_barcode[0].address:null)
-            
+            setProductAddress(product_from_barcode[0].inventory_id === inventory ? product_from_barcode[0].address : null)
+
             let searchPriceinput = document.querySelector("#price_per_product");
             if (searchPriceinput) {
               searchPriceinput.focus();
@@ -368,9 +363,9 @@ export default function AddStock() {
     setMarketPrices(e.target.getAttribute("data-product-market-price"));
     setImage(e.target.getAttribute("data-product-image"));
     setBarcode(e.target.getAttribute("data-product-barcode"));
-    setProductRemaining(e.target.getAttribute("data-product-remaining")? parseInt(e.target.getAttribute("data-product-remaining").replace(/,/g, '')): e.target.getAttribute("data-product-remaining"))
-    setProductAddress(e.target.getAttribute("data-product-address")? (e.target.getAttribute("data-product-address").replace(/,/g, '')): e.target.getAttribute("data-product-address"))
-    
+    setProductRemaining(e.target.getAttribute("data-product-remaining") ? parseInt(e.target.getAttribute("data-product-remaining").replace(/,/g, '')) : e.target.getAttribute("data-product-remaining"))
+    setProductAddress(e.target.getAttribute("data-product-address") ? (e.target.getAttribute("data-product-address").replace(/,/g, '')) : e.target.getAttribute("data-product-address"))
+
     let searchPriceinput = document.querySelector("#price_per_product");
     if (searchPriceinput) {
       searchPriceinput.focus();
@@ -391,6 +386,7 @@ export default function AddStock() {
       inventory !== "" &&
       pricePerProduct !== ""
     ) {
+
       let temp = {
         added_by: addedBy,
         stock_quantity: quantity,
@@ -399,8 +395,8 @@ export default function AddStock() {
         inventory: inventory_id,
         procurement_price_per_product: pricePerProduct,
         barcode: barcode,
-        batch_number:batch_number,
-        expiry:expiry
+        batch_number: batch_number,
+        expiry: expiry
       };
       cartData.push(temp);
     }
@@ -494,16 +490,20 @@ export default function AddStock() {
   }, [barcodeQuery]);
 
 
+  const newArr = new Array(4).fill(0);
 
   //qwert
   return (
-    <div className="everything-delivery-wrapper">
+    <div className="add-stock-container flex-1 flex-col">
+
       <Modal show={load}>
-        <Loader message={"Please Wait. Products are fetching!"}></Loader>
+        <Loader message={"Please Wait. Products are being fetched!"}></Loader>
       </Modal>
+
       <Modal show={loader}>
         <Loader message={"Please Wait. Adding Stocks!"}></Loader>
       </Modal>
+
       <Modal show={showModal}>
         <div className="home-page-modal">
           <h5>
@@ -511,6 +511,7 @@ export default function AddStock() {
           </h5>
         </div>
       </Modal>
+
       <Modal show={modal} onClose={() => setModal(false)}>
         {option === "inventory" ? (
           <Addinventory closeModal={closeModal} dropdown={dropdown} />
@@ -531,240 +532,222 @@ export default function AddStock() {
             setTempProduct={setTempProduct}
           />
         ) : null}
-        
+
       </Modal>
-      <div className="inventory-select-wrapper">
-      <select
-                  onChange={inventoryHandler}
-                  value={inventory}
-                  className="inventory-list"
-                    >
-                      <option>---------select inventory---------------</option>
 
-                      {stockdropdownList &&
-                      allInventories &&
-                        allInventories.map(
-                          (i, index) => (
-                            <option value={i.id} key={index}>
-                              {i.name}
-                            </option>
-                          )
-                        )}
-                    </select>
+      <div className="input-border small-input-padding" style={{ maxHeight: 'fit-content' }}>
+        <select
+          onChange={inventoryHandler}
+          value={inventory}
+        >
+          <option>Select Inventory</option>
 
+          {
+            stockdropdownList &&
+            allInventories &&
+            allInventories.map(
+              (i, index) => (
+                <option value={i.id} key={index}>
+                  {i.name}
+                </option>
+              )
+            )
+          }
+
+        </select>
       </div>
-                  
-      <form
-        className="forms"
-        onSubmit={handleSubmit}
-        id="form"
-        autoComplete="new-password"
-      >
-        <div className="everything-delivery-container">
-          <div className="table__wrapper__stock">
-            <h3 className="Page_Heading">Add Stock for <span className="inventory_colored">({inventoryname})</span></h3>
-            {!editModal && (
-              <div className="topbar__add_stock">
-                
-                <div class="product_address">{productAddress}</div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {productRemaining}
-                <div className="responsive__wrapper">
-                  <select
-                    className="added__by"
-                    onChange={(e) => onChangeHandler(e, "ADDED_BY")}
-                    value={addedBy}
-                    // data-addedBy={}
-                  >
-                    <option>Added By</option>
-                    {stockdropdownList &&
-                      stockdropdownList.added_by &&
-                      stockdropdownList.added_by.map((added_by, index) => (
-                        <option value={added_by.id} key={index}>
-                          {added_by.phone_number}
-                        </option>
-                      ))}
-                  </select>
-                </div>
 
-                <div className="responsive__wrapper">
-                  <img style={{ maxWidth: "3.5rem" }} src={image} />
-                </div>
 
-                <div className="responsive__wrapper">
-                  <textarea
-                    className="product_barcode"
-                    type="text"
-                    placeholder="Barcode"
-                    onChange={(e) => onChangeHandler(e, "BARCODE")}
-                    value={barcode}
-                  />
-                </div>
+      <div className="" style={{ width: '100%', height: '100%' }}>
 
-                <div className="responsive__wrapper" style={{width: "60rem"}}>
-                  <div className="suggestionHandle">
-                    <input
-                      id="product_name"
-                      className="suggestion_input"
-                      type="text"
-                      placeholder="Search Product"
-                      style={{ backgroundColor: "white" }}
-                      onChange={handleSearchProduct}
-                      // value={tempProduct? tempProduct: null}
-                      onKeyDown={(e) => {
-                        let key = e.keyCode || e.charCode;
-                        if (key === 8) {
-                          setTempProduct("");
-                          setPrices("");
-                          setMarketPrices("");
-                          setProduct("");
-                        }
-                      }}
-                    />
-                    <Searchsuggestion
-                      inventory={inventory}
-                      productSuggestions={productSuggestions}
-                      handleSuggestion={handleSuggestion}
-                      showsuggestions={showSuggestions}
-                    />
-                  </div>
-                  <button
-                    className="circle__button"
-                    type="button"
-                    onClick={() => {
-                      setModal(true);
-                      setOption("product");
-                    }}
-                  >
-                    {" "}
-                    +{" "}
-                  </button>
-                </div>
+        <form
+          className=""
+          onSubmit={handleSubmit}
+          id="form"
+          autoComplete="new-password"
+        >
+          <div className=" " style={{ marginTop: '2rem' }}>
+            {
+              !editModal &&
+              (
+                <div className="flex-column gap-10">
 
-                <div className="responsive__wrapper">
-                  <div className="individual__component__wrapper">
-                    <select
-                      onChange={(e) => onChangeHandler(e, "UNIT")}
-                      value={unit}
-                    >
-                      <option>Units</option>
+                  <div className="responsive-flex-row product-address-rem-barcode">
+                    <img style={{ maxWidth: "3.5rem" }} src={image} />
+                    <div class="product_address flex-1">{productAddress}</div>
+                    {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
 
-                      {stockdropdownList &&
-                        stockdropdownList.stock_unit &&
-                        stockdropdownList.stock_unit.map(
-                          (stock_unit, index) => (
-                            <option value={stock_unit.id} key={index}>
-                              {stock_unit.name}
+                    <div>{productRemaining + "  "}</div>
+
+                    <div className="small-input-padding input-border flex-1">
+                      <select
+                        className="select"
+                        onChange={(e) => onChangeHandler(e, "ADDED_BY")}
+                        value={addedBy}
+                      // data-addedBy={}
+                      >
+                        <option>Added By</option>
+                        {stockdropdownList &&
+                          stockdropdownList.added_by &&
+                          stockdropdownList.added_by.map((added_by, index) => (
+                            <option value={added_by.id} key={index}>
+                              {added_by.phone_number}
                             </option>
-                          )
+                          ))}
+                      </select>
+                    </div>
+
+                    <div className="input-border small-input-padding flex-1">
+                      <input
+                        type="text"
+                        placeholder="Barcode"
+                        onChange={(e) => onChangeHandler(e, "BARCODE")}
+                        value={barcode}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="responsive-flex-row gap-10">
+
+                    <div className="input-border small-input-padding flex-1">
+                      <input
+                        className="priceperproduct"
+                        type="text"
+                        placeholder="Price"
+                        onChange={(e) => onChangeHandler(e, "PRICE_PER_PRODUCT")}
+                        value={pricePerProduct}
+                        list={"price_options"}
+                        id="price_per_product"
+                      />
+                      <datalist id="price_options">
+                        <option value={prices}>Our Price</option>
+                        {marketPrices && (
+                          <option value={marketPrices}>Market Price</option>
                         )}
-                    </select>
+                      </datalist>
+                    </div>
+
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="number"
+                      placeholder="Quantity"
+                      onChange={(e) => onChangeHandler(e, "QUANTITY")}
+                      value={quantity}
+                    />
+
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="date"
+                      placeholder="Expiry Date"
+                      onChange={(e) => { setExpiry(e.target.value) }}
+                      value={expiry}
+                    />
+
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="text"
+                      placeholder="Batch Number"
+                      onChange={(e) => setBatchNumber(e.target.value)}
+                      value={batch_number}
+                    />
+
                   </div>
-                  <button
-                    className="circle__button"
-                    type="button"
-                    onClick={() => {
-                      setModal(true);
-                      setOption("unit");
-                    }}
-                  >
-                    {" "}
-                    +{" "}
-                  </button>
-                </div>
 
-                {/* <div
-                  className="inventory_wrapper responsive__wrapper"
-                >
-                  <div className="individual__component__wrapper">
-                    <select
-                      onChange={(e) => onChangeHandler(e, "INVENTORY")}
-                      value={inventory}
-                    >
-                      <option>Inventory</option>
-                      {stockdropdownList &&
-                        stockdropdownList.stock_unit &&
-                        stockdropdownList.inventory.map((inventory, index) => (
-                          <option value={inventory.id} key={index}>
-                            {inventory.name}
-                          </option>
-                        ))}
-                    </select>
+                  <div className="responsive-flex-row gap-10">
+
+                    <div className="flex-row justify-between input-border smaller-input-padding flex-1 relative">
+
+                      <div className="flex-1 flex-row">
+                        <input
+                          id="product_name"
+                          className="suggestion_input flex-1"
+                          type="text"
+                          placeholder="Search Product"
+                          style={{ backgroundColor: "white" }}
+                          onChange={handleSearchProduct}
+                          // value={tempProduct? tempProduct: null}
+                          onKeyDown={(e) => {
+                            let key = e.keyCode || e.charCode;
+                            if (key === 8) {
+                              setTempProduct("");
+                              setPrices("");
+                              setMarketPrices("");
+                              setProduct("");
+                            }
+                          }}
+                        />
+                      </div>
+
+                      <Searchsuggestion
+                        inventory={inventory}
+                        productSuggestions={productSuggestions}
+                        handleSuggestion={handleSuggestion}
+                        showsuggestions={showSuggestions}
+                      />
+                    </div>
+
+
+
+                    <div className="flex-row justify-between input-border smaller-input-padding flex-1">
+
+                      <div className="flex-row flex-1">
+                        <select
+                          onChange={(e) => onChangeHandler(e, "UNIT")}
+                          value={unit}
+                          className="flex-1"
+                        >
+                          <option>Units</option>
+
+                          {
+                            stockdropdownList &&
+                            stockdropdownList.stock_unit &&
+                            stockdropdownList.stock_unit.map(
+                              (stock_unit, index) => (
+                                <option value={stock_unit.id} key={index}>
+                                  {stock_unit.name}
+                                </option>
+                              )
+                            )
+                          }
+                        </select>
+                      </div>
+
+                      <button
+                        className="circle-button btn-none"
+                        style={{
+                          color: '#666',
+                          fontSize: '1.2rem',
+                          fontWeight: '200'
+                        }}
+                        type="button"
+                        onClick={() => {
+                          setModal(true);
+                          setOption("unit");
+                        }}
+                      >
+                        {" "}
+                        +{" "}
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    className="circle__button"
-                    type="button"
-                    onClick={() => {
-                      setModal(true);
-                      setOption("inventory");
-                    }}
-                  >
-                    {" "}
-                    +{" "}
-                  </button>
-                </div> */}
 
-                <div className="line">|</div>
+                  <div className="flex-column place-item-center gap-10">
+                    <button type="button" className="btn-none btn-primary" onClick={addItem}>
+                      ADD
+                    </button>
+                    <div className="flex-row place-item-center">
+                      <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(true)} type={'button'}>Save {cartData.length > 0 && cartData.length}</button>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+          </div>
 
-                <div className="responsive__wrapper">
-                  <input
-                    className="priceperproduct"
-                    type="text"
-                    placeholder="price"
-                    style={{ backgroundColor: "white", paddingLeft: "15px" }}
-                    onChange={(e) => onChangeHandler(e, "PRICE_PER_PRODUCT")}
-                    value={pricePerProduct}
-                    list={"price_options"}
-                    id="price_per_product"
-                  />
-                  <datalist id="price_options">
-                    <option value={prices}>Our Price</option>
-                    {marketPrices && (
-                      <option value={marketPrices}>Market Price</option>
-                    )}
-                  </datalist>
-                </div>
-
-                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
-                  <input
-                    className="product_quantity"
-                    type="number"
-                    placeholder="Quantity"
-                    onChange={(e) => onChangeHandler(e, "QUANTITY")}
-                    value={quantity}
-                  />
-                </div>
-                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
-                  <input
-                    className="product_quantity"
-                    type="date"
-                    placeholder="expiry date"
-                    onChange={(e) => {setExpiry(e.target.value)}}
-                    value={expiry}
-                  />
-                </div>
-                <div className="responsive__wrapper priceperproduct__wrapper bottom-buttons">
-                  <input
-                    className="product_quantity"
-                    type="text"
-                    placeholder="Batch Number"
-                    onChange={(e) => setBatchNumber(e.target.value)}
-                    value={batch_number}
-                  />
-                </div>
-
-                <div className="responsive__wrapper bottom-buttons">
-                  <button type="button" className="add" onClick={addItem}>
-                    ADD
-                  </button>
-                </div>
-
-                <div className="counter-container"></div>
-              </div>
-            )}
-            <div className="table-responsive">
-              <table className="product__details__table" style={{"width":"100%"}}>
-                <tr className="stock-headings">
+          <Modal show={addStockModal} onClose={() => toggleAddStockModal(false)} maxWidth={'100vw'} height={'30rem'}>
+            <div className="table-stock">
+              <table className="overflow-scroll">
+                <thead className="">
                   <th>Address</th>
                   <th>Product Remaining</th>
                   <th>Added By</th>
@@ -778,104 +761,103 @@ export default function AddStock() {
                   <th>Batch Number</th>
                   <th>Delete</th>
                   <th>Edit</th>
-                </tr>
+                </thead>
 
-                {cartData.map((product, index) => {
-                  const {
-                    stock_quantity,
-                    temp_stock_product,
-                    added_by,
-                    stock_unit,
-                    inventory,
-                    procurement_price_per_product,
-                    description,
-                    barcode,
-                    product_remaining,
-                    product_address
-                  } = product;
-                  return ( 
-                    <tr className="stock-products" key={index} style={{wordBreak: "break-all"}}>
-                      <td>{product_address}</td>
-                      <td>{product_remaining}</td>
-                      <td>
-                        {stockdropdownList &&
-                          stockdropdownList.added_by.map((user) =>
-                            user.id.toString() === added_by
-                              ? user.phone_number
-                              : null
-                          )}
-                      </td>
-                      <td>{barcode}</td>
-                      <td >
-                        {temp_stock_product} ({description})
-                      </td>
-                      <td>
-                        {stockdropdownList &&
-                          stockdropdownList.stock_unit.map((stockunit) =>{
-                            return(
-                            stockunit.id === parseInt(stock_unit)
-                              ? stockunit.name
-                              : null
+                <tbody>
+                  {
+                    cartData.map((product, index) => {
+                      const {
+                        stock_quantity,
+                        temp_stock_product,
+                        added_by,
+                        stock_unit,
+                        inventory,
+                        procurement_price_per_product,
+                        description,
+                        barcode,
+                        product_remaining,
+                        product_address
+                      } = product;
+
+                      return (
+                        <tr className="" key={index}>
+                          <td>{product_address}</td>
+                          <td>{product_remaining}</td>
+                          <td>
+                            {stockdropdownList &&
+                              stockdropdownList.added_by.map((user) =>
+                                user.id.toString() === added_by
+                                  ? user.phone_number
+                                  : null
+                              )}
+                          </td>
+                          <td>{barcode}</td>
+                          <td >
+                            {temp_stock_product} ({description})
+                          </td>
+                          <td>
+                            {stockdropdownList &&
+                              stockdropdownList.stock_unit.map((stockunit) => {
+                                return (
+                                  stockunit.id === parseInt(stock_unit)
+                                    ? stockunit.name
+                                    : null
+                                )
+
+                              }
+                              )}
+                          </td>
+                          <td>
+                            {inventoryname}
+                          </td>
+                          <td>{procurement_price_per_product}</td>
+                          <td>{stock_quantity}</td>
+                          <td>{expiry}</td>
+
+                          {
+                            batch_number !== 0 ? (
+                              <td>{batch_number}</td>
+                            ) : (
+                              <td></td>
                             )
-                           
                           }
-                          )}
-                      </td>
-                      <td>
-                      {inventoryname}
-                      </td>
-                      <td>{procurement_price_per_product}</td>
-                      <td>{stock_quantity}</td>
-                      <td>{expiry}</td>
-                      
-                     { 
-                     batch_number!==0?(
-                      <td>{batch_number}</td>
-                     ):(
-                        <td></td>
-                     )
-                     }
-                     
-                      <td>
-                        <div onClick={() => deleteItem(index)}>
-                          <img
-                            src={deleteIcon}
-                            className="cursor"
-                            alt="Delete"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          onClick={() => {
-                            setEditModal(true);
-                            setEditIndex(index);
-                            setValues(index);
-                          }}
-                        >
-                          <img
-                            src={editIcon}
-                            className="cursor edit"
-                            alt="Edit"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+
+                          <td>
+                            <button onClick={() => deleteItem(index)} className="btn-none flex-row place-item-center">
+                              <MdDelete fontSize={'1.2rem'} width={'2rem'} color={'red'} />
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => {
+                                setEditModal(true);
+                                setEditIndex(index);
+                                setValues(index);
+                              }}
+
+                              className={'btn-none flex-row place-item-center'}
+                            >
+                              <FaEdit fontSize={'1.2rem'} width={'2rem'} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                </tbody>
               </table>
             </div>
-          </div>
-        </div>
-        <div className="checkout-button">
-          <Button
-            className="checkout-button"
-            text="Add Stock"
-            clicker={handleSubmit}
-            type="submit"
-          />
-        </div>
-      </form>
+
+            <div className="option-buttons save-changes-buttons" style={{position : 'absolute', bottom : '10px', right : '10px' }}>
+                <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(false)} type={'button'}>
+                  Discard
+                </button>
+                <button className="btn-none btn-primary" type="submit" onClick={handleSubmit}>Save</button>
+            </div>
+          </Modal>
+        </form>
+      </div>
+
       <Modal unset={true} show={editModal} onClose={() => setEditModal(false)}>
         <div className="cross" onClick={() => setEditModal(false)}>
           ✕
@@ -895,7 +877,7 @@ export default function AddStock() {
                     className="added__by"
                     onChange={(e) => onChangeHandler(e, "ADDED_BY")}
                     value={addedBy}
-                    // data-addedBy={}
+                  // data-addedBy={}
                   >
                     <option>Added By</option>
                     {stockdropdownList &&
@@ -918,7 +900,7 @@ export default function AddStock() {
                 </div>
 
                 <div className="responsive__wrapper searchWrapper">
-                  <div className="suggestionHandle">
+                  <div className="">
                     <input
                       className="suggestion_input"
                       type="text"
@@ -939,11 +921,13 @@ export default function AddStock() {
                         }
                       }}
                     />
+
                     <Searchsuggestion
                       productSuggestions={productSuggestions}
                       handleSuggestion={handleSuggestion}
                       showsuggestions={showSuggestions}
                     />
+
                   </div>
                 </div>
 
@@ -959,11 +943,11 @@ export default function AddStock() {
                         stockdropdownList.stock_unit &&
                         stockdropdownList.stock_unit.map(
                           (stock_unit, index) => (
-                           
+
                             <option value={stock_unit.id} key={index}>
                               {stock_unit.name}
                             </option>
-                            
+
                           )
                         )}
                     </select>
@@ -991,7 +975,7 @@ export default function AddStock() {
                   </div>
                 </div> */}
 
-                <div className="responsive__wrapper">
+                <div className="">
                   <input
                     className="priceperproduct"
                     type="text"
@@ -1029,7 +1013,7 @@ export default function AddStock() {
                     className="product_quantity"
                     type="date"
                     placeholder="expiry date"
-                    onChange={(e) => {setExpiry(e.target.value)}}
+                    onChange={(e) => { setExpiry(e.target.value) }}
                     value={expiry}
                   />
                 </div>
@@ -1038,7 +1022,7 @@ export default function AddStock() {
                     className="product_quantity"
                     type="text"
                     placeholder="Batch Number"
-                    onChange={(e) => {setBatchNumber(e.target.value)}}
+                    onChange={(e) => { setBatchNumber(e.target.value) }}
                     value={batch_number}
                   />
                 </div>
@@ -1055,6 +1039,7 @@ export default function AddStock() {
           </div>
         </form>
       </Modal>
+
     </div>
   );
 }

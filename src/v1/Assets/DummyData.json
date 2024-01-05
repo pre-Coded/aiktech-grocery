@@ -1,0 +1,641 @@
+{
+    "products" : [
+        {
+            "id": 342,
+            "product_name": "milk",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000001",
+            "is_active_product": true,
+            "barcode": null,
+            "description": "lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj aklorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak"
+        },
+        {
+            "id": 532,
+            "product_name": "curd",
+            "category": {},
+            "photo": "",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 63,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        }
+    ], 
+
+    
+    "categories" : [
+        {
+            "id": 53,
+            "products": [
+                {
+                    "id": 24,
+                    "product_name": "curd",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000002",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                }
+            ],
+            "parent": null,
+            "sub_categories": [
+                {
+                    "id": 92,
+                    "image": "",
+                    "sub_categories": [],
+                    "category": "sub-cat-test-1",
+                    "created_on": "2023-12-31T17:27:16.274619+05:30",
+                    "updated_on": "2023-12-31T17:28:17.325949+05:30",
+                    "name": "sub-cat-test-1",
+                    "description": "",
+                    "slug": "sub-cat-test-1",
+                    "priority": null,
+                    "active": true,
+                    "colour": null,
+                    "home_page": false,
+                    "parent": 1,
+                    "tenant": 2,
+                    "products" : [
+                        {
+                            "id": 923,
+                            "product_name": "milk",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000001",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": "lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj aklorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak"
+                        },
+                        {
+                            "id": 139,
+                            "product_name": "curd",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000002",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": ""
+                        }
+                    ]
+                }
+            ],
+            "created_on": "2023-12-19T03:48:28.712607+05:30",
+            "updated_on": "2023-12-31T17:15:19.649538+05:30",
+            "name": "test",
+            "description": "",
+            "slug": "test",
+            "priority": null,
+            "active": true,
+            "image": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+            "colour": null,
+            "home_page": true,
+            "tenant": 2
+        },
+        {
+            "id": 2,
+            "products": [
+                {
+                    "id": 13,
+                    "product_name": "milk",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000001",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                },
+                {
+                    "id": 513,
+                    "product_name": "curd",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000002",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                }
+            ],
+            "parent": null,
+            "sub_categories": [],
+            "created_on": "2023-12-19T03:48:42.852717+05:30",
+            "updated_on": "2023-12-21T23:15:52.488975+05:30",
+            "name": "test2",
+            "description": "",
+            "slug": "test2",
+            "priority": null,
+            "active": true,
+            "image": "https://aiktech.s3.amazonaws.com/phurti-cloudfront/category/Screenshot_9_tHUGkc5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA33DDZ3PR4YDUELUI%2F20231231%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20231231T140008Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8aec51aa3938e9567ddf870eab92a55ae6a2302100b458f1c283c607f8a76dbf",
+            "colour": null,
+            "home_page": true,
+            "tenant": 2
+        },
+        {
+            "id": 3,
+            "products": [
+                {
+                    "id": 51,
+                    "product_name": "milk",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000001",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                },
+                {
+                    "id": 32,
+                    "product_name": "curd",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000002",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                }
+            ],
+            "parent": null,
+            "sub_categories": [],
+            "created_on": "2023-12-22T00:30:31.254941+05:30",
+            "updated_on": "2023-12-24T13:55:40.353525+05:30",
+            "name": "test3",
+            "description": "",
+            "slug": "test3",
+            "priority": null,
+            "active": true,
+            "image": "https://aiktech.s3.amazonaws.com/phurti-cloudfront/category/Screenshot_8.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA33DDZ3PR4YDUELUI%2F20231231%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20231231T140008Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b6a9fed50d4be68a8ddbc1ea0c39f0e17b723e893bc3898714f685dfdcd195bb",
+            "colour": null,
+            "home_page": true,
+            "tenant": 2
+        },
+        {
+            "id": 52,
+            "products": [
+                {
+                    "id": 51,
+                    "product_name": "milk",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000001",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                },
+                {
+                    "id": 531,
+                    "product_name": "curd",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000002",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                }
+            ],
+            "parent": null,
+            "sub_categories": [
+                {
+                    "id": 13,
+                    "image": "",
+                    "sub_categories": [],
+                    "category": "sub-cat-test-1",
+                    "created_on": "2023-12-31T17:27:16.274619+05:30",
+                    "updated_on": "2023-12-31T17:28:17.325949+05:30",
+                    "name": "sub-cat-test-1",
+                    "description": "",
+                    "slug": "sub-cat-test-3",
+                    "priority": null,
+                    "active": true,
+                    "colour": null,
+                    "home_page": false,
+                    "parent": 1,
+                    "tenant": 2,
+                    "products" : [
+                        {
+                            "id": 13,
+                            "product_name": "milk",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000001",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": "lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj aklorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak lorem kajdl la jlk kl jlkaj lkaj kaj dkaj lkfdj kfld kfaj dlkfja lkf jakfj ak"
+                        },
+                        {
+                            "id": 531,
+                            "product_name": "curd",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000002",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": ""
+                        },
+                        {
+                            "id": 13,
+                            "product_name": "curd",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000002",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": ""
+                        },
+                        {
+                            "id": 592,
+                            "product_name": "curd",
+                            "category": {},
+                            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                            "market_price": null,
+                            "price": null,
+                            "sku": "SKU00000002",
+                            "is_active_product": true,
+                            "barcode": null,
+                            "description": ""
+                        }
+                    ]
+                },
+                {
+                    "id": 1341,
+                    "image": "",
+                    "sub_categories": [],
+                    "category": "sub-cat-test-1",
+                    "created_on": "2023-12-31T17:27:16.274619+05:30",
+                    "updated_on": "2023-12-31T17:28:17.325949+05:30",
+                    "name": "sub-cat-test-1",
+                    "description": "",
+                    "slug": "sub-cat-test-4",
+                    "priority": null,
+                    "active": true,
+                    "colour": null,
+                    "home_page": false,
+                    "parent": 1,
+                    "tenant": 2,
+                    "products": []
+                }, 
+                {
+                    "id": 52,
+                    "image": "",
+                    "sub_categories": [],
+                    "category": "sub-cat-test-1",
+                    "created_on": "2023-12-31T17:27:16.274619+05:30",
+                    "updated_on": "2023-12-31T17:28:17.325949+05:30",
+                    "name": "sub-cat-test-5",
+                    "description": "",
+                    "slug": "sub-cat-test-2",
+                    "priority": null,
+                    "active": true,
+                    "colour": null,
+                    "home_page": false,
+                    "parent": 1,
+                    "tenant": 2,
+                    "products": []
+                }
+            ],
+            "created_on": "2023-12-22T00:30:38.117446+05:30",
+            "updated_on": "2023-12-24T13:56:18.516960+05:30",
+            "name": "test4",
+            "description": "",
+            "slug": "test4",
+            "priority": null,
+            "active": true,
+            "image": "https://aiktech.s3.amazonaws.com/phurti-cloudfront/category/Screenshot_8_qIPc2Rf.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA33DDZ3PR4YDUELUI%2F20231231%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20231231T140008Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=76136d0047a23ec1db11643a5e32a4e66afc7b8474475ebfeca92936e86d18ad",
+            "colour": null,
+            "home_page": true,
+            "tenant": 2
+        },
+        {
+            "id": 523,
+            "products": [
+                {
+                    "id": 1,
+                    "product_name": "milk",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_p3qKX9v.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000001",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                },
+                {
+                    "id": 39,
+                    "product_name": "curd",
+                    "category": {},
+                    "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+                    "market_price": null,
+                    "price": null,
+                    "sku": "SKU00000002",
+                    "is_active_product": true,
+                    "barcode": null,
+                    "description": ""
+                }
+            ],
+            "parent": null,
+            "sub_categories": [],
+            "created_on": "2023-12-22T00:30:45.387233+05:30",
+            "updated_on": "2023-12-22T00:32:27.384975+05:30",
+            "name": "test5",
+            "description": "",
+            "slug": "test5",
+            "priority": null,
+            "active": true,
+            "image": "https://aiktech.s3.amazonaws.com/phurti-cloudfront/category/Screenshot_8_q7iPWzA.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA33DDZ3PR4YDUELUI%2F20231231%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20231231T140008Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=83f1708af13097a62a38aa641127b79963adcc283c2fd575d21d91c96bd12f0e",
+            "colour": null,
+            "home_page": false,
+            "tenant": 2
+        }
+    ], 
+    "dashboardOrders" : [
+        {
+            "id": 58,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T15:31:24.366520+05:30",
+            "updated_on": "2023-12-31T15:31:24.392571+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": null,
+            "delivery_time": null,
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "60.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 53,
+            "inventory": 1
+        },
+        {
+            "id": 57,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T15:26:40.156541+05:30",
+            "updated_on": "2023-12-31T15:26:40.190784+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": null,
+            "delivery_time": null,
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "60.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 15:26PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 52,
+            "inventory": 1
+        },
+        {
+            "id": 56,
+            "customer": {
+                "id": 6,
+                "name": "sddgfs",
+                "phone_number": "8074363852"
+            },
+            "created_on": "2023-12-31T00:10:10.046674+05:30",
+            "updated_on": "2023-12-31T00:10:10.078307+05:30",
+            "fulfilment_type": "DELIVERY",
+            "delivery_type": "EXPRESS",
+            "delivery_date": "2024-01-01",
+            "delivery_time": "00:01:00",
+            "payment_status": "PENDING",
+            "fulfilment_address": "asdsa\ndsads\n111111",
+            "delivery_address": " ",
+            "total_price": "30.0000",
+            "packaging_charge": "0.0000",
+            "delivery_charge": "10.0000",
+            "prescription_url": null,
+            "source": "website",
+            "state": {
+                "state_list": [
+                    {
+                        "action": null,
+                        "state_type": "TEXT",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": "Welcome to Aikam\nNow get your medicines at your doorstep with huge discount",
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "REQUEST_CALLBACK",
+                        "state_type": "REQUEST_CALLBACK",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    },
+                    {
+                        "action": "UPLOAD_PRESCRIPTION",
+                        "state_type": "UPLOAD_PRESCRIPTION",
+                        "sender": "AIKAM",
+                        "created_on": "December 2023, 23:43PM",
+                        "body": {
+                            "value": null,
+                            "media_width": null,
+                            "media_height": null,
+                            "thumbnail_image": {
+                                "url": null,
+                                "height": null,
+                                "width": null
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": "ORDER_PLACED",
+            "notified": false,
+            "tenant": 2,
+            "cart": 51,
+            "inventory": 1
+        }
+    ]
+}

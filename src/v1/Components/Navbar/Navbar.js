@@ -147,10 +147,9 @@ const Navbar = (props) => {
 
       <div className="bottom-container">
         <Link to="/">
-            <div className="Logo">
+             <div className="Logo">
                 <img src={logoImg} alt="Logo" />
               </div>
-          
         </Link>
         {/* <div className='location '>
                     <img src={locationIcon} alt="" />
@@ -191,6 +190,7 @@ const Navbar = (props) => {
                   <p className="favorite">Favourite</p>
                 </div>
               </Link>
+
               <div className="menu-container" ref={clickOutsideProfile}>
                 <div
                   className="navbar-items"
@@ -213,6 +213,7 @@ const Navbar = (props) => {
                   </Link>
                 </div>
               </div>
+              
             </>
           ) : (
             <div
