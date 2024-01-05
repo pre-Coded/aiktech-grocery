@@ -34,6 +34,8 @@ const mapStateToProps = ({ stockdropdown, productsearch }) => ({
   productsearch
 });
 
+
+
 export default function AddStock() {
 
 
@@ -63,6 +65,7 @@ export default function AddStock() {
   const [batch_number, setBatchNumber] = useState(null)
   const [allInventories, SetAllInventories] = useState(null);
   const [allproducts, setAllProducts] = useState([])
+  const [addStockModal, toggleAddStockModal] = useState(false);
 
 
   console.log(allproducts, "all products");
@@ -394,7 +397,7 @@ export default function AddStock() {
       inventory !== "" &&
       pricePerProduct !== ""
     ) {
-      console.log(product,"product");
+      console.log(product, "product");
       let temp = {
         added_by: addedBy,
         stock_quantity: quantity,
@@ -502,7 +505,7 @@ export default function AddStock() {
 
   //qwert
   return (
-    <div className="add-stock-container flex-1">
+    <div className="add-stock-container flex-1 flex-col">
 
       <Modal show={load}>
         <Loader message={"Please Wait. Products are being fetched!"}></Loader>
@@ -543,7 +546,7 @@ export default function AddStock() {
 
       </Modal>
 
-      <div className="inventory-select-wrapper input-border small-input-padding">
+      <div className="input-border small-input-padding" style={{ maxHeight: 'fit-content' }}>
         <select
           onChange={inventoryHandler}
           value={inventory}
@@ -551,7 +554,8 @@ export default function AddStock() {
         >
           <option>Select Inventory</option>
 
-          {stockdropdownList &&
+          {
+            stockdropdownList &&
             allInventories &&
             allInventories.map(
               (i, index) => (
@@ -559,360 +563,310 @@ export default function AddStock() {
                   {i.name}
                 </option>
               )
-            )}
+            )
+          }
+
         </select>
       </div>
 
 
-      <div className="add-product-form-wrapper">
+      <div className="" style={{ width: '100%', height: '100%' }}>
 
         <form
-          className="add-product-form"
+          className=""
           onSubmit={handleSubmit}
           id="form"
           autoComplete="new-password"
         >
+          <div className=" " style={{ marginTop: '2rem' }}>
+            {
+              !editModal &&
+              (
+                <div className="flex-column gap-10">
 
-          <div className="">
-            <div className="flex-column gap-10">
+                  <div className="responsive-flex-row product-address-rem-barcode">
+                    <img style={{ maxWidth: "3.5rem" }} src={image} />
+                    <div class="product_address flex-1">{productAddress}</div>
+                    {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
 
-              <div className="add-stock-heading">
-                <span className="">{inventoryname}</span>
-              </div>
+                    <div>{productRemaining + "  "}</div>
 
-              {!editModal &&
+                    <div className="small-input-padding input-border flex-1">
+                      <select
+                        className="select"
+                        onChange={(e) => onChangeHandler(e, "ADDED_BY")}
+                        value={addedBy}
+                      // data-addedBy={}
+                      >
+                        <option>Added By</option>
+                        {stockdropdownList &&
+                          stockdropdownList.added_by &&
+                          stockdropdownList.added_by.map((added_by, index) => (
+                            <option value={added_by.id} key={index}>
+                              {added_by.phone_number}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
 
-                (
-                  <div className="flex-column gap-10">
+                    <div className="input-border small-input-padding flex-1">
+                      <input
+                        type="text"
+                        placeholder="Barcode"
+                        onChange={(e) => onChangeHandler(e, "BARCODE")}
+                        value={barcode}
+                      />
+                    </div>
+                  </div>
 
-                    <div className="responsive-flex-row gap-10 product-address-rem-barcode">
-                      <img style={{ maxWidth: "3.5rem" }} src={image} />
-                      <div class="product_address flex-1">{productAddress}</div>
-                      {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+                  <div className="responsive-flex-row gap-10">
 
-                      <div>{productRemaining + "  "}</div>
+                    <div className="input-border small-input-padding flex-1">
+                      <input
+                        className="priceperproduct"
+                        type="text"
+                        placeholder="Price"
+                        onChange={(e) => onChangeHandler(e, "PRICE_PER_PRODUCT")}
+                        value={pricePerProduct}
+                        list={"price_options"}
+                        id="price_per_product"
+                      />
+                      <datalist id="price_options">
+                        <option value={prices}>Our Price</option>
+                        {marketPrices && (
+                          <option value={marketPrices}>Market Price</option>
+                        )}
+                      </datalist>
+                    </div>
 
-                      <div className="small-input-padding input-border flex-1">
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="number"
+                      placeholder="Quantity"
+                      onChange={(e) => onChangeHandler(e, "QUANTITY")}
+                      value={quantity}
+                    />
+
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="date"
+                      placeholder="Expiry Date"
+                      onChange={(e) => { setExpiry(e.target.value) }}
+                      value={expiry}
+                    />
+
+                    <input
+                      className="input-border small-input-padding flex-1"
+                      type="text"
+                      placeholder="Batch Number"
+                      onChange={(e) => setBatchNumber(e.target.value)}
+                      value={batch_number}
+                    />
+
+                  </div>
+
+                  <div className="responsive-flex-row gap-10">
+
+                    <div className="flex-row justify-between input-border smaller-input-padding flex-1 relative">
+
+                      <div className="flex-1 flex-row">
+                        <input
+                          id="product_name"
+                          className="suggestion_input flex-1"
+                          type="text"
+                          placeholder="Search Product"
+                          style={{ backgroundColor: "white" }}
+                          onChange={handleSearchProduct}
+                          // value={tempProduct? tempProduct: null}
+                          onKeyDown={(e) => {
+                            let key = e.keyCode || e.charCode;
+                            if (key === 8) {
+                              setTempProduct("");
+                              setPrices("");
+                              setMarketPrices("");
+                              setProduct("");
+                            }
+                          }}
+                        />
+                      </div>
+
+                      <Searchsuggestion
+                        inventory={inventory}
+                        productSuggestions={productSuggestions}
+                        handleSuggestion={handleSuggestion}
+                        showsuggestions={showSuggestions}
+                      />
+                    </div>
+
+
+
+                    <div className="flex-row justify-between input-border smaller-input-padding flex-1">
+
+                      <div className="flex-row flex-1">
                         <select
-                          className="select"
-                          onChange={(e) => onChangeHandler(e, "ADDED_BY")}
-                          value={addedBy}
-                        // data-addedBy={}
+                          onChange={(e) => onChangeHandler(e, "UNIT")}
+                          value={unit}
+                          className="flex-1"
                         >
-                          <option>Added By</option>
-                          {stockdropdownList &&
-                            stockdropdownList.added_by &&
-                            stockdropdownList.added_by.map((added_by, index) => (
-                              <option value={added_by.id} key={index}>
-                                {added_by.phone_number}
-                              </option>
-                            ))}
+                          <option>Units</option>
+
+                          {
+                            stockdropdownList &&
+                            stockdropdownList.stock_unit &&
+                            stockdropdownList.stock_unit.map(
+                              (stock_unit, index) => (
+                                <option value={stock_unit.id} key={index}>
+                                  {stock_unit.name}
+                                </option>
+                              )
+                            )
+                          }
                         </select>
                       </div>
 
-                      <div className="input-border small-input-padding flex-1">
-                        <input
-                          type="text"
-                          placeholder="Barcode"
-                          onChange={(e) => onChangeHandler(e, "BARCODE")}
-                          value={barcode}
-                        />
-                      </div>
-                    </div>
-
-                    {/* <div
-                  className="inventory_wrapper responsive__wrapper"
-                  >
-                  <div className="individual__component__wrapper">
-                    <select
-                      onChange={(e) => onChangeHandler(e, "INVENTORY")}
-                      value={inventory}
-                    >
-                      <option>Inventory</option>
-                      {stockdropdownList &&
-                        stockdropdownList.stock_unit &&
-                        stockdropdownList.inventory.map((inventory, index) => (
-                          <option value={inventory.id} key={index}>
-                            {inventory.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                  <button
-                    className="circle__button"
-                    type="button"
-                    onClick={() => {
-                      setModal(true);
-                      setOption("inventory");
-                    }}
-                  >
-                    {" "}
-                    +{" "}
-                  </button>
-                 </div> */}
-
-                    <div className="responsive-flex-row gap-10">
-
-                      <div className="input-border small-input-padding flex-1">
-                        <input
-                          className="priceperproduct"
-                          type="text"
-                          placeholder="Price"
-                          onChange={(e) => onChangeHandler(e, "PRICE_PER_PRODUCT")}
-                          value={pricePerProduct}
-                          list={"price_options"}
-                          id="price_per_product"
-                        />
-                        <datalist id="price_options">
-                          <option value={prices}>Our Price</option>
-                          {marketPrices && (
-                            <option value={marketPrices}>Market Price</option>
-                          )}
-                        </datalist>
-                      </div>
-
-                      <input
-                        className="input-border small-input-padding flex-1"
-                        type="number"
-                        placeholder="Quantity"
-                        onChange={(e) => onChangeHandler(e, "QUANTITY")}
-                        value={quantity}
-                      />
-
-                      <input
-                        className="input-border small-input-padding flex-1"
-                        type="date"
-                        placeholder="Expiry Date"
-                        onChange={(e) => { setExpiry(e.target.value) }}
-                        value={expiry}
-                      />
-
-                      <input
-                        className="input-border small-input-padding flex-1"
-                        type="text"
-                        placeholder="Batch Number"
-                        onChange={(e) => setBatchNumber(e.target.value)}
-                        value={batch_number}
-                      />
-
-                    </div>
-
-                    <div className="responsive-flex-row gap-10">
-
-                      <div className="flex-row justify-between input-border smaller-input-padding flex-1 relative">
-
-                        <div className="">
-                          <input
-                            id="product_name"
-                            className="suggestion_input"
-                            type="text"
-                            placeholder="Search Product"
-                            style={{ backgroundColor: "white" }}
-                            onChange={handleSearchProduct}
-                            // value={tempProduct? tempProduct: null}
-                            onKeyDown={(e) => {
-                              let key = e.keyCode || e.charCode;
-                              if (key === 8) {
-                                setTempProduct("");
-                                setPrices("");
-                                setMarketPrices("");
-                                setProduct("");
-                              }
-                            }}
-                          />
-                        </div>
-
-                        <button
-                          className="circle-button btn-none"
-                          type="button"
-                          style={{
-                            color: '#333',
-                            fontSize: '2rem',
-                            fontWeight : '200'
-                          }}
-                          onClick={() => {
-                            setModal(true);
-                            setOption("product");
-                          }}
-                        >
-                          +
-                        </button>
-                        
-                          
-                        <Searchsuggestion
-                            inventory={inventory}
-                            productSuggestions={productSuggestions}
-                            handleSuggestion={handleSuggestion}
-                            showsuggestions={showSuggestions}
-                        />
-                        </div>
-                        
-                      
-
-                      <div className="flex-row justify-between input-border smaller-input-padding flex-1">
-
-                        <div className="flex-row place-item-center">
-                          <select
-                            onChange={(e) => onChangeHandler(e, "UNIT")}
-                            value={unit}
-                            className="select"
-                          >
-                            <option>Units</option>
-
-                            {
-                              stockdropdownList &&
-                              stockdropdownList.stock_unit &&
-                              stockdropdownList.stock_unit.map(
-                                (stock_unit, index) => (
-                                  <option value={stock_unit.id} key={index}>
-                                    {stock_unit.name}
-                                  </option>
-                                )
-                              )
-                            }
-                          </select>
-                        </div>
-
-                        <button
-                          className="circle-button btn-none"
-                          style={{
-                            color: '#333',
-                            fontSize: '2rem',
-                            fontWeight : '200'
-                          }}
-                          type="button"
-                          onClick={() => {
-                            setModal(true);
-                            setOption("unit");
-                          }}
-                        >
-                          {" "}
-                          +{" "}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex-row place-item-center">
-                      <button type="button" className="btn-none btn" onClick={addItem}>
-                        ADD
+                      <button
+                        className="circle-button btn-none"
+                        style={{
+                          color: '#666',
+                          fontSize: '1.2rem',
+                          fontWeight: '200'
+                        }}
+                        type="button"
+                        onClick={() => {
+                          setModal(true);
+                          setOption("unit");
+                        }}
+                      >
+                        {" "}
+                        +{" "}
                       </button>
                     </div>
-
-                    {/* <div className="counter-container"></div> */}
                   </div>
-                )
-              }
 
-              {/* {/* */}
-
-
-                <div className="table-stock">
-                  <table className="">
-                    <thead className="">
-                      <th>Address</th>
-                      <th>Product Remaining</th>
-                      <th>Added By</th>
-                      <th>Barcode</th>
-                      <th>Product</th>
-                      <th>Unit</th>
-                      <th>Inventory</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>Expiry</th>
-                      <th>Batch Number</th>
-                      <th>Delete</th>
-                      <th>Edit</th>
-                    </thead>
-
-                    <tbody>
-                      {
-                        cartData.map((product, index) => {
-                          const {
-                            stock_quantity,
-                            temp_stock_product ,
-                            added_by,
-                            stock_unit,
-                            inventory,
-                            procurement_price_per_product,
-                            description,
-                            barcode,
-                            product_remaining,
-                            product_address
-                          } = product;
-
-                          return (
-                            <tr className="" key={index}>
-                              <td>{product_address}</td>
-                              <td>{product_remaining}</td>
-                              <td>
-                                {stockdropdownList &&
-                                  stockdropdownList.added_by.map((user) =>
-                                    user.id.toString() === added_by
-                                      ? user.phone_number
-                                      : null
-                                  )}
-                              </td>
-                              <td>{barcode}</td>
-                              <td >
-                                {temp_stock_product} ({description})
-                              </td>
-                              <td>
-                                {stockdropdownList &&
-                                  stockdropdownList.stock_unit.map((stockunit) => {
-                                    return (
-                                      stockunit.id === parseInt(stock_unit)
-                                        ? stockunit.name
-                                        : null
-                                    )
-
-                                  }
-                                  )}
-                              </td>
-                              <td>
-                                {inventoryname}
-                              </td>
-                              <td>{procurement_price_per_product}</td>
-                              <td>{stock_quantity}</td>
-                              <td>{expiry}</td>
-
-                              {
-                                batch_number !== 0 ? (
-                                  <td>{batch_number}</td>
-                                ) : (
-                                  <td></td>
-                                )
-                              }
-
-                              <td>
-                                <button onClick={() => deleteItem(index)} className="btn-none flex-row place-item-center">
-                                    <MdDelete fontSize={'1.2rem'} width={'2rem'} color={'red'}/>
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  onClick={() => {
-                                    setEditModal(true);
-                                    setEditIndex(index);
-                                    setValues(index);
-                                  }}
-
-                                  className={'btn-none flex-row place-item-center'}
-                                >
-                                  <FaEdit fontSize={'1.2rem'} width={'2rem'}/>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-
-                    </tbody>
-                  </table>
-                </div> 
-              </div>
-              <div className="flex-row place-item-center">
-                <button className="btn-none btn" onClick={handleSubmit} type={'submit'}>Add Stock</button>
-              </div>
+                  <div className="flex-column place-item-center gap-10">
+                    <button type="button" className="btn-none btn-primary" onClick={addItem}>
+                      ADD
+                    </button>
+                    <div className="flex-row place-item-center">
+                      <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(true)} type={'button'}>Save {cartData.length > 0 && cartData.length}</button>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
           </div>
+
+          <Modal show={addStockModal} onClose={() => toggleAddStockModal(false)} maxWidth={'100vw'} height={'30rem'}>
+            <div className="table-stock">
+              <table className="overflow-scroll">
+                <thead className="">
+                  <th>Address</th>
+                  <th>Product Remaining</th>
+                  <th>Added By</th>
+                  <th>Barcode</th>
+                  <th>Product</th>
+                  <th>Unit</th>
+                  <th>Inventory</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Expiry</th>
+                  <th>Batch Number</th>
+                  <th>Delete</th>
+                  <th>Edit</th>
+                </thead>
+
+                <tbody>
+                  {
+                    cartData.map((product, index) => {
+                      const {
+                        stock_quantity,
+                        temp_stock_product,
+                        added_by,
+                        stock_unit,
+                        inventory,
+                        procurement_price_per_product,
+                        description,
+                        barcode,
+                        product_remaining,
+                        product_address
+                      } = product;
+
+                      return (
+                        <tr className="" key={index}>
+                          <td>{product_address}</td>
+                          <td>{product_remaining}</td>
+                          <td>
+                            {stockdropdownList &&
+                              stockdropdownList.added_by.map((user) =>
+                                user.id.toString() === added_by
+                                  ? user.phone_number
+                                  : null
+                              )}
+                          </td>
+                          <td>{barcode}</td>
+                          <td >
+                            {temp_stock_product} ({description})
+                          </td>
+                          <td>
+                            {stockdropdownList &&
+                              stockdropdownList.stock_unit.map((stockunit) => {
+                                return (
+                                  stockunit.id === parseInt(stock_unit)
+                                    ? stockunit.name
+                                    : null
+                                )
+
+                              }
+                              )}
+                          </td>
+                          <td>
+                            {inventoryname}
+                          </td>
+                          <td>{procurement_price_per_product}</td>
+                          <td>{stock_quantity}</td>
+                          <td>{expiry}</td>
+
+                          {
+                            batch_number !== 0 ? (
+                              <td>{batch_number}</td>
+                            ) : (
+                              <td></td>
+                            )
+                          }
+
+                          <td>
+                            <button onClick={() => deleteItem(index)} className="btn-none flex-row place-item-center">
+                              <MdDelete fontSize={'1.2rem'} width={'2rem'} color={'red'} />
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => {
+                                setEditModal(true);
+                                setEditIndex(index);
+                                setValues(index);
+                              }}
+
+                              className={'btn-none flex-row place-item-center'}
+                            >
+                              <FaEdit fontSize={'1.2rem'} width={'2rem'} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                </tbody>
+              </table>
+            </div>
+
+            <div className="option-buttons save-changes-buttons" style={{position : 'absolute', bottom : '10px', right : '10px' }}>
+                <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(false)} type={'button'}>
+                  Discard
+                </button>
+                <button className="btn-none btn-primary" type="submit" onClick={handleSubmit}>Save</button>
+            </div>
+          </Modal>
         </form>
       </div>
 

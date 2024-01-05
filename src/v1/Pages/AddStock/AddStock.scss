@@ -84,9 +84,9 @@ input::placeholder{
 }
 
 .table-stock{
-  overflow: auto;
   width: 100%;
   margin: 2rem 0;
+  overflow: scroll;
 }
 
 .table-stock table{
@@ -111,7 +111,7 @@ input::placeholder{
 }
 
 .table-stock thead th:first-child{
-  min-width: 20rem;
+  min-width: 10rem;
 }
 
 .table-stock tbody{
@@ -140,7 +140,7 @@ input::placeholder{
 }
 
 .table-stock tbody tr td:first-child{
-  min-width: 20rem;
+  min-width: 10rem;
 }
 
 

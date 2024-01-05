@@ -4,7 +4,7 @@ import "./Modal.scss";
 
 class Modal extends Component {
   render() {
-    const { show, children, onClose, unset } = this.props;
+    const { show, children, onClose, unset, maxWidth, height } = this.props;
     const showHideClassName = show ? `modal displayBlock` : `modal displayNone`;
 
     if (!show) {
@@ -15,6 +15,10 @@ class Modal extends Component {
         <section
           className={!unset ? "modal-section" : "modal-section modal-unset"}
           onClick={(e) => e.stopPropagation()}
+          style={{
+            maxWidth : maxWidth ? maxWidth : '30rem',
+            height : height ? height : 'fit-content'
+          }}
         >
           {children}
         </section>{" "}
