@@ -83,11 +83,12 @@ const ContentCard = (props) => {
         if(props.deleteCard?.itemName === "subcategory"){
             try{
                 const response = await deleteSubCategoryFromCategory({ category_id : props.categoryId, id : props.cardId})
-
-                response && props.deleteCard?.reponse({
-                    id : props.deleteCard?.itemName, 
+                
+                 response && props.deleteCard?.response({
+                    id : props.deleteCard.itemName, 
                     data : response.data
                 });
+
             }catch(e){
                 toast.error("Error in deleting subcategory.",  {autoClose : 1000})
             }   

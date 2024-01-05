@@ -77,6 +77,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
 
 
   // console.log(productsearch)
+  console.log(data,"category data");
 
   /////
   const handleAddItem = (e) =>
@@ -93,7 +94,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       price: item.price,
       description: item.description,
       sku: item.sku,
-      photo: image
+      photo: image,
+      categories: categories
     };
 
 
@@ -124,26 +126,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }).catch((err) => {
       const msg = errorMsg(err);
       toast.error(msg);
-    }) : addProductToCat ?  addProductToCategory(data)
-    .then( (res) => {
-      console.log(res,"add to category result");
-      if(res.status === 201){
-        console.log(201);
-        toast.success("Product Added Successfully");
-
-        handleResponse({ id : "product", data : res.data });
-        closeModal(false);
-      }else if(res.status === 400){
-        toast.error("Please fill values correctly.")
-      }
-
-      return;
-    })
-    .catch((err) => {
-      toast.error(errorMsg(err))
-
-      return;
-    }) :
+    }) : 
     addProduct(data)
     .then((res) => {
       // console.log(res);
@@ -283,7 +266,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
             const selectedImage = event.target.files[0];
             setImage(selectedImage);
           }}
-          required
+          
         />
         
       </div>

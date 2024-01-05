@@ -111,10 +111,12 @@ const AddCategory = () => {
       setFullCategoryList(data?.data)
     }
 
-    if(data?.id === "productFromSub" || data?.id === "productFromCat"){
+    if(data?.id === "productFromSubCat" || data?.id === "productFromCat"){
 
       const catOrSubCatID = data.catOrSubCatId;
       const categoryList = data.data;
+      setCategories(data?.data)
+      setFullCategoryList(data?.data)
 
       categoryList.reduce((filteredCategories, category) => {
 
@@ -131,8 +133,7 @@ const AddCategory = () => {
   
       }, []);
 
-      setCategories(data?.data)
-      setFullCategoryList(data?.data)
+      
     }
 
 
@@ -154,6 +155,7 @@ const AddCategory = () => {
   const handleEditSuccess = (data) => {
 
     if(data.id === "category"){
+      console.log("cat");
       setCategories(data.data);
       setFullCategoryList(data.data);
     }
@@ -162,6 +164,8 @@ const AddCategory = () => {
 
       const catOrSubCatID = productList.subCategoryId;
       const categoryList = data.data;
+      setCategories(data?.data)
+      setFullCategoryList(data?.data)
 
       const filterProductList = categoryList.reduce((filteredCategories, category) => {
         if (category.id === catOrSubCatID) {
