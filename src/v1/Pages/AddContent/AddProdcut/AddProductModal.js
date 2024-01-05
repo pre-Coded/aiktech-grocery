@@ -169,7 +169,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   }, []);
 
   const handleCategoryChange = (e) => {
-    console.log(e);
     if (Array.isArray(e)) {
       const temp = e.map((x) => x.value);
       setCategories(temp);

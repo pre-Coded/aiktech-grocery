@@ -49,10 +49,8 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
   });
   const [image, setImage] = useState(null);
 
-  console.log(item,"item");
   useEffect(()=>{
     if(category){
-      console.log(category,"catgor in  props");
         setItem({
         id:category.id,
         category_name: category.name,
@@ -85,7 +83,6 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
       description: item.description,
       home_page: item.home_page
     };
-    console.log(data,"data");
 
     if(category){
       data["id"] = item.id
@@ -94,7 +91,6 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
       data["category_id"] = category_id
     }
     if(image){
-      console.log(image,"image");
       data["image"]=image
     }
 

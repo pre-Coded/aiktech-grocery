@@ -68,7 +68,6 @@ export default function AddStock() {
   const [addStockModal, toggleAddStockModal] = useState(false);
 
 
-  console.log(allproducts, "all products");
 
   const inventoryHandler = (e) => {
     setInventory(e.target.value)
@@ -87,7 +86,6 @@ export default function AddStock() {
           .then((response) => {
 
             setInventoryId(response.data.data);
-            console.log(response.data.data);
             const config = {
               params: {
                 "inv": response.data.data
@@ -95,12 +93,10 @@ export default function AddStock() {
             }
             axios.get(`${getBaseUrl()}/api/shop/products/data/`, config)
               .then((response) => {
-                console.log(response.data.data, "products");
                 setAllProducts(response.data.data);
               }).catch((err) => {
                 console.log(err.message);
               })
-            console.log(productsearch);
 
           }).catch((err) => {
             console.log(err.message);
@@ -175,7 +171,6 @@ export default function AddStock() {
     } else if (key === "BARCODE") {
       setBarcode(value);
     }
-    console.log(e.target.value);
   };
   const isEqual = (item, id, inventory_id) => item.id === id && item.inventory_id === inventory_id;
   //ADDING ALL THE ITEM INFORMATION IN THE LIST
@@ -194,10 +189,8 @@ export default function AddStock() {
     } else {
 
       if (product && quantity) {
-        console.log(allproducts, "all products");
         const entered_product = allproducts.find(item => isEqual(item, parseInt(product), inventory_id));
 
-        console.log(entered_product);
         let payload = {
           stock_product: product,
           stock_quantity: quantity,
@@ -315,14 +308,11 @@ export default function AddStock() {
       if (product_name || barcode) {
 
         if (product_name) {
-          console.log(allproducts, "for suggestions");
           setShowSuggestions(true);
           let regex = new RegExp(`${product_name}`, 'i');
           let suggestion = allproducts.filter(o => regex.test(o.product_name));
-          console.log(suggestion);
           let sortedSuggestion = fuzzysort.go(product_name.toLowerCase(), suggestion, { key: 'product_name' })
           suggestion = sortedSuggestion.map(i => i.obj);
-          console.log(suggestion);
           setProductSuggestions(suggestion);
           setTempProduct(product_name);
           setBarcode("");
@@ -331,7 +321,6 @@ export default function AddStock() {
         } else if (barcode) {
 
           let product_from_barcode = allproducts.filter(i => i.barcode === barcode.replace("\n", ""));
-          console.log(product_from_barcode, "product_from_barcode");
           if (product_from_barcode.length > 0) {
             setTempProduct(product_from_barcode[0].product_name);
             setProduct(product_from_barcode[0].id);
@@ -397,7 +386,7 @@ export default function AddStock() {
       inventory !== "" &&
       pricePerProduct !== ""
     ) {
-      console.log(product, "product");
+
       let temp = {
         added_by: addedBy,
         stock_quantity: quantity,

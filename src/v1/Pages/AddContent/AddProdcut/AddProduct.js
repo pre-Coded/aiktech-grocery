@@ -72,7 +72,6 @@ const AddProduct = () => {
     }
 
     const handleEditButton = (data) => {
-        console.log("clicked edit", data)
 
         setProductForm({
             id: data.id,

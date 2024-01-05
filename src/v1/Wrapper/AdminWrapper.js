@@ -16,7 +16,6 @@ export default function AdminWrapper({ children }) {
         if(isLoggedin){
             const response =  checkAdmin();
             response.then((res)=>{
-                console.log(res,"result");
             }).catch((err)=>{
                 history.push('/');
         })

@@ -145,9 +145,6 @@ const ContentCard = (props) => {
                                     <button
                                         onClick={ (e) => {
                                             e.stopPropagation();
-
-                                            console.log("Clicked Edit");
-
                                             props.editFunction && props.editFunction(props.data)
                                         }}
                                         className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'

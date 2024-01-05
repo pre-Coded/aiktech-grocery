@@ -31,7 +31,6 @@ const CardOrders = ({ order }) => {
         localStorage.setItem(`${order.id}`, "1");
         axios.get(`${getBaseUrl()}/api/shop/order/items/`, config)
             .then((response) => {
-                console.log(response.data.message);
                 const data = response.data.message;
                 history.push({ pathname: '/orderItems', state: data })
             }).catch((err) => {

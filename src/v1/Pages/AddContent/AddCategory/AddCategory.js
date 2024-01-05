@@ -93,8 +93,6 @@ const AddCategory = () => {
   }
 
   const handleEditButton = (data) => {
-      console.log("clicked edit", data)
-
       setCategoryForm({
           name :  data.name,
           description: data.description,
@@ -150,12 +148,10 @@ const AddCategory = () => {
     categoryId : productList.subCategoryId, 
   })
 
-  console.log(productList,"product list");
 
   const handleEditSuccess = (data) => {
 
     if(data.id === "category"){
-      console.log("cat");
       setCategories(data.data);
       setFullCategoryList(data.data);
     }
@@ -203,7 +199,6 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-          {console.log(categoryForm,"catrgory form")}
           {
             productList["option"]==="add-sub-category"?
             <AddCategoryModal closeModal={handleToggleModal}  category_id={productList.subCategoryId}
