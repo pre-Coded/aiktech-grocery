@@ -68,7 +68,10 @@ export const addProduct = (data) => {
   const url = `/shop/post/add_product/`;
   const params = {};
   const payload = { ...data };
-  return requestMaker(url, "post", { params, payload });
+  return requestMaker(url, "post", { params, payload },  {
+    'Content-Type': 'multipart/form-data',
+    'Accept': '*/*'
+  });
 };
 
 export const addInventory = (data) => {
@@ -131,5 +134,17 @@ export const editProduct = (data) => {
   const url = `/shop/tenant/products/`;
   const params = {};
   const payload = { ...data };
-  return requestMaker(url, "patch", { params, payload });
+  return requestMaker(url, "patch", { params, payload }, {
+    'Content-Type': 'multipart/form-data',
+  });
+};
+
+export const addSubCategory = (data) => {
+  const url = `/shop/category/subcategory/`;
+  const params = {};
+  const payload = { ...data };
+  return requestMaker(url, "put", { params, payload },  {
+    'Content-Type': 'multipart/form-data',
+    'Accept': '*/*'
+  });
 };

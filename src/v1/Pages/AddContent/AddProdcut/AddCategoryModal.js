@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import defaultImg from '../../../Assets/Images/default-image.png'
 
 import { editCategory } from "../../../Api/dashboardAPI";
 
@@ -20,6 +21,7 @@ import {
 } from "../../../Utils/general-utils";
 import { addCategory } from "../../../Api/dashboardAPI";
 import { actionsCreator } from "../../../Redux/actions/actionsCreator";
+import { addSubCategory } from "../../../Api/productAPI";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
@@ -28,7 +30,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 });
 
 ////
-function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
+function AddCategoryModal({ closeModal, category, handleResponse, category_id}) {
   
   const {
     stockdropdown: { list: stockdropdownList },
@@ -42,8 +44,11 @@ function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
   const [item, setItem] = useState({
     category_name: "",
     description: "",
-    home_page:false
+    home_page:false,
+    image: null
   });
+  const [image, setImage] = useState(null);
+
   console.log(item,"item");
   useEffect(()=>{
     if(category){
@@ -71,22 +76,26 @@ function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
   }
     
 
-  //////
+
   const handleSubmit = (e) => {
+
     e.preventDefault();
     let data = {
-
       name: item.category_name,
       description: item.description,
-      image: item.image,
       home_page: item.home_page
-
     };
+    console.log(data,"data");
 
-    console.log(data)
     if(category){
       data["id"] = item.id
-
+    }
+    if(category_id && !category){
+      data["category_id"] = category_id
+    }
+    if(image){
+      console.log(image,"image");
+      data["image"]=image
     }
 
     category ? editCategory(data).then((res)=>{
@@ -106,7 +115,16 @@ function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
       const msg = errorMsg(err);
         toast.error(msg);
 
-    }) : addCategory(data)
+    }) : category_id? addSubCategory(data).then((res)=>{
+      if(res.status===201){
+        toast.success("added subcategory successfully");
+        handleResponse({data : res.data, id : "product"})
+
+          closeModal(false);
+      }
+    }).catch((err)=>{
+      toast.error("error while adding sub category");
+    }) :addCategory(data)
       .then((res) => {
         // console.log(res);
         if (res.status === 201) {
@@ -183,6 +201,34 @@ function AddCategoryModal({ closeModal, setBarcode, category, handleResponse}) {
             width : '1rem',
           }}
         />
+      </div>
+
+      <div className={'input-border flex-row items-center gap-10'}>
+
+        <div className={'overflow-hidden'} style={{
+          height: '4rem',
+          aspectRatio: '1',
+        }}>
+          <img
+            src={image ? URL.createObjectURL(image) : defaultImg} 
+            alt="Selected"
+            style={{
+              height: '100%',
+              aspectRatio: '1',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+
+        <input
+          type={'file'}
+          onChange={(event) => {
+            const selectedImage = event.target.files[0];
+            setImage(selectedImage);
+          }}
+          required
+        />
+        
       </div>
 
       <div className="option-buttons save-changes-buttons">

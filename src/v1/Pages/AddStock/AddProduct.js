@@ -4,7 +4,9 @@ import {
   fetchCategories,
   fetchleafcategory,
 } from "../../Api/productAPI";
+
 import "./form.scss";
+
 import { toast } from "react-toastify";
 import InputField from "../../Components/InputField";
 import { useEffect } from "react";
@@ -192,6 +194,7 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
         onChange={handleAddItem}
         required
       />
+
       <div className="input-container">
         <Select
           className="dropdown"
@@ -202,9 +205,11 @@ function AddProductForm({ closeModal, setBarcode, setProduct, setTempProduct}) {
           isClearable
         />
       </div>
+
       <div className="option-buttons save-changes-buttons">
         <button onClick={handleSubmit}>Save</button>
       </div>
+      
     </form>
   );
 }

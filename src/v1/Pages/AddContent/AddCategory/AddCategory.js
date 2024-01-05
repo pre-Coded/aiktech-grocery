@@ -83,10 +83,7 @@ const AddCategory = () => {
   const [addOrEditModal, toggleAddOrEditModal] = useState(false);
   const [addProductModal, toggleAddProductModal] = useState(false);
 
-  const [categoryForm, setCategoryForm] = useState({
-      id : "",
-      password : "",
-  })
+  const [categoryForm, setCategoryForm] = useState(null)
 
   // Modal View and toggleEdit Button
   const handleToggleModal = () => {
@@ -164,6 +161,11 @@ const AddCategory = () => {
     }
   }
 
+  const addSubcategory = (data) => {
+    setProductList((prev)=>({...prev, ["subCategoryId"]:data,["option"]:"add-sub-category"}))
+    toggleAddOrEditModal(true);
+  }
+  
 
   return (
     <div className='add-category-container flex-column flex-1'>
@@ -174,7 +176,15 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-          <AddCategoryModal closeModal={handleToggleModal} category={categoryForm} handleResponse ={ handleEditSuccess }/>
+          {console.log(categoryForm,"catrgory form")}
+          {
+            productList["option"]==="add-sub-category"?
+            <AddCategoryModal closeModal={handleToggleModal}  category_id={productList.subCategoryId}
+           handleResponse ={ handleEditSuccess }/>:
+           <AddCategoryModal closeModal={handleToggleModal}  category={categoryForm} category_id={productList.subCategoryId}
+           handleResponse ={ handleEditSuccess }/>
+          }
+         
         </Modal>
       }
 
@@ -184,7 +194,7 @@ const AddCategory = () => {
           show={addProductModal}
           onClick={() => toggleAddProductModal(false)}
         >
-          {console.log(productForm,"product form ")}
+          
           <AddProductModal closeModal={() => toggleAddProductModal(false)}  handleResponse ={ handleEditSuccess }
           categoryId={productList.subCategoryId} addProductToCat={true} />
         </Modal>
@@ -232,7 +242,7 @@ const AddCategory = () => {
                   handleToggleModal();
                   setCategoryForm(null)
                 }}>
-                  {`Add More`}
+                  {`Add Cateogory`}
                 </button>
               </div>
 
@@ -257,6 +267,8 @@ const AddCategory = () => {
                       itemName : 'category',
                       response : handleDelete,
                     } }
+
+                    addSubcategory = {addSubcategory}
 
                     selectSubCategory={handleProductChange}
 

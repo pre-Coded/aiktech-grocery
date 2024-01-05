@@ -547,7 +547,6 @@ export default function AddStock() {
         <select
           onChange={inventoryHandler}
           value={inventory}
-          className="select"
         >
           <option>Select Inventory</option>
 
@@ -721,24 +720,7 @@ export default function AddStock() {
                             }}
                           />
                         </div>
-
-                        <button
-                          className="circle-button btn-none"
-                          type="button"
-                          style={{
-                            color: '#333',
-                            fontSize: '2rem',
-                            fontWeight : '200'
-                          }}
-                          onClick={() => {
-                            setModal(true);
-                            setOption("product");
-                          }}
-                        >
-                          +
-                        </button>
-                        
-                          
+                         
                         <Searchsuggestion
                             inventory={inventory}
                             productSuggestions={productSuggestions}

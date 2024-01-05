@@ -6,6 +6,7 @@ import HoverComponent from '../../Components/HoverComponent/HoverComponent';
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { BsCartCheck, BsThreeDotsVertical } from "react-icons/bs";
+import { IoMdAdd } from "react-icons/io";
 
 import defaultImg from '../../Assets/Images/default-image.png'
 
@@ -164,6 +165,24 @@ const ContentCard = (props) => {
                                         <span>Delete</span>
                                     }
                                 </button>
+                                
+                                {
+                                    props.addSubcategory && 
+                                    <button
+                                    className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
+
+                                    onClick={ () => {
+                                        props.addSubcategory(props.cardId)
+                                    } }
+                                    >
+
+                                    <IoMdAdd fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
+                                    {
+                                        'Add Subcategory'
+                                    }
+                                    </button>
+                                }
+
                             </div>
                         </HoverComponent>
                     }

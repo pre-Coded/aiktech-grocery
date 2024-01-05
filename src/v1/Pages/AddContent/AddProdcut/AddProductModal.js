@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import {
-  addProduct,
   editProduct,
   fetchCategories,
   fetchleafcategory,
 } from "../../../Api/productAPI";
 
 // import '../../AddStock/form.scss'
+import defaultImg from '../../../Assets/Images/default-image.png'
 
 import { toast } from "react-toastify";
 import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import Select from 'react-select'
+import { addProduct } from "../../../Api/productAPI";
 
 import {
   formatOptions,
@@ -22,6 +24,8 @@ import {
 } from "../../../Utils/general-utils";
 
 import { addProductToCategory } from "../../../Api/dashboardAPI";
+import axios from "axios";
+import { getBaseUrl } from "../../../Lib/NetworkHandler";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] }) => ({
   stockdropdown,
@@ -46,7 +50,16 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     description: "",
     sku: "",
     category: null,
+    photo: null
   });
+  // const addProduct = async (data)=>{
+  //   const response = await axios.post(`${getBaseUrl()}/api/shop/post/add_product/`,
+  //   data,{ headers: {
+  //     'Content-type': 'multipart/form-data',
+  //     'Accept': '*/*'
+  //   }})
+  //   return response
+  // }
 
   useEffect(() => {
 
@@ -57,7 +70,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         price: product.price,
         description: product?.description,
         category: product.category?.id,
-        barcode: product.barcode
+        barcode: product.barcode,
       })
     }
     
@@ -68,6 +81,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   const [leafCategories, setLeafCategories] = useState(null);
   const [data, setData] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [image, setImage] = useState(null);
 
 
   // console.log(productsearch)
@@ -77,6 +91,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     setItem({ ...item, [e.target.name]: e.target.value });
 
   //////
+  const formData = new FormData();
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
@@ -85,7 +100,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       price: item.price,
       description: item.description,
       sku: item.sku,
-      
     };
 
     if (product) {
@@ -94,7 +108,16 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     if(categoryId){
       data["category_id"]=categoryId
     }
+    if(image){
+      data["photo"] = image
+    }
+    
+    formData.append('image', image, image.name);
+    formData.append('data', data);
 
+    console.log(formData,"form data");
+    console.log(data);
+    data["photo"] = formData.get('image')
 
 
     product ?
@@ -144,8 +167,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       } else if (res.status === 400) {
         toast.success("Please fill values correctly.");
       }
-      const code = data["barcode"] + "\n";
-      setBarcode(code);
     })
     .catch((error) => {
       const msg = errorMsg(error);
@@ -198,47 +219,19 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }
   }, [product_barcode]);
 
-  //qwert
+ 
   return (
-    <form className="add-product-wrapper flex-column gap-10">
+    <form className="add-product-wrapper flex-column gap-10" onSubmit={handleSubmit} encType="multipart/form-data">
       <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add Product</div>
 
-      {!product &&
-        <input
-          className="input-border"
-
-          type={"text"}
-          name="product_barcode"
-          id="product_barcode"
-          placeholder="Barcode"
-          value={product_barcode}
-          onChange={(e) => {
-            setProductBarcode(e.target.value);
-          }}
-          required
-        />
-      }
 
       <input 
         className="input-border"
         type={"text"}
-
         name="product_name"
         id="product_name"
         placeholder="Product name"
         value={item.product_name}
-        onChange={handleAddItem}
-        required
-      />
-
-      <input 
-        className="input-border"
-        type={"text"}
-
-        name="price"
-        id="price"
-        placeholder="Price"
-        value={item.price}
         onChange={handleAddItem}
         required
       />
@@ -262,11 +255,68 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         required
       />
 
+      {!product &&
+        <input
+          className="input-border"
+
+          type={"text"}
+          name="product_barcode"
+          id="product_barcode"
+          placeholder="Barcode (optional)"
+          value={product_barcode}
+          onChange={(e) => {
+            setProductBarcode(e.target.value);
+          }}       
+        />
+      }
+
+      <div className={'input-border flex-row items-center gap-10'}>
+
+        <div className={'overflow-hidden'} style={{
+          height: '4rem',
+          aspectRatio: '1',
+        }}>
+          <img
+            src={image ? URL.createObjectURL(image) : defaultImg} 
+            alt="Selected"
+            style={{
+              height: '100%',
+              aspectRatio: '1',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+
+        <input
+          type={'file'}
+          name="photo"
+          onChange={(event) => {
+            const selectedImage = event.target.files[0];
+            console.log(selectedImage,"image");
+            setImage(selectedImage);
+          }}
+          required
+        />
+        
+      </div>
+
+      <div className="input-border">
+        <Select
+          className="dropdown"
+          placeholder={"Category"}
+          options={data}
+          onChange={handleCategoryChange}
+          isMulti
+          isClearable
+        />
+      </div>
+
+
       <div className="option-buttons save-changes-buttons">
         <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
           Discard
         </button>
-        <button className="btn-none btn-primary" onClick={handleSubmit}>Save</button>
+        <button className="btn-none btn-primary" >Save</button>
       </div>
     </form>
   );
