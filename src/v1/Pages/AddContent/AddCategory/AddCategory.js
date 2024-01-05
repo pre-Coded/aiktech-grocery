@@ -10,9 +10,11 @@ import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
 
 import AddProductModal from '../AddProdcut/AddProductModal';
+import { fetchTenantUsers } from '../../../Api/authAPI.js';
 
 
 const AddCategory = () => {
+  
   const [categories, setCategories] = useState([])
   const [fullCategoryList, setFullCategoryList] = useState([]);
   const [loading, setLoading] = useState(true);

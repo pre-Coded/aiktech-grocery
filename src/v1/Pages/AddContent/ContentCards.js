@@ -11,7 +11,6 @@ import { IoMdAdd } from "react-icons/io";
 import defaultImg from '../../Assets/Images/default-image.png'
 
 const ContentCard = (props) => {
-    console.log(props,"props");
 
     const editRef = useRef(null);
     const [showEditBtn, toggleEditBtn] = useState(false);

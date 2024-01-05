@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import InputField from "../../../Components/InputField";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../../Api/productAPI";
 
 import Select from 'react-select'
 
@@ -82,7 +83,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     setItem({ ...item, [e.target.name]: e.target.value });
 
   //////
-  const formData = new FormData();
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -106,77 +107,59 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     if(image){
       data["photo"] = image
     }
-    
-    formData.append('image', image, image.name);
-    formData.append('data', data);
+   
+    product ?
+    editProduct(data)
+    .then((res) => {
+      if (res.status === 200) {
 
-    if(image){
-      data["photo"] = image
-    }
-    
-    const formData = new FormData();
-    console.log(image)
-    console.log(product_barcode) 
+        toast.success("Product updated successfully.");
+        handleResponse({id : "product", data : res.data})
 
-    formData.append('image', image);
-    formData.append("product_barcode", product_barcode)
-    
-    console.log(formData.get('image'),"form data");
-    console.log(data);
+        closeModal(false);
+      } else if (res.status === 400) {
+        toast.success("Please fill values correctly.");
+      }
 
+    }).catch((err) => {
+      const msg = errorMsg(err);
+      toast.error(msg);
+    }) : addProductToCat ?  addProductToCategory(data)
+    .then( (res) => {
+      console.log(res,"add to category result");
+      if(res.status === 201){
+        console.log(201);
+        toast.success("Product Added Successfully");
 
-    // product ?
-    // editProduct(data)
-    // .then((res) => {
-    //   if (res.status === 200) {
+        handleResponse({ id : "product", data : res.data });
+        closeModal(false);
+      }else if(res.status === 400){
+        toast.error("Please fill values correctly.")
+      }
 
-    //     toast.success("Product updated successfully.");
-    //     handleResponse({id : "product", data : res.data})
+      return;
+    })
+    .catch((err) => {
+      toast.error(errorMsg(err))
 
-    //     closeModal(false);
-    //   } else if (res.status === 400) {
-    //     toast.success("Please fill values correctly.");
-    //   }
+      return;
+    }) :
+    addProduct(data)
+    .then((res) => {
+      // console.log(res);
+      if (res.status === 201) {
+        toast.success("Product added successfully.");
+        handleResponse({id : "product", data : res.data})         
+        closeModal(false); 
 
-    // }).catch((err) => {
-    //   const msg = errorMsg(err);
-    //   toast.error(msg);
-    // }) : addProductToCat ?  addProductToCategory(data)
-    // .then( (res) => {
-    //   console.log(res,"add to category result");
-    //   if(res.status === 201){
-    //     console.log(201);
-    //     toast.success("Product Added Successfully");
-
-    //     handleResponse({ id : "product", data : res.data });
-    //     closeModal(false);
-    //   }else if(res.status === 400){
-    //     toast.error("Please fill values correctly.")
-    //   }
-
-    //   return;
-    // })
-    // .catch((err) => {
-    //   toast.error(errorMsg(err))
-
-    //   return;
-    // }) :
-    // addProduct(data)
-    // .then((res) => {
-    //   // console.log(res);
-    //   if (res.status === 201) {
-    //     toast.success("Product added successfully.");
-    //     handleResponse({id : "product", data : res.data})         
-    //     closeModal(false); 
-
-    //   } else if (res.status === 400) {
-    //     toast.success("Please fill values correctly.");
-    //   }
-    // })
-    // .catch((error) => {
-    //   const msg = errorMsg(error);
-    //   toast.error(msg);
-    // });
+      } else if (res.status === 400) {
+        toast.success("Please fill values correctly.");
+      }
+    })
+    .catch((error) => {
+      const msg = errorMsg(error);
+      toast.error(msg);
+    });
 
 
   };

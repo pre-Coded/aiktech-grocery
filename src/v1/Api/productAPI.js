@@ -114,7 +114,7 @@ export const fetchInventories = (data) => {
 
 export const fetchleafcategory = (data) => {
   const { leaf } = data;
-  const url = `/shop/fetchcategories/?leaf=${leaf}`;
+  const url = `/shop/categories/leaf/`;
   const params = {};
   const payload = {};
   return requestMaker(url, "get", { params, payload });
