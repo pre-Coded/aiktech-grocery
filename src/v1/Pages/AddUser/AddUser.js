@@ -1,27 +1,29 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import './AddProduct.scss'
 
-import { Modal } from '../../../Components';
-import ContentCard from '../ContentCards';
+// import './AddProduct.scss'
 
-import AddProductModal from './AddProductModal';
-import { useAsyncError } from 'react-router';
+import { Modal } from '../../Components';
 
-import { dashboardAPI } from "../../../Api/index.js";
+import ContentCard from '../AddContent/ContentCards';
 
-import data from '../../../Assets/DummyData.json'
 
-import Loader from '../../../Components/Loader';
+import AddProductModal from '../AddContent/AddProdcut/AddProductModal';
+
+import { dashboardAPI } from "../../Api/index.js";
+
+// import data from '../../../Assets/DummyData.json'
+
+import Loader from '../../Components/Loader';
 import { toast } from 'react-toastify';
-import { productList } from '../../../../api/request.api';
+
+import { productList } from '../../../api/request.api';
 
 
-const AddProduct = () => {
+const AddUser = () => {
     const [products, setProducts] = useState([])
     const [fullProductList, setFullProductList] = useState([]);
 
-    const [loading, setLoading] = useState(false);
-    const searchRef = useRef(null);
+    const [loading, setLoading] = useState(true);
 
     const fetchItem = async () => {
         try{
@@ -83,70 +85,20 @@ const AddProduct = () => {
             barcode: data.barcode
         })
 
-        handleToggleModal()
+        handleToggleModal();
     }
 
     const handleDelete = (data) => {
-
-        if(data.type === "product"){
-            const newProductList = fullProductList.filter((item) => item.id !== data.cardId)
-
-            setFullProductList(newProductList);
-
-            // if user deletes while searching
-            const searchText = searchRef.current.value;
-
-            if (searchText === null || searchText.length === 0 || searchText === "") {
-                setProducts(newProductList);
-            }
-
-            const filterItem = newProductList.filter((item) => {
-                return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
-            })
-
-            setProducts(filterItem);
+        if(data.id === "product"){
+            setProducts(data?.data);
+            setFullProductList(data?.data);
         }
     }
 
     const handleEditSuccess = (data) =>{
-
-        if(data.type === "product"){
-
-            // if it didn't match even once, then it's a new Product added.
-            let newProductAdded = true;
-
-            const newProductList = fullProductList.reduce(( product, productItem ) => {
-
-                // if it didn't match even once, then it's a new Product added.
-
-                if(productItem.id === data.itemId){
-                    productItem = data.data;
-
-                    if(newProductAdded) newProductAdded = false;
-                }
-
-                product.push(productItem);
-
-                return product;
-            }, [])
-
-
-            if(newProductAdded) newProductList.push(data.data);
-
-            setFullProductList(newProductList)
-
-            // if user is adding while searching;
-            const searchText = searchRef.current.value;
-
-            if (searchText === null || searchText.length === 0 || searchText === "") {
-                setProducts(newProductList);
-            }
-
-            const filterItem = newProductList.filter((item) => {
-                return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
-            })
-
-            setProducts(filterItem);
+        if(data.id === "product"){
+            setProducts(data.data);
+            setFullProductList(data.data)
         }
     }
 
@@ -176,9 +128,8 @@ const AddProduct = () => {
                         <div className='search-tab input-border flex-1'>
                             <input
                                 type={'search'}
-                                placeholder="Search Your Product..."
+                                placeholder="Search User..."
                                 onChange={handleChange}
-                                ref={searchRef}
                             />
                         </div>
 
@@ -186,7 +137,7 @@ const AddProduct = () => {
                             handleToggleModal();
                             setProductForm(null)
                         }} className='add-btn btn-none btn-outline'>
-                            {`Add Product`}
+                            {`Add User`}
                         </button>
 
                     </section>
@@ -198,25 +149,24 @@ const AddProduct = () => {
                                 products.map((product, index) =>
                                 (
                                     <ContentCard
-                                        key={product.id}
-                                        cardId={product.id}
-                                        data={product}
+                                        // key={product.id}
+                                        // cardId={product.id}
+                                        // data={product}
                                         
-                                        editFunction={handleEditButton}
+                                        // editFunction={handleEditButton}
 
-                                        deleteCard={{
-                                            itemName : 'product',
-                                            response : handleDelete,
-                                        }}
+                                        // deleteCard={{
+                                        //     itemName : 'product',
+                                        //     response : handleDelete,
+                                        // }}
 
-                                        width ={"32%"}
-                                        productCard
+                                        // width ={"32%"}
                                     />
                                 )
                                 ) 
                                 :
                                 <div className='text-medium text-bold-sm flex-1 flex-row place-item-center'>
-                                    No Product to show
+                                    No User to show
                                 </div>
                             }
                         </div>
@@ -230,4 +180,4 @@ const AddProduct = () => {
 }
 
 
-export default AddProduct;
+export default AddUser;

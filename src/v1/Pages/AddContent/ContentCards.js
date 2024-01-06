@@ -24,11 +24,11 @@ const ContentCard = (props) => {
 
         if(props.deleteCard?.itemName === "product"){
             try{
-                const response = await deleteProduct({id : props.cardId})
 
-                response && props.deleteCard?.response({
-                    id : props.deleteCard?.itemName, 
-                    data : response.data
+                const response = await deleteProduct({id : props.cardId})
+                response.status === 202 && props.deleteCard?.response({
+                    type : props.deleteCard?.itemName, 
+                    cardId : props.cardId
                 });
 
             }catch(e){
@@ -40,10 +40,10 @@ const ContentCard = (props) => {
             try{
                 const response = await deleteProductFromCategory({ category_id : props.categoryId, id : props.cardId})
 
-                response && props.deleteCard?.response({
-                    id : props.deleteCard?.itemName,
+                response.status === 202 && props.deleteCard?.response({
+                    type : props.deleteCard?.itemName,
+                    cardId : props.cardId,
                     catOrSubCatId : props.categoryId, 
-                    data : response.data
                 });
 
             }catch(e){
@@ -55,10 +55,10 @@ const ContentCard = (props) => {
             try{
                 const response = await deleteProductFromCategory({ category_id : props.subCategoryId , id : props.cardId})
 
-                response && props.deleteCard?.response({
-                    id : props.deleteCard?.itemName, 
+                response.status === 202 && props.deleteCard?.response({
+                    type : props.deleteCard?.itemName,
+                    cardId : props.cardId,
                     catOrSubCatId : props.subCategoryId,
-                    data : response.data
                 });
 
             }catch(e){
@@ -71,9 +71,9 @@ const ContentCard = (props) => {
             try{
                 const response = await deleteCategory({id : props.cardId})
 
-                response && props.deleteCard?.response({
-                    id : props.deleteCard?.itemName, 
-                    data : response.data
+                response.status === 202 && props.deleteCard?.response({
+                    type : props.deleteCard?.itemName, 
+                    cardId : props.cardId
                 });
             }catch(e){
                 toast.error("Error in deleting category.",  {autoClose : 1000})
@@ -84,11 +84,11 @@ const ContentCard = (props) => {
             try{
                 const response = await deleteSubCategoryFromCategory({ category_id : props.categoryId, id : props.cardId})
                 
-                 response && props.deleteCard?.response({
-                    id : props.deleteCard.itemName, 
-                    data : response.data
+                 response.status === 202 && props.deleteCard?.response({
+                    type : props.deleteCard.itemName, 
+                    cardId : props.cardId
                 });
-
+                
             }catch(e){
                 toast.error("Error in deleting subcategory.",  {autoClose : 1000})
             }   
@@ -138,6 +138,12 @@ const ContentCard = (props) => {
                         showEditBtn &&
                         <HoverComponent
                             hoverRef={editRef}
+                            style={{
+                                backgroundColor : '#f2f2f2', 
+                                padding : '4px 0', 
+                                width : '8rem',
+                                borderRadius : '8px'
+                            }}
                         >
                             <div className='flex-column gap-10'>
                                 {
@@ -171,10 +177,11 @@ const ContentCard = (props) => {
                                     <button
                                     className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
 
-                                    onClick={ () => {
+                                    onClick={ (e) => {
+                                        e.stopPropagation();
                                         props.addSubcategory(props.cardId)
-                                        
                                     } }
+
                                     >
 
                                     <IoMdAdd fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
@@ -242,6 +249,7 @@ const ContentCard = (props) => {
             {
                 props.cardId !== null && 
                 props.selectedCardId !== null &&
+                !props.productCard && 
                 (props.cardId === props.selectedCardId) &&
                     <div className='subcategory-container overflow-scroll' >
                         {
@@ -261,6 +269,7 @@ const ContentCard = (props) => {
 
                                             deleteCard={props.deleteSubCategory}
 
+                                            productCard
                                             width={"100%"}
                                         />
                                     )
@@ -268,10 +277,11 @@ const ContentCard = (props) => {
                             }
                             </>
                             :
-
-                            <span className='text-small text-bold-sm'>
-                                No SubCategory to show.
-                            </span>
+                            (
+                                <span className='text-small text-bold-sm'>
+                                    No SubCategory to show.
+                                </span>
+                            )
                         }
                     </div>
             }

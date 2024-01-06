@@ -33,7 +33,6 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
   productsearch
 });
 
-////
 function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat, categoryId }) {
   const {
     stockdropdown: { list: stockdropdownList },
@@ -42,7 +41,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   } = useSelector(mapStateToProps);
 
   const dispatch = useDispatch();
-
 
   const [item, setItem] = useState({
     product_name: "",
@@ -76,13 +74,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   const [image, setImage] = useState(null);
 
 
-  // console.log(productsearch)
-
-  /////
   const handleAddItem = (e) =>
     setItem({ ...item, [e.target.name]: e.target.value });
-
-  //////
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -108,6 +101,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     if(image){
       data["photo"] = image
     }
+
    
     product ?
     editProduct(data)
@@ -115,7 +109,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       if (res.status === 200) {
 
         toast.success("Product updated successfully.");
-        handleResponse({id : "product", data : res.data})
+
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})
 
         closeModal(false);
       } else if (res.status === 400) {
@@ -125,13 +120,13 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }).catch((err) => {
       const msg = errorMsg(err);
       toast.error(msg);
-    }) : 
+    }) 
+    : 
     addProduct(data)
     .then((res) => {
-      // console.log(res);
       if (res.status === 201) {
         toast.success("Product added successfully.");
-        handleResponse({id : "product", data : res.data})         
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})         
         closeModal(false); 
 
       } else if (res.status === 400) {
@@ -142,7 +137,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       const msg = errorMsg(error);
       toast.error(msg);
     });
-
 
   };
 
@@ -242,7 +236,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       <div className={'input-border flex-row items-center gap-10'}>
 
         <div className={'overflow-hidden'} style={{
-          height: '4rem',
+          height: '2.5rem',
+          maxHeight: '2.5rem',
           aspectRatio: '1',
         }}>
           <img
@@ -269,16 +264,16 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         
       </div>
 
-      <div className="input-border">
+
         <Select
-          className="dropdown"
           placeholder={"Category"}
           options={data}
-          onChange={handleCategoryChange}
+          // onChange={handleCategoryChange}
           isMulti
           isClearable
+          className="select-category"
         />
-      </div>
+
 
 
       <div className="option-buttons save-changes-buttons">

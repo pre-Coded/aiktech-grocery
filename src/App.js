@@ -51,7 +51,7 @@ function App() {
             <Route path="/">
               <Navigation />
               <ScrollToTop />
-              <Switch>
+              <Switch> 
                 <Route exact path="/" component={Home} />
                 {/* <Route exact path="/comingsoon" component={Comingsoon} /> */}
                 <Route path="/categories/:category" component={() => (<AuthWrapper><Category /></AuthWrapper>)} />

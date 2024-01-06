@@ -261,16 +261,16 @@ select {
   background-color: $tabcolor2;
   letter-spacing: 2px;
   font-size: 0.9rem;
-  min-height: 2rem;
+  min-height: 2.2rem;
   min-width: 8rem;
   color : white;
 
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .btn-outline{
   border: 1px solid $tabcolor2;
-  min-height: 2rem;
+  min-height: 2.2rem;
   min-width: 8rem;
 
   letter-spacing: 2px;
@@ -278,7 +278,7 @@ select {
   color: $tabcolor2;
   background-color: white;
 
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .place-item-center{
@@ -292,10 +292,22 @@ select {
 }
 
 .input-border{
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid #999;
  
-  padding: 5px 10px;
+  padding: 4px 8px;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  font-size: medium;
+  color: #333;
+  font-family: $poppins;
+}
+
+.input-border::placeholder{
+  font-size: small;
+  color: #777;
+  font-family: $poppins;
 }
 
 .relative{

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 
-const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, height, width}) => {
+const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, style}) => {
 
     console.log("ref",hoverRef);
 
@@ -26,21 +26,18 @@ const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, height, 
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{
-            maxWidth: '10rem',
-            // minHeight: '5rem',
-            backgroundColor : '#f2f2f2',
-            borderRadius : '5px',
-            padding : '4px',
+            padding : `${position.top}px 10px`,
             position: 'absolute',
-            top: `${position.top}px`,
             right : '0px',
-            fontSize : '0.8rem', 
-            zIndex : '1000'
+            zIndex : '1000',
+            top : '0px',
         }}
     >
+        <div style={style}>
         {
             children
         }
+        </div>
     </div>
     )
 }
