@@ -213,6 +213,7 @@ const AddCategory = () => {
 
 
   const handleEditSuccess = (data) => {
+    console.log(data,"response data");
 
     if(data.type === "category"){
       // checkAddSubCategory state will be used to find, whether to add new data to category or subCategory

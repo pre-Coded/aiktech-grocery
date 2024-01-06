@@ -102,7 +102,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id, n
         handleResponse({
           type : 'category',
           itemId : res.data.id,
-          data : res.data.data
+          data : res.data
         })
 
         closeModal();
@@ -123,7 +123,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id, n
         handleResponse({
           type : 'category',
           itemId : res.data.id,
-          data : res.data.data
+          data : res.data
         })
 
         closeModal(false);
@@ -140,7 +140,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id, n
           handleResponse({
             type : 'category',
             itemId : res.data.id,
-            data : res.data.data
+            data : res.data
           })
 
           closeModal(false);
