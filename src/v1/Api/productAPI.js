@@ -147,3 +147,10 @@ export const addSubCategory = (data) => {
     'Accept': '*/*'
   });
 };
+
+export const fetchCategoryProducts = (data) => {
+  const url = `/shop/category/product/`;
+  const params = {  };
+  const payload = { ...data };
+  return requestMaker(url, "get", { params, payload });
+};

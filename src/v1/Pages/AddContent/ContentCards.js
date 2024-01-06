@@ -173,6 +173,7 @@ const ContentCard = (props) => {
 
                                     onClick={ () => {
                                         props.addSubcategory(props.cardId)
+                                        
                                     } }
                                     >
 
