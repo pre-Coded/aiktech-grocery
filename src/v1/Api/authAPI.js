@@ -71,3 +71,21 @@ export const fetchTenantUsers = (data)=>{
     const payload = {...data};
     return requestMaker(url, "get", {params,payload})
 }
+export const editTenantUsers = (data)=>{
+    const url = `/account/tenant/users`;
+    const params = {}
+    const payload = {...data};
+    return requestMaker(url, "patch", {params,payload})
+}
+export const deleteTenantUsers = (data)=>{
+    const url = `/account/tenant/users`;
+    const params = {}
+    const payload = {...data};
+    return requestMaker(url, "delete", {params,payload})
+}
+export const addTenantUser = (data)=>{
+    const url = `/account/tenant/users`;
+    const params = {}
+    const payload = {...data};
+    return requestMaker(url, "post", {params,payload})
+}
