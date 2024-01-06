@@ -11,6 +11,9 @@ import { toast } from 'react-toastify';
 
 import AddProductModal from '../AddProdcut/AddProductModal';
 import { fetchTenantUsers } from '../../../Api/authAPI.js';
+import { fetchCategoryProducts } from '../../../Api/productAPI.js';
+import axios from 'axios';
+import { getBaseUrl } from '../../../Lib/NetworkHandler.js';
 
 
 const AddCategory = () => {
@@ -41,6 +44,28 @@ const AddCategory = () => {
   useEffect(async ()=>{
     fetchItem();
   },[])
+
+  const fetchSpecificProduct = async () => {
+    try{
+      if(productList.subCategoryId!==null){
+        const input = {name : productList.subCategoryName, id : productList.subCategoryId }
+        const response = await axios.post(`${getBaseUrl()}/api/shop/category/product/`,input);
+        const data = response.data.data;
+        setProductList( prev => ({...prev , data : data }));
+      }
+      
+
+      
+
+    }catch(er){
+      toast.error("Error in fetching products");
+    }
+
+  }
+
+  useEffect(async () => {
+    fetchSpecificProduct();
+  }, [productList.subCategoryId, categories])
 
 
   const handleProductChange = (event, data) => {
@@ -185,11 +210,10 @@ const AddCategory = () => {
   }
 
   const addSubcategory = (data) => {
-    setProductList((prev)=>({...prev, ["subCategoryId"]:data,["option"]:"add-sub-category"}))
+    setProductList((prev)=>({...prev, ["subCategoryId"]:data}));
+    setCategoryForm(null)
     toggleAddOrEditModal(true);
   }
-  
-
   return (
     <div className='add-category-container flex-column flex-1'>
 
@@ -199,14 +223,8 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-          {
-            productList["option"]==="add-sub-category"?
-            <AddCategoryModal closeModal={handleToggleModal}  category_id={productList.subCategoryId}
-           handleResponse ={ handleEditSuccess }/>:
            <AddCategoryModal closeModal={handleToggleModal}  category={categoryForm} category_id={productList.subCategoryId}
            handleResponse ={ handleEditSuccess }/>
-          }
-         
         </Modal>
       }
 
