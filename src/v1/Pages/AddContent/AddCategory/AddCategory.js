@@ -17,6 +17,9 @@ import { getBaseUrl } from '../../../Lib/NetworkHandler.js';
 
 import data from '../../../Assets/DummyData.json'
 
+import Select from 'react-select';
+import LinkProduct from './LinkProduct';
+
 const AddCategory = () => {
   
   const [categories, setCategories] = useState([])
@@ -328,6 +331,9 @@ const AddCategory = () => {
     toggleAddOrEditModal(true);
   }
 
+  // handleProductLink
+
+
   return (
     <div className='add-category-container flex-column flex-1'>
 
@@ -493,7 +499,13 @@ const AddCategory = () => {
                             toggleLinkProductModal(prev => !prev);
                           }}
                         >
-                          
+                          <LinkProduct 
+                            categoryId = {productList.subCategoryId}
+                            fullCategoryList = {fullCategoryList}
+                            setCategories = {setCategories}
+                            setFullCategoryList = {setFullCategoryList}
+                            closeModal = {toggleLinkProductModal}
+                          />
                         </HoverComponent>
                       }
                     </div>

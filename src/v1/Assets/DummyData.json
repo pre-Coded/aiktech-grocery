@@ -47,6 +47,78 @@
             "is_active_product": true,
             "barcode": null,
             "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
+        },
+        {
+            "id": 11,
+            "product_name": "curd",
+            "category": {},
+            "photo": "https://duhpn7g3b6mt.cloudfront.net/phurti-cloudfront/products/logo_2tB0hSb.png",
+            "market_price": null,
+            "price": null,
+            "sku": "SKU00000002",
+            "is_active_product": true,
+            "barcode": null,
+            "description": ""
         }
     ], 
 

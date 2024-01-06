@@ -17,7 +17,7 @@ import AddUser from "../AddUser/AddUser";
 
 const TenantDashboard = () => {
 
-    const [activeComponent, setActiveComponent] = useState("dashboard");
+    const [activeComponent, setActiveComponent] = useState("addCategory");
     const [userInformation, setUserInformation] = useState(false);
     const userInfoRef = useRef(null);
     const history = useHistory();

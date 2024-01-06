@@ -96,7 +96,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }
 
     if(categoryId){
-      data["category_id"]=categoryId
+      data["category_id"]= categoryId
     }
     if(image){
       data["photo"] = image
@@ -177,6 +177,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       element.focus();
     }
   }, []);
+
 
   const handleCategoryChange = (e) => {
     if (Array.isArray(e)) {
@@ -284,10 +285,9 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         <Select
           placeholder={"Category"}
           options={data}
-          // onChange={handleCategoryChange}
+          onChange={handleCategoryChange}
           isMulti
           isClearable
-          className="select-category"
         />
 
 
