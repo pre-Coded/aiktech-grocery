@@ -18,20 +18,122 @@ import { toast } from 'react-toastify';
 
 import { productList } from '../../../api/request.api';
 
+import { fetchTenantUsers } from '../../Api/authAPI';
+import { CiEdit } from 'react-icons/ci';
+import { MdDeleteOutline } from 'react-icons/md';
+import HoverComponent from '../../Components/HoverComponent/HoverComponent';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import AddUserModal from './AddUserModal';
+
+import { deleteTenantUsers } from '../../Api/authAPI';
+
+import data from '../../Assets/DummyData.json'
+
+const UserCard = (props) => {
+    const editRef = useRef(null);
+    const [showEditBtn, toggleEditBtn] = useState(false);
+
+
+    const handleEdit = () => {
+        props.editFunction(props.data);
+    }
+
+    const handleDelete = () => {
+        deleteTenantUsers({id : props.id })
+        .then((res) => {
+            res.status === 202 && props.deleteFunction(props.id);
+        })
+        .catch((err) => {
+            toast.error("Error in deleting user.")
+        })
+    }
+
+    return (
+        <ul 
+            className='ul-style-none relative' 
+            style={{
+                display : 'inline-flex',
+                flexDirection : 'column',
+                maxWidth : '32%',
+                width : '32%',
+                marginBottom : '1%',
+                marginLeft : '1%',
+                gap : '4px',
+                borderRadius : '8px',
+                padding : '4px',
+                boxShadow : '0 0 1px #333'
+            }}
+        >
+            <div
+                className='content-card-edit btn-none'
+                onMouseEnter={() => toggleEditBtn(true)}
+                onMouseLeave={() => toggleEditBtn(false)}
+                ref={editRef}
+            >
+                <BsThreeDotsVertical fontSize={'1rem'} color={"black"} />
+                {
+                    showEditBtn &&
+                    <HoverComponent
+                        hoverRef={editRef}
+                        style={{
+                            backgroundColor : '#f2f2f2', 
+                            padding : '4px 0', 
+                            width : '8rem',
+                            borderRadius : '8px'
+                        }}
+                    >  
+                        <div className='flex-column gap-10'>
+                            { 
+                                <button 
+                                    onClick={ handleEdit }
+                                    className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
+                                >
+                                    <CiEdit fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/> Edit
+                                </button>
+                            }
+                            <button
+                                className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
+
+                                onClick={ handleDelete }
+                            >
+                                <MdDeleteOutline fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+                    </HoverComponent>
+                }
+            </div>
+
+            <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
+                <span className='text-small text-bold-sm'>Name : </span>
+                <span>{props.data?.name}</span>
+            </li>
+            <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
+                <span className='text-small text-bold-sm'>Email : </span>
+                <span>{props.data?.email}</span>
+            </li>
+            <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
+                <span className='text-small text-bold-sm'>Phone Number : </span>
+                <span>{props.data?.phone_number}</span>
+            </li>
+        </ul>
+    )
+}
+
 
 const AddUser = () => {
-    const [products, setProducts] = useState([])
-    const [fullProductList, setFullProductList] = useState([]);
+    const [users, setUsers] = useState([])
+    const [fullUsers, setFullUsers] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
     const fetchItem = async () => {
         try{
-            const response = await dashboardAPI.fetchTenantProducts();
-            setProducts(response.data);
-            setFullProductList(response.data)
+            const response = await fetchTenantUsers();
+            setUsers(response.data);
+            setFullUsers(response.data)
         }catch(e){
-            toast.error("Failed in fetching product.", 1000)
+            toast.error("Failed in fetching User.", 1000)
         }
 
         setLoading(false);
@@ -47,26 +149,24 @@ const AddUser = () => {
         const searchText = e.target.value;
 
         if (searchText === null || searchText.length === 0 || searchText === "") {
-            setProducts(fullProductList);
+            setUsers(fullUsers);
             return;
         }
 
-        const filterItem = fullProductList.filter((item) => {
-            return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+        const filterItem = fullUsers.filter((item) => {
+            return item?.name.toLowerCase().includes(searchText.toLowerCase())
         })
 
-        setProducts(filterItem);
+        setUsers(filterItem);
     }
 
     const [addOrEditModal, toggleAddOrEditModal] = useState(false);
 
-    const [productForm, setProductForm] = useState({
-        product_name : "",
-        packaging_price: "",
-        description: "",
-        sku: "",
-        category: null,
-        id: null, 
+    const [userForm, setUserForm] = useState({
+        name : '',
+        email : '',
+        phone_number : '',
+        role : ''
     })  
 
     // Modal View and toggleEdit Button
@@ -75,31 +175,37 @@ const AddUser = () => {
     }
 
     const handleEditButton = (data) => {
-
-        setProductForm({
-            id: data.id,
-            product_name : data.product_name,
-            packaging_price: data.packaging_price,
-            description: data.description,
-            category: data.category,
-            barcode: data.barcode
-        })
-
+        setUserForm(data);
         handleToggleModal();
     }
 
     const handleDelete = (data) => {
-        if(data.id === "product"){
-            setProducts(data?.data);
-            setFullProductList(data?.data);
-        }
+        const newUser = fullUsers.filter((item) => item.id === data.id);
+
+        setUsers(newUser);
+        setFullUsers(newUser);
     }
 
     const handleEditSuccess = (data) =>{
-        if(data.id === "product"){
-            setProducts(data.data);
-            setFullProductList(data.data)
-        }
+        const id = data.id;
+
+        let newUserAdded = true;
+        const newUserList = fullUsers.reduct( (newList, data) => {
+            if(data.id === id){
+
+                data = data.data;
+
+                if(newUserAdded) newUserAdded = false;
+            }
+
+            newList.push(data);
+            return newList;
+        }, [])
+
+        if(newUserAdded) newUserList.push(data.data);
+
+        setUsers(newUserList);
+        setFullUsers(newUserList)
     }
 
     return (
@@ -110,7 +216,12 @@ const AddUser = () => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} handleResponse={ handleEditSuccess }/>
+                    <AddUserModal 
+                        closeModal={toggleAddOrEditModal}
+                        userForm={userForm}
+                        handleResponse = {handleEditSuccess}
+                        edit = { userForm.email !== '' }
+                    />
                 </Modal>
             }
 
@@ -134,8 +245,15 @@ const AddUser = () => {
                         </div>
 
                         <button onClick={()=>{
+                            setUserForm({
+                                name : '',
+                                email : '',
+                                phone_number : '',
+                                role : ''
+                            })
+
                             handleToggleModal();
-                            setProductForm(null)
+
                         }} className='add-btn btn-none btn-outline'>
                             {`Add User`}
                         </button>
@@ -145,22 +263,15 @@ const AddUser = () => {
                     <section className='all-products-list-wrapper flex-row flex-1'>
                         <div className='all-products-list overflow-scroll flex-1'>
                             {
-                                products.length !== 0 ? 
-                                products.map((product, index) =>
+                                users.length !== 0 ? 
+                                users.map((user, index) =>
                                 (
-                                    <ContentCard
-                                        // key={product.id}
-                                        // cardId={product.id}
-                                        // data={product}
-                                        
-                                        // editFunction={handleEditButton}
-
-                                        // deleteCard={{
-                                        //     itemName : 'product',
-                                        //     response : handleDelete,
-                                        // }}
-
-                                        // width ={"32%"}
+                                    <UserCard
+                                        key={user.id}
+                                        id={user.id}
+                                        data={user}
+                                        editFunction = {handleEditButton}
+                                        deleteFunction = {handleDelete}
                                     />
                                 )
                                 ) 

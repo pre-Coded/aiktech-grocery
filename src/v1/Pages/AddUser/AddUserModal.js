@@ -1,0 +1,107 @@
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+
+import { editTenantUsers, addTenantUser } from '../../Api/authAPI'
+
+function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
+
+    const [item, setItem] = useState(userForm);
+
+    const handleChange = (e) => {
+        setItem( prev => ({
+            ...prev, 
+            [e.target.name] : e.target.value
+        }))
+    }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    !edit ? 
+    addTenantUser(userForm)
+    .then( (res) => {
+
+        res.status === 201 && handleResponse({
+            id : res.data.id, 
+            data : res.data
+        })
+
+    })
+    .catch( (err) => {
+        toast.error("Error in adding user.")
+    })
+    :
+    editTenantUsers(userForm)
+    .then((res) => {
+
+        res.status === 200 &&  handleResponse({
+            id : res.data.id,
+            data : res.data
+        })
+
+    })
+    .catch( (err) => {
+        toast.error("Error in editing user.")
+    })
+
+  }
+ 
+  return (
+    <form className="add-product-wrapper flex-column gap-10" onSubmit={handleSubmit} encType="multipart/form-data">
+      <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add User</div>
+
+      <input 
+        className="input-border"
+        type={"text"}
+        name="name"
+        id="name"
+        placeholder="User Name"
+        value={item.name}
+        onChange={handleChange}
+        required
+      />
+
+        <input
+            className="input-border"
+            type={"email"}
+            name="email"
+            id="email"
+            placeholder="Email"
+            value={item.email}
+            onChange={handleChange}       
+        />
+
+        <input
+            className="input-border"
+            type={"text"}
+            name="phone_number"
+            id="phone_number"
+            placeholder="Phone Number"
+            value={item.phone_number}
+            onChange={handleChange}  
+            required     
+        />
+
+        <input
+            className="input-border"
+            type={"text"}
+            name="role"
+            id="role"
+            placeholder="Role"
+            value={item.role}
+            onChange={handleChange} 
+            required      
+        />
+
+        <div className="option-buttons save-changes-buttons">
+            <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
+            Discard
+            </button>
+            <button className="btn-none btn-primary" type="submit">Save</button>
+        </div>
+    </form>
+  );
+}
+
+export default AddUserModal;

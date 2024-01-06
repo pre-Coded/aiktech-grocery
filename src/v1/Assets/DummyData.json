@@ -637,5 +637,66 @@
             "cart": 51,
             "inventory": 1
         }
+    ], 
+    "users" : [
+        {
+            "id": 6,
+            "password": "pbkdf2_sha256$260000$MP3pvjJDvidHPyX5FEcJ9U$y5SZBmm3yuaGzmtHWqfFZzK/aLNgaN185QyrjDgildo=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "",
+            "last_name": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2023-12-23T13:06:03+05:30",
+            "phone_number": "8074363852",
+            "is_verified": true,
+            "email": "hemanth.bonala11@gmail.com",
+            "role": "ADMIN",
+            "username": "80743638522",
+            "name": "sddgfs",
+            "device_id": null,
+            "attributes": {
+                "PHONE_NUMBERS": [
+                    {
+                        "id": 0,
+                        "phone_number": null,
+                        "label": null,
+                        "verified": true
+                    }
+                ],
+                "EMAILS": [
+                    {
+                        "id": 0,
+                        "email": null,
+                        "label": null,
+                        "verified": true
+                    }
+                ],
+                "ADDRESSES": [
+                    {
+                        "id": 0,
+                        "address": null,
+                        "phone_number": null,
+                        "pincode": null,
+                        "landmark": null,
+                        "label": null,
+                        "primary": true,
+                        "verified": true
+                    },
+                    {
+                        "value": "asdsa\ndsads\n111111coordinates{'lat':17.1465029,'long':79.6229375,'link':https://www.google.com/maps/search/?api=1&query=17.1465029%2C79.6229375}",
+                        "value_type": 3,
+                        "pk": "",
+                        "id": 1
+                    }
+                ]
+            },
+            "staff_category": null,
+            "inventory": 1,
+            "tenant": 2,
+            "groups": [],
+            "user_permissions": []
+        }
     ]
 }

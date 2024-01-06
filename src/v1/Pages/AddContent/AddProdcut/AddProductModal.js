@@ -24,6 +24,7 @@ import {
 } from "../../../Utils/general-utils";
 
 import { addProductToCategory } from "../../../Api/dashboardAPI";
+
 import axios from "axios";
 import { getBaseUrl } from "../../../Lib/NetworkHandler";
 
@@ -63,7 +64,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         barcode: product.barcode,
       })
     }
-    
 
   }, [])
 
@@ -103,6 +103,22 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }
 
    
+    addProductToCat ? 
+    addProductToCat(data)
+    .then((res) => {
+      if(res.status === 201){
+        toast.success("Product added successfully.");
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})         
+        closeModal(false); 
+      }else{
+        toast.error("Please fill the values correctly.");
+      }
+    })
+    .catch((err) => {
+      toast.error("Adding product to category failed.")
+    })
+    : 
+    (
     product ?
     editProduct(data)
     .then((res) => {
@@ -136,8 +152,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     .catch((error) => {
       const msg = errorMsg(error);
       toast.error(msg);
-    });
-
+    })
+    )
   };
 
   const fetchCategories = async () => {

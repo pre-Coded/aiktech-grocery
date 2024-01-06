@@ -158,7 +158,12 @@ const AddProduct = () => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} handleResponse={ handleEditSuccess }/>
+                    <AddProductModal 
+                        closeModal={toggleAddOrEditModal} 
+                        product={productForm} 
+                        handleResponse={ handleEditSuccess }
+                        addProductToCat={false}
+                    />
                 </Modal>
             }
 

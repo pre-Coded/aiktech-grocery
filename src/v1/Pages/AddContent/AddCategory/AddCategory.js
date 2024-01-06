@@ -258,7 +258,6 @@ const AddCategory = () => {
 
     if(data.type === "product"){
 
-
       const catOrSubCatID = productList.subCategoryId;
 
       const newCategoryList = fullCategoryList.reduce(( newCat , cat) => {
@@ -338,8 +337,13 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-           <AddCategoryModal closeModal={handleToggleModal}  category={categoryForm} category_id={productList.subCategoryId}
-           handleResponse ={ handleEditSuccess } name={checkAddSubCategory}/>
+           <AddCategoryModal 
+            closeModal={handleToggleModal}  
+            category={categoryForm} 
+            category_id={productList.subCategoryId}
+            handleResponse ={ handleEditSuccess } 
+            name={checkAddSubCategory}
+            />
         </Modal>
       }
 
@@ -350,8 +354,12 @@ const AddCategory = () => {
           onClick={() => toggleAddProductModal(false)}
         >
           
-          <AddProductModal closeModal={() => toggleAddProductModal(false)}  handleResponse ={ handleEditSuccess }
-          categoryId={productList.subCategoryId} addProductToCat={true} />
+          <AddProductModal 
+            closeModal={() => toggleAddProductModal(false)}  
+            handleResponse ={ handleEditSuccess }
+            categoryId={productList.subCategoryId} 
+            addProductToCat={true}
+            />
         </Modal>
       }
 
