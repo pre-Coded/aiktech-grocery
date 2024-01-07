@@ -86,7 +86,8 @@ const ProductCard = (props) => {
 }
 
 const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCategoryList, closeModal }) => {
-    const [product, setProducts] = useState([])
+    const [product, setProducts] = useState([]);
+    const [searchProducts, setSearchProduct] = useState([])
 
     const [loader, setLoder] = useState(true);
 
@@ -97,6 +98,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
         // make the loader false;
         const response  = await fetchTenantProducts();
         setProducts(response.data);
+        setSearchProduct(response.data)
         setLoder(false);
     }, [])
 
@@ -182,6 +184,18 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
         toggleSelectedCard(filterData);
     }
+    const handleChange = (e)=>{
+        const searchText = e.target.value;
+
+        if (searchText === null || searchText.length === 0 || searchText === "") {
+            setSearchProduct(product)
+            return;
+        }
+        const items = product.filter((item)=>{
+            return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+        })
+        setSearchProduct(items)
+    }
 
     return (
         <div className='absolute flex-column' style={{
@@ -254,8 +268,15 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                                         flex: '1',
                                     }}
                                 >
+                                    <div className='search-tab input-border small-input-padding flex-1'>
+                                        <input
+                                        type={'search'}
+                                        placeholder="Search Category..."
+                                        onChange={handleChange}
+                                        />
+                                    </div>
                                     {
-                                        product.map((item) => {
+                                        searchProducts.length !==0 && searchProducts.map((item) => {
                                             return (
                                                 <ProductCard
                                                     key={item.id}
