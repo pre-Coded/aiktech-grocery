@@ -162,7 +162,7 @@ const AddProduct = () => {
                         closeModal={toggleAddOrEditModal} 
                         product={productForm} 
                         handleResponse={ handleEditSuccess }
-                        addProductToCat={false}
+                        edit={ productForm === null }
                     />
                 </Modal>
             }

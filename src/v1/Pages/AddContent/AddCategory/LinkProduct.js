@@ -123,7 +123,9 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                     subCategoryName : '',
                     products : filterProductName(cat.products)
                 })
+
             } else {
+
                 const newSubcategory = cat.sub_categories.reduce((newSub, sub) => {
                     if (sub.id === categoryId) {
                         sub.products.concat(productIdArray);
@@ -169,7 +171,6 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
         }
         else{
             toast.error("Error while linking product");
-            
         }
 
     }
@@ -206,7 +207,10 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                     :
                     (
                         treeView !== null ?
-                            <TreeView treeView={ treeView } /> :
+                            <div className='flex-1 flex-row justify-center' style={{paddingTop : '10px'}}>
+                                <TreeView treeView={ treeView } />
+                            </div>    
+                             :
                             <>
                                 {
                                     selectedCard.length > 0 &&

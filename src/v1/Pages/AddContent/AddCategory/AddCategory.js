@@ -19,6 +19,7 @@ import data from '../../../Assets/DummyData.json'
 
 import Select from 'react-select';
 import LinkProduct from './LinkProduct';
+import { BsArrowUpCircle, BsArrowDownCircle } from "react-icons/bs";
 
 const AddCategory = () => {
   
@@ -354,22 +355,6 @@ const AddCategory = () => {
       }
 
       {
-        addProductModal && 
-        <Modal 
-          show={addProductModal}
-          onClick={() => toggleAddProductModal(false)}
-        >
-          
-          <AddProductModal 
-            closeModal={() => toggleAddProductModal(false)}  
-            handleResponse ={ handleEditSuccess }
-            categoryId={productList.subCategoryId} 
-            addProductToCat={true}
-            />
-        </Modal>
-      }
-
-      {
         loading ? 
 
         <div className="flex-1 flex-row place-item-center">
@@ -461,7 +446,7 @@ const AddCategory = () => {
 
               <div className='flex-row justify-between items-center' style={{paddingBottom : '1rem'}}>
                 <span className='text-large text-bold-md'>
-                  {productList.subCategoryName?.toUpperCase() || "Product"}
+                  {productList.subCategoryName?.toUpperCase() || "Select Category"}
                 </span>
 
                 <div className='flex-row items-center gap-10'>
@@ -473,12 +458,17 @@ const AddCategory = () => {
                       className="relative"
                     >
                       <button 
-                        className='btn-none btn-outline' 
+                        className='btn-none btn-outline flex-row items-center gap-10' 
                         onClick={() => {
                           toggleLinkProductModal(prev => !prev);
                         }}
                       >
-                        Link Product
+                        <span>Link Product</span>
+                        {
+                          linkProductModal ? 
+                          <BsArrowUpCircle size={'1rem'} color={'#5c77ff'}/> : 
+                          <BsArrowDownCircle size={'1rem'} color={'#5c77ff'}/>
+                        }
                       </button>
 
                       {
@@ -489,9 +479,6 @@ const AddCategory = () => {
                               backgroundColor : '#f2f2f2',
                               width : '20rem',
                               height : '10rem'
-                          }}
-                          onMouseLeave={() => {
-                            toggleLinkProductModal(prev => !prev);
                           }}
                         >
                           <LinkProduct 
