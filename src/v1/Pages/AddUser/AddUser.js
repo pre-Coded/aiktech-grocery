@@ -190,15 +190,15 @@ const AddUser = () => {
         const id = data.id;
 
         let newUserAdded = true;
-        const newUserList = fullUsers.reduct( (newList, data) => {
-            if(data.id === id){
+        const newUserList = fullUsers.reduct( (newList, user) => {
+            if(user.id === id){
 
-                data = data.data;
+                user = data.data;
 
                 if(newUserAdded) newUserAdded = false;
             }
 
-            newList.push(data);
+            newList.push(user);
             return newList;
         }, [])
 

@@ -1,9 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import AddCategory from './AddCategory.scss';
 import { FiDelete } from 'react-icons/fi';
 import { MdAddCircleOutline } from 'react-icons/md';
 
 import data from '../../../Assets/DummyData.json';
 import Loader from '../../../Components/Loader';
+
+
+const TreeView = ({ treeView }) => {
+  const [active, setActive] = useState(false);
+  const [active2, setActive2] = useState(false);
+
+
+  return (
+    <ul className='ul-style-none'>
+      <li onClick={(e) => {
+        e.stopPropagation();
+        setActive(prev => !prev);
+      }} className={active ? 'caret caret-down' : 'caret'}>
+        {treeView.categoryName}
+        <ul className={`${active ? "active" : 'nested'}`}>
+          {treeView.subCategoryName !== '' &&
+            <li onClick={(e) => {
+                e.stopPropagation();
+                setActive2(prev => !prev)
+            }} className={active2 ? 'caret caret-down' : 'caret'}>
+              {treeView.subCategoryName}
+            </li>
+          }
+          <ul className={`${ active2 ? "active" : 'nested'}`}>
+            {treeView.products?.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </ul>
+      </li>
+    </ul>
+  );
+}
+
 
 const ProductCard = (props) => {
     return (
@@ -55,6 +90,8 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const [loader, setLoder] = useState(true);
 
+    const [treeView, setTreeView] = useState(null);
+
     useEffect(() => {
         // make the api call and setProducts here. and setProduct;
         // make the loader false;
@@ -63,15 +100,37 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const [selectedCard, toggleSelectedCard] = useState([]);
 
+    const filterProductName = (selectedProducts = []) => {
+        const data = product.map((p) => {
+            if(selectedProducts.some(item => item.id === p.id )){
+                return p.product_name;
+            }
+        })
+
+        return data;
+    }
+
     const changeCategories = (productIdArray) => {
 
         const newCategoryList = fullCategoryList.reduct((newCat, cat) => {
             if (cat.id === categoryId) {
                 cat.products.concat(productIdArray);
+
+                setTreeView({
+                    categoryName : cat.name, 
+                    subCategoryName : '',
+                    products : filterProductName(cat.products)
+                })
             } else {
                 const newSubcategory = cat.sub_categories.reduce((newSub, sub) => {
                     if (sub.id === categoryId) {
                         sub.products.concat(productIdArray);
+
+                        setTreeView({
+                            categoryName : cat.name, 
+                            subCategoryName : sub.name,
+                            products : filterProductName(sub.products)
+                        })
                     }
 
                     newSub.push(sub);
@@ -88,6 +147,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
         setCategories(newCategoryList);
         setFullCategoryList(newCategoryList);
+
     }
 
     const handleSave = () => {
@@ -131,75 +191,79 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                         <Loader />
                     </div>
                     :
-                    <>
-                        {
-                            selectedCard.length > 0 &&
-                            <div style={{
-                                borderBottom: '1px solid #222',
-                                minWidth: '100%',
-                                minHeight: '4.5rem',
-                                overflowX: 'scroll',
-                                overflowY: 'hidden',
-                            }}>
-                                <div style={{
-                                    width: '60rem',
-                                    overflowY: 'hidden',
-                                    overflowX: 'scroll',
-                                    margin: '10px',
-                                    padding: '0 2px'
-                                }}>
+                    (
+                        treeView !== null ?
+                            <TreeView treeView={ treeView } /> :
+                            <>
+                                {
+                                    selectedCard.length > 0 &&
+                                    <div style={{
+                                        borderBottom: '1px solid #222',
+                                        minWidth: '100%',
+                                        minHeight: '4.5rem',
+                                        overflowX: 'scroll',
+                                        overflowY: 'hidden',
+                                    }}>
+                                        <div style={{
+                                            width: '60rem',
+                                            overflowY: 'hidden',
+                                            overflowX: 'scroll',
+                                            margin: '10px',
+                                            padding: '0 2px'
+                                        }}>
+                                            {
+                                                selectedCard.map((item) => {
+                                                    return (
+                                                        <ProductCard
+                                                            key={item.id}
+                                                            id={item.id}
+                                                            data={item}
+                                                            selectedCard={true}
+                                                            width={'8rem'}
+                                                            onClick={handleDelete}
+                                                        />
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                <div
+                                    style={{
+                                        overflowY: 'scroll',
+                                        overflowX: 'hidden',
+                                        width: '100%',
+                                        height: '100%',
+                                        padding: '10px 4px',
+                                        flex: '1',
+                                    }}
+                                >
                                     {
-                                        selectedCard.map((item) => {
+                                        product.map((item) => {
                                             return (
                                                 <ProductCard
                                                     key={item.id}
                                                     id={item.id}
                                                     data={item}
-                                                    selectedCard={true}
-                                                    width={'8rem'}
-                                                    onClick={handleDelete}
+                                                    onClick={handleSelect}
+                                                    selectedCard={false}
+                                                    width={'100%'}
                                                 />
                                             )
                                         })
                                     }
                                 </div>
-                            </div>
-                        }
 
-                        <div
-                            style={{
-                                overflowY: 'scroll',
-                                overflowX: 'hidden',
-                                width: '100%',
-                                height: '100%',
-                                padding: '10px 4px',
-                                flex: '1',
-                            }}
-                        >
-                            {
-                                product.map((item) => {
-                                    return (
-                                        <ProductCard
-                                            key={item.id}
-                                            id={item.id}
-                                            data={item}
-                                            onClick={handleSelect}
-                                            selectedCard={false}
-                                            width={'100%'}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
-
-                        <div className='flex-row' style={{ justifyContent: 'flex-end', padding: '1rem 10px' }}>
-                            <button className='btn-none btn-primary' onClick={handleSave}>
-                                Save
-                            </button>
-                        </div>
+                                <div className='flex-row' style={{ justifyContent: 'flex-end', padding: '1rem 10px' }}>
+                                    <button className='btn-none btn-primary' onClick={handleSave}>
+                                        Save
+                                    </button>
+                                </div>
 
 
-                    </>
+                            </>
+                    )
             }
 
         </div>
