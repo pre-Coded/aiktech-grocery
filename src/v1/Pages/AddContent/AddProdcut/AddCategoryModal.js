@@ -19,6 +19,7 @@ import {
   isNewLine,
   removeNewLine,
 } from "../../../Utils/general-utils";
+
 import { addCategory } from "../../../Api/dashboardAPI";
 import { actionsCreator } from "../../../Redux/actions/actionsCreator";
 import { addSubCategory } from "../../../Api/productAPI";
@@ -30,7 +31,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
 });
 
 ////
-function AddCategoryModal({ closeModal, category, handleResponse, category_id}) {
+function AddCategoryModal({ closeModal, category, handleResponse, category_id, name}) {
   
   const {
     stockdropdown: { list: stockdropdownList },
@@ -73,11 +74,10 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
     }
   }
     
-
-
   const handleSubmit = (e) => {
 
     e.preventDefault();
+
     let data = {
       name: item.category_name,
       description: item.description,
@@ -94,15 +94,19 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
       data["image"]=image
     }
 
-    category ? editCategory(data).then((res)=>{
+    category ? 
+    editCategory(data).then((res)=>{
       if (res.status === 200) {
         toast.success("category updated successfully.");
 
-        handleResponse({data : res.data, id : "product"})
+        handleResponse({
+          type : 'category',
+          itemId : res.data.id,
+          data : res.data
+        })
 
         closeModal();
-        
-        
+
       } else if (res.status === 400) {
         toast.success("Please fill values correctly.");
       }
@@ -110,23 +114,34 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
     }).catch((err)=>{
       const msg = errorMsg(err);
         toast.error(msg);
-
-    }) : category_id? addSubCategory(data).then((res)=>{
+    }) 
+    : category_id ? addSubCategory(data).then((res)=>{
       if(res.status===201){
-        toast.success("added subcategory successfully");
-        handleResponse({data : res.data, id : "product"})
 
-          closeModal(false);
+        toast.success("added subcategory successfully");
+
+        handleResponse({
+          type : 'category',
+          itemId : res.data.id,
+          data : res.data
+        })
+
+        closeModal(false);
       }
     }).catch((err)=>{
       toast.error("error while adding sub category");
-    }) :addCategory(data)
+    }) 
+    : addCategory(data)
       .then((res) => {
-        // console.log(res);
+        
         if (res.status === 201) {
           toast.success("category added successfully.");
 
-          handleResponse({data : res.data, id : "category"})
+          handleResponse({
+            type : 'category',
+            itemId : res.data.id,
+            data : res.data
+          })
 
           closeModal(false);
         } else if (res.status === 400) {
@@ -139,7 +154,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
         const msg = errorMsg(error);
         toast.error(msg);
       });
-  };
+    };
 
 
 
@@ -149,26 +164,21 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
 
 
   return (
-    <form className="add-product-wrapper flex-column gap-10">
-      <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add Category</div>
-      <form encType="multipart/form-data">
-
-      
-
+    <form className="add-product-wrapper flex-column gap-10" encType="multipart/form-data">
+      <div className="text-large text-bold-md" style={{textAlign : 'center'}}>Add { !name ? "Category" : "SubCategory" }</div>
       <input 
         className="input-border"
         type={"text"}
 
         name="category_name"
         id="category_name"
-        placeholder="category name"
+        placeholder={`${!name ? "Category " : "SubCategory "}Name`}
         value={item.category_name}
         onChange={handleAddItem}
         required
       />
 
       <textarea
-
         style={{
           minHeight : '10rem', 
           resize : 'none',
@@ -192,7 +202,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
           type="checkbox"
           name="home_page"
           id="honme_page"
-          placeholder="show this on home page"
+          placeholder="Show this on homepage"
           value={item.home_page}
           onChange={handleAddItem}
           checked={item.home_page}
@@ -229,13 +239,12 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id}) 
         />
         
       </div>
-      </form>
 
       <div className="option-buttons save-changes-buttons">
         <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
           Discard
         </button>
-        <button className="btn-none btn-primary" onClick={handleSubmit}>Save</button>
+        <button className="btn-none btn-primary" onClick={handleSubmit} type={'submit'}>Save</button>
       </div>
     </form>
   );

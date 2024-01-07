@@ -91,3 +91,9 @@ export const addProductToCategory = (data)=>{
     const payload = { ...data }
     return requestMaker(url, "patch", {params,payload})
 }
+export const linkProductToCategory = (data)=>{
+    const url = `/shop/category/product/`
+    const params = {  }
+    const payload = { ...data }
+    return requestMaker(url, "put", {params,payload})
+}

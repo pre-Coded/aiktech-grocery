@@ -20,7 +20,8 @@ const AddProduct = () => {
     const [products, setProducts] = useState([])
     const [fullProductList, setFullProductList] = useState([]);
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const searchRef = useRef(null);
 
     const fetchItem = async () => {
         try{
@@ -82,20 +83,70 @@ const AddProduct = () => {
             barcode: data.barcode
         })
 
-        handleToggleModal();
+        handleToggleModal()
     }
 
     const handleDelete = (data) => {
-        if(data.id === "product"){
-            setProducts(data?.data);
-            setFullProductList(data?.data);
+
+        if(data.type === "product"){
+            const newProductList = fullProductList.filter((item) => item.id !== data.cardId)
+
+            setFullProductList(newProductList);
+
+            // if user deletes while searching
+            const searchText = searchRef.current.value;
+
+            if (searchText === null || searchText.length === 0 || searchText === "") {
+                setProducts(newProductList);
+            }
+
+            const filterItem = newProductList.filter((item) => {
+                return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+            })
+
+            setProducts(filterItem);
         }
     }
 
     const handleEditSuccess = (data) =>{
-        if(data.id === "product"){
-            setProducts(data.data);
-            setFullProductList(data.data)
+
+        if(data.type === "product"){
+
+            // if it didn't match even once, then it's a new Product added.
+            let newProductAdded = true;
+
+            const newProductList = fullProductList.reduce(( product, productItem ) => {
+
+                // if it didn't match even once, then it's a new Product added.
+
+                if(productItem.id === data.itemId){
+                    productItem = data.data;
+
+                    if(newProductAdded) newProductAdded = false;
+                }
+
+                product.push(productItem);
+
+                return product;
+            }, [])
+
+
+            if(newProductAdded) newProductList.push(data.data);
+
+            setFullProductList(newProductList)
+
+            // if user is adding while searching;
+            const searchText = searchRef.current.value;
+
+            if (searchText === null || searchText.length === 0 || searchText === "") {
+                setProducts(newProductList);
+            }
+
+            const filterItem = newProductList.filter((item) => {
+                return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+            })
+
+            setProducts(filterItem);
         }
     }
 
@@ -107,7 +158,12 @@ const AddProduct = () => {
                     show={addOrEditModal}
                     onClick={handleToggleModal}
                 >
-                    <AddProductModal closeModal={toggleAddOrEditModal} product={productForm} handleResponse={ handleEditSuccess }/>
+                    <AddProductModal 
+                        closeModal={toggleAddOrEditModal} 
+                        product={productForm} 
+                        handleResponse={ handleEditSuccess }
+                        edit={ productForm === null }
+                    />
                 </Modal>
             }
 
@@ -127,6 +183,7 @@ const AddProduct = () => {
                                 type={'search'}
                                 placeholder="Search Your Product..."
                                 onChange={handleChange}
+                                ref={searchRef}
                             />
                         </div>
 
@@ -158,6 +215,7 @@ const AddProduct = () => {
                                         }}
 
                                         width ={"32%"}
+                                        productCard
                                     />
                                 )
                                 ) 

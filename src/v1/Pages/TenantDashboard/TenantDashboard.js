@@ -13,6 +13,7 @@ import AddProduct from "../AddContent/AddProdcut/AddProduct";
 
 import HoverComponent from "../../Components/HoverComponent/HoverComponent";
 import { useDispatch } from "react-redux";
+import AddUser from "../AddUser/AddUser";
 
 const TenantDashboard = () => {
 
@@ -41,7 +42,11 @@ const TenantDashboard = () => {
         }
         else if (activeComponent === 'addStock') {
             return <AddStock />
-        } else {
+        }
+        else if (activeComponent === "addUser"){
+            return <AddUser />
+        } 
+        else {
             return <></>;
         }
     }, [activeComponent])
@@ -83,6 +88,12 @@ const TenantDashboard = () => {
                         userInformation && 
                         <HoverComponent 
                             hoverRef={userInfoRef}
+                            style={{
+                                backgroundColor : '#f2f2f2', 
+                                padding : '4px 0', 
+                                width : '8rem',
+                                borderRadius : '8px'
+                            }}
                         >
                             <div className="mobile-sidebar-items">
                                 <SideBarComponent  
@@ -91,13 +102,7 @@ const TenantDashboard = () => {
                                 />
                             </div>
                             <button 
-                                className="btn-none nowrap"
-                                style={{
-                                    color : 'black',
-                                    letterSpacing : '2px',
-                                    padding : '4px'
-                                }}
-
+                                className="btn-none nowrap flex-row items-center text-small"
                                 onClick={logout}
                             >
                                 Log Out

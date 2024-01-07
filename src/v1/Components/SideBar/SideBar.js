@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom";
 
 import { MdOutlineDashboard, MdOutlineProductionQuantityLimits, MdCategory } from "react-icons/md";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import userEvent from "@testing-library/user-event";
+import { FaUser } from "react-icons/fa";
 
 const DropDownModel = ({ setActiveComponent, activeComponent }) => {
     return (
@@ -52,6 +54,7 @@ const SideBarComponent = ({ setActiveComponent, activeComponent }) => {
     const dashboard = useRef(null);
     const addStock = useRef(null);
     const addContent = useRef(null);
+    const addUser = useRef(null);
 
     const setActiveLiPosition = () => {
         const firstElement = dashboard?.current.getBoundingClientRect().top;
@@ -64,6 +67,8 @@ const SideBarComponent = ({ setActiveComponent, activeComponent }) => {
             setTop(addStock?.current.getBoundingClientRect().top - firstElement);
         } else if (activeComponent === "addProduct" || activeComponent === "addCategory") {
             setTop(addContent?.current.getBoundingClientRect().top - firstElement);
+        } else if (activeComponent === "addUser") {
+            setTop(addUser?.current.getBoundingClientRect().top - firstElement);
         }
 
     }
@@ -150,6 +155,19 @@ const SideBarComponent = ({ setActiveComponent, activeComponent }) => {
                 >
                     <MdOutlineProductionQuantityLimits style={{ maxWidth: '2rem', }} className="hide-on-sm" />
                     <span style={{ justifyContent: 'flex-start', display: 'flex' }}>Add Stock</span>
+                </button>
+            </li>
+
+            <li
+                className=""
+                ref={addUser}
+            >
+                <button
+                    onClick={() => (setActiveComponent("addUser"))}
+                    className={`btn-none flex-row gap-10 ${activeComponent === "addUser" && 'active-li'}`}
+                >
+                    <FaUser style={{ maxWidth: '2rem', }} className="hide-on-sm" />
+                    <span style={{ justifyContent: 'flex-start', display: 'flex' }}>Add User</span>
                 </button>
             </li>
 

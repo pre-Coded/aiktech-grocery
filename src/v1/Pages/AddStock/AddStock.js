@@ -95,11 +95,11 @@ export default function AddStock() {
               .then((response) => {
                 setAllProducts(response.data.data);
               }).catch((err) => {
-                console.log(err.message);
+
               })
 
           }).catch((err) => {
-            console.log(err.message);
+
           })
 
         return 0
@@ -111,7 +111,7 @@ export default function AddStock() {
     invenrorys_promise.then((response) => {
       SetAllInventories(response.data.message);
     }).catch((err) => {
-      console.log(err.message);
+      console.error(err.message);
     });
 
   }, [])
@@ -581,7 +581,7 @@ export default function AddStock() {
 
                     <div className="small-input-padding input-border flex-1">
                       <select
-                        className="select"
+                        className=""
                         onChange={(e) => onChangeHandler(e, "ADDED_BY")}
                         value={addedBy}
                       // data-addedBy={}
@@ -732,19 +732,15 @@ export default function AddStock() {
                   </div>
 
                   <div className="flex-column place-item-center gap-10">
-                    <button type="button" className="btn-none btn-primary" onClick={addItem}>
+                    <button type="button" className="btn-none btn-outline" onClick={addItem}>
                       ADD
                     </button>
-                    <div className="flex-row place-item-center">
-                      <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(true)} type={'button'}>Save {cartData.length > 0 && cartData.length}</button>
-                    </div>
                   </div>
                 </div>
               )
             }
           </div>
 
-          <Modal show={addStockModal} onClose={() => toggleAddStockModal(false)} maxWidth={'100vw'} height={'30rem'}>
             <div className="table-stock">
               <table className="overflow-scroll">
                 <thead className="">
@@ -843,18 +839,12 @@ export default function AddStock() {
                         </tr>
                       );
                     })}
-
                 </tbody>
               </table>
             </div>
-
-            <div className="option-buttons save-changes-buttons" style={{position : 'absolute', bottom : '10px', right : '10px' }}>
-                <button className="btn-none btn-outline" onClick={() => toggleAddStockModal(false)} type={'button'}>
-                  Discard
-                </button>
-                <button className="btn-none btn-primary" type="submit" onClick={handleSubmit}>Save</button>
+            <div className="flex-row place-item-center">
+                <button className="btn-none btn-primary" onClick={handleSubmit} type={'button'}>Save {cartData.length > 0 && cartData.length}</button>
             </div>
-          </Modal>
         </form>
       </div>
 

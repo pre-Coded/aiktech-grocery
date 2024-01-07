@@ -24,6 +24,7 @@ import {
 } from "../../../Utils/general-utils";
 
 import { addProductToCategory } from "../../../Api/dashboardAPI";
+
 import axios from "axios";
 import { getBaseUrl } from "../../../Lib/NetworkHandler";
 
@@ -33,8 +34,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
   productsearch
 });
 
-////
-function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat, categoryId }) {
+function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit, categoryId }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -43,6 +43,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
 
   const dispatch = useDispatch();
 
+  const [categoryIdArray, setCategoryIdArray] = useState([]);
 
   const [item, setItem] = useState({
     product_name: "",
@@ -65,7 +66,6 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         barcode: product.barcode,
       })
     }
-    
 
   }, [])
 
@@ -76,13 +76,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   const [image, setImage] = useState(null);
 
 
-  // console.log(productsearch)
-
-  /////
   const handleAddItem = (e) =>
     setItem({ ...item, [e.target.name]: e.target.value });
-
-  //////
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -90,48 +85,45 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     let data = {
       barcode: product_barcode,
       product_name: item.product_name,
-      price: item.price,
       description: item.description,
-      sku: item.sku,
       photo: image,
-      categories: categories
     };
-
 
     if (product) {
       data["id"] = item.id
     }
 
-    if(categoryId){
-      data["category_id"]=categoryId
+    if(categoryIdArray.length > 0){
+      data["categories"] = categoryIdArray;
     }
+ 
+
     if(image){
       data["photo"] = image
     }
+
    
-    product ?
+    edit ? 
+    addProductToCategory(data)
+    .then((res) => {
+      if(res.status === 201){
+        toast.success("Product added successfully.");
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})           
+        closeModal(false); 
+      }else{
+        toast.error("Please fill the values correctly.");
+      }
+    })
+    .catch((err) => {
+      toast.error("Adding product to category failed.")
+    })
+    : 
+    ( 
     editProduct(data)
     .then((res) => {
       if (res.status === 200) {
-
-        toast.success("Product updated successfully.");
-        handleResponse({id : "product", data : res.data})
-
-        closeModal(false);
-      } else if (res.status === 400) {
-        toast.success("Please fill values correctly.");
-      }
-
-    }).catch((err) => {
-      const msg = errorMsg(err);
-      toast.error(msg);
-    }) : 
-    addProduct(data)
-    .then((res) => {
-      // console.log(res);
-      if (res.status === 201) {
         toast.success("Product added successfully.");
-        handleResponse({id : "product", data : res.data})         
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})         
         closeModal(false); 
 
       } else if (res.status === 400) {
@@ -141,9 +133,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     .catch((error) => {
       const msg = errorMsg(error);
       toast.error(msg);
-    });
-
-
+    })
+    )
   };
 
   const fetchCategories = async () => {
@@ -168,10 +159,16 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
     }
   }, []);
 
+
   const handleCategoryChange = (e) => {
     if (Array.isArray(e)) {
       const temp = e.map((x) => x.value);
+
+      const catId = e.map((x) => x.value);
+      setCategoryIdArray(catId);
+
       setCategories(temp);
+
     }
   };
 
@@ -242,7 +239,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       <div className={'input-border flex-row items-center gap-10'}>
 
         <div className={'overflow-hidden'} style={{
-          height: '4rem',
+          height: '2.5rem',
+          maxHeight: '2.5rem',
           aspectRatio: '1',
         }}>
           <img
@@ -269,17 +267,13 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         
       </div>
 
-      <div className="input-border">
-        <Select
-          className="dropdown"
-          placeholder={"Category"}
-          options={data}
-          onChange={handleCategoryChange}
-          isMulti
-          isClearable
-        />
-      </div>
-
+      <Select
+        placeholder={"Category"}
+        options={data}
+        onChange={handleCategoryChange}
+        isMulti
+        isClearable
+      />
 
       <div className="option-buttons save-changes-buttons">
         <button className="btn-none btn-outline" onClick={() => closeModal(false)}>

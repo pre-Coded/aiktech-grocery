@@ -47,11 +47,11 @@ function App() {
     <div className="AppRoot">
       <Provider store={store}>
           <Switch>
-          <Route path='/cms' render={()=>(<AdminWrapper><TenantDashboard/></AdminWrapper>)}/> 
+          <Route path='/cms' render={()=>(<AuthWrapper><TenantDashboard/></AuthWrapper>)}/> 
             <Route path="/">
               <Navigation />
               <ScrollToTop />
-              <Switch>
+              <Switch> 
                 <Route exact path="/" component={Home} />
                 {/* <Route exact path="/comingsoon" component={Comingsoon} /> */}
                 <Route path="/categories/:category" component={() => (<AuthWrapper><Category /></AuthWrapper>)} />

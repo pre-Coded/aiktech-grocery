@@ -15,12 +15,18 @@ import { fetchCategoryProducts } from '../../../Api/productAPI.js';
 import axios from 'axios';
 import { getBaseUrl } from '../../../Lib/NetworkHandler.js';
 
+import data from '../../../Assets/DummyData.json'
+
+import Select from 'react-select';
+import LinkProduct from './LinkProduct';
+import { BsArrowUpCircle, BsArrowDownCircle } from "react-icons/bs";
 
 const AddCategory = () => {
   
   const [categories, setCategories] = useState([])
   const [fullCategoryList, setFullCategoryList] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const [loading, setLoading] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [productList, setProductList] = useState({
@@ -28,6 +34,10 @@ const AddCategory = () => {
     subCategoryName : null,
     data : null,
   });
+
+  const [checkAddSubCategory, setCheckAddSubCategory] = useState(false);
+  const [linkProductModal, toggleLinkProductModal] = useState(false);
+  const linkProductRef = useRef(null);
 
   const fetchItem = async () => {
     try{
@@ -47,20 +57,15 @@ const AddCategory = () => {
 
   const fetchSpecificProduct = async () => {
     try{
-      if(productList.subCategoryId!==null){
+      if(productList.subCategoryId !== null){
         const input = {name : productList.subCategoryName, id : productList.subCategoryId }
         const response = await axios.post(`${getBaseUrl()}/api/shop/category/product/`,input);
         const data = response.data.data;
         setProductList( prev => ({...prev , data : data }));
       }
-      
-
-      
-
     }catch(er){
       toast.error("Error in fetching products");
     }
-
   }
 
   useEffect(async () => {
@@ -71,8 +76,6 @@ const AddCategory = () => {
   const handleProductChange = (event, data) => {
     event.stopPropagation();
     
-
-   
     if(data.data?.length === 0){
       setProductList({
         subCategoryId : data.id,
@@ -82,6 +85,7 @@ const AddCategory = () => {
 
       return;
     }
+
     setProductList({
       subCategoryId : data.id,
       subCategoryName : data.name,
@@ -118,6 +122,8 @@ const AddCategory = () => {
   }
 
   const handleEditButton = (data) => {
+      setCheckAddSubCategory(false);
+
       setCategoryForm({
           name :  data.name,
           description: data.description,
@@ -129,38 +135,74 @@ const AddCategory = () => {
   }
 
   const handleDelete = (data) => {
-    if(data?.id === "category" || data?.id === "subcategory"){
-      setCategories(data?.data)
-      setFullCategoryList(data?.data)
+
+    if(data?.type === "category" || data?.type === "subcategory"){
+
+      const newCategoryList = fullCategoryList.reduce( (array, item) => {
+
+        if(item.id !== data.cardId){
+
+          let subCategory = item.sub_categories.filter((item) => item.id !== data.cardId);
+          
+          item["sub_categories"] = subCategory;
+          array.push(item);
+
+        }
+      
+        return array;
+      }, [])
+
+      setCategories(newCategoryList)
+      setFullCategoryList(newCategoryList)
+
+      setProductList({
+        subCategoryId : null, 
+        subCategoryName : null,
+        data : null,
+      })
+
     }
 
-    if(data?.id === "productFromSubCat" || data?.id === "productFromCat"){
+    if(data?.type === "productFromSubCat" || data?.type === "productFromCat"){
 
       const catOrSubCatID = data.catOrSubCatId;
-      const categoryList = data.data;
-      setCategories(data?.data)
-      setFullCategoryList(data?.data)
 
-      categoryList.reduce((filteredCategories, category) => {
+      const newCategoryList = fullCategoryList.reduce( (cat, catItem) => {
 
-        if (category.id === catOrSubCatID) {
-          setProductList( (prev) => ({...prev, ["data"] : category.products }) )
-        } else {
-          const subCategory = category.sub_categories;
-          subCategory.some(subCat => {
-            if (subCat.id === catOrSubCatID) {
-              setProductList( (prev) => ({...prev, ["data"] : subCat.products }) )
+        if(catItem.id !== catOrSubCatID){
+
+          let newSubcategory = catItem.sub_categories.reduce( (subCat, subCatItem) => {
+
+            if(subCatItem.id === catOrSubCatID){
+
+              const newProductList = subCatItem.products.filter((item) => item.id !== data.cardId);
+
+              subCatItem["products"] = newProductList;
             }
-          });
+
+            subCat.push(subCatItem);
+
+            return subCat;
+          }, [])
+          
+
+          cat["sub_categories"] = newSubcategory;
+          cat.push(catItem);
+
+        }else{
+          const newProductList = catItem.products.filter((item) => item.id !== data.cardId);
+
+          catItem["products"] = newProductList;
+
+          cat.push(catItem);
         }
-  
-      }, []);
-
       
+        return cat;
+      }, [])
+
+      setCategories(newCategoryList);
+      setFullCategoryList(newCategoryList); 
     }
-
-
-
   }
 
   const [productForm, setProductForm] = useState({
@@ -175,45 +217,123 @@ const AddCategory = () => {
 
 
   const handleEditSuccess = (data) => {
+    
+    if(data.type === "category"){
+      // checkAddSubCategory state will be used to find, whether to add new data to category or subCategory
+      const catOrSubCatID = data.itemId;
 
-    if(data.id === "category"){
-      setCategories(data.data);
-      setFullCategoryList(data.data);
+      let newCategoryAdded = true;
+      const newCategoryList = fullCategoryList.reduce(( newCat , cat) => {
+        if(cat.id === catOrSubCatID){
+          cat = data.data;
+
+          if(newCategoryAdded) newCategoryAdded = false;
+        }else{
+
+          let newSubCatAdded = true;
+          const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
+            
+            if(sub.id === catOrSubCatID){
+
+              sub = data.data;
+              if(newSubCatAdded) newSubCatAdded = false;
+            }
+
+            newSub.push(sub);
+
+            return newSub;
+          }, [])
+
+          if(newSubCatAdded && checkAddSubCategory) newSubCat.push(data.data);
+
+          cat["sub_categories"] = newSubCat;
+        }
+
+        newCat.push(cat);
+        return newCat;
+      }, []);
+
+      if(newCategoryAdded && !checkAddSubCategory) newCategoryList.push(data.data);
+
+      setCategories(newCategoryList);
+      setFullCategoryList(newCategoryList);
     }
 
-    if(data.id === "product"){
+    if(data.type === "product"){
 
       const catOrSubCatID = productList.subCategoryId;
-      const categoryList = data.data;
-      setCategories(data?.data)
-      setFullCategoryList(data?.data)
 
-      const filterProductList = categoryList.reduce((filteredCategories, category) => {
-        if (category.id === catOrSubCatID) {
-          setProductList( (prev) => ({...prev, ["data"] : category.products }) )
+      const newCategoryList = fullCategoryList.reduce(( newCat , cat) => {
 
-        } else {
-          const subCategory = category.sub_categories;
-          subCategory.some(subCat => {
-            if (subCat.id === catOrSubCatID) {
-              setProductList( (prev) => ({...prev, ["data"] : subCat.products }) )
+        if(cat.id === catOrSubCatID){
+
+          let newProductAdded = true;
+
+          const newProductList = cat.products.map((item) => {
+            if(item.id === data.itemId){
+
+              if(newProductAdded) newProductAdded = false;
+
+              return data.data;
             }
-          });
+
+            return item;
+          })
+
+          if(newProductAdded) newProductList.push(data.data);
+
+          cat["products"] = newProductList;
+        }else{
+
+          const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
+            
+            if(sub.id === catOrSubCatID){
+
+              let newProductAdded = true;
+
+              const newProductList = sub.products.map((item) => {
+                if(item.id === data.itemId){
+    
+                  if(newProductAdded) newProductAdded = false;
+    
+                  return data.data;
+                }
+    
+                return item;
+              })
+    
+              if(newProductAdded) newProductList.push(data.data);
+
+              sub["products"] = newProductList;
+            }
+
+            newSub.push(sub);
+
+            return newSub;
+          }, [])
+
+          cat["sub_categories"] = newSubCat;
         }
-      
-        return filteredCategories;
+
+        newCat.push(cat);
+
+        return newCat;
       }, []);
-      
+
+      setCategories(newCategoryList);
+      setFullCategoryList(newCategoryList);
     }
-
-
   }
 
   const addSubcategory = (data) => {
-    setProductList((prev)=>({...prev, ["subCategoryId"]:data}));
+    setCheckAddSubCategory(true);
     setCategoryForm(null)
     toggleAddOrEditModal(true);
   }
+
+  // handleProductLink
+
+
   return (
     <div className='add-category-container flex-column flex-1'>
 
@@ -223,20 +343,13 @@ const AddCategory = () => {
             show={addOrEditModal}
             onClick={handleToggleModal}
         >
-           <AddCategoryModal closeModal={handleToggleModal}  category={categoryForm} category_id={productList.subCategoryId}
-           handleResponse ={ handleEditSuccess }/>
-        </Modal>
-      }
-
-      {
-        addProductModal && 
-        <Modal 
-          show={addProductModal}
-          onClick={() => toggleAddProductModal(false)}
-        >
-          
-          <AddProductModal closeModal={() => toggleAddProductModal(false)}  handleResponse ={ handleEditSuccess }
-          categoryId={productList.subCategoryId} addProductToCat={true} />
+           <AddCategoryModal 
+            closeModal={handleToggleModal}  
+            category={categoryForm} 
+            category_id={productList.subCategoryId}
+            handleResponse ={ handleEditSuccess } 
+            name={checkAddSubCategory}
+            />
         </Modal>
       }
 
@@ -278,7 +391,8 @@ const AddCategory = () => {
                 <span className='text-large text-bold-md flex-row'>
                   Category and Subcategory
                 </span>
-                <button className='add-btn btn-none btn-outline' onClick={()=>{
+                <button className='add-btn btn-none btn-primary' onClick={()=>{
+                  setCheckAddSubCategory(false);
                   handleToggleModal();
                   setCategoryForm(null)
                 }}>
@@ -331,12 +445,56 @@ const AddCategory = () => {
 
               <div className='flex-row justify-between items-center' style={{paddingBottom : '1rem'}}>
                 <span className='text-large text-bold-md'>
-                  {productList.subCategoryName?.toUpperCase() || "Product"}
+                  {productList.subCategoryName?.toUpperCase() || "Select Category"}
                 </span>
 
-                <button className='btn-none btn-outline' onClick={() => toggleAddProductModal(true)}>
-                  Add Product
-                </button>
+                <div className='flex-row items-center gap-10'>
+                  
+                  {
+                    productList.subCategoryId !== null &&
+                    <div
+                      ref={linkProductRef}
+                      className="relative"
+                    >
+                      <button 
+                        className='btn-none btn-outline flex-row items-center gap-10' 
+                        onClick={() => {
+                          toggleLinkProductModal(prev => !prev);
+                        }}
+                      >
+                        <span>Link Product</span>
+                        {
+                          linkProductModal ? 
+                          <BsArrowUpCircle size={'1rem'} color={'#5c77ff'}/> : 
+                          <BsArrowDownCircle size={'1rem'} color={'#5c77ff'}/>
+                        }
+                      </button>
+
+                      {
+                        linkProductModal && 
+                        <HoverComponent 
+                          hoverRef={linkProductRef}
+                          style={{
+                              backgroundColor : '#f2f2f2',
+                              width : '20rem',
+                              height : '10rem'
+                          }}
+                          onMouseLeave={() => {
+                            toggleLinkProductModal(prev => !prev)
+                          }}
+                        >
+                          <LinkProduct 
+                            categoryId = {productList.subCategoryId}
+                            fullCategoryList = {fullCategoryList}
+                            setCategories = {setCategories}
+                            setFullCategoryList = {setFullCategoryList}
+                            closeModal = {toggleLinkProductModal}
+                          />
+                        </HoverComponent>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
 
               {
@@ -345,7 +503,6 @@ const AddCategory = () => {
                 (
                   productList.data.map((product, index) => (
                     <ContentCard 
-
                       key={index} 
                       cardId={product.id}
                       data={product} 
@@ -358,6 +515,7 @@ const AddCategory = () => {
                       subCategoryId ={ productList.subCategoryId }
 
                       width ={"100%"}
+                      productCard
                     /> 
                   ))
                 )
