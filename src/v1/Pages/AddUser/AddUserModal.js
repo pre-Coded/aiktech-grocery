@@ -8,6 +8,9 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
     const [item, setItem] = useState(userForm);
 
     const handleChange = (e) => {
+
+        console.log(e.target.name, e.target.value);
+
         setItem( prev => ({
             ...prev, 
             [e.target.name] : e.target.value
@@ -17,7 +20,7 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     !edit ? 
     addTenantUser(item)
     .then( (res) => {
@@ -86,16 +89,19 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
             required     
         />
 
-        <input
-            className="input-border"
-            type={"text"}
-            name="role"
-            id="role"
-            placeholder="Role"
-            value={item.role}
-            onChange={handleChange} 
-            required      
-        />
+        <div className="input-border flex-row ">
+            <select
+                onChange={handleChange}
+                name={'role'}
+                className="flex-1"
+                required
+            >
+                <option value={"C"} defaultValue>Customer</option>
+                <option value={"DP"}>Delievery Partner</option>
+                <option value={"SK"}>Store Manager</option>
+                <option value={"ADMIN"}>Admin</option>
+            </select>
+        </div>
 
         <div className="option-buttons save-changes-buttons">
             <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
