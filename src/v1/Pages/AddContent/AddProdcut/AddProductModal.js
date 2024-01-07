@@ -34,7 +34,7 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch = [] })
   productsearch
 });
 
-function AddProductModal({ closeModal, setBarcode, product, handleResponse, addProductToCat, categoryId }) {
+function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit, categoryId }) {
   const {
     stockdropdown: { list: stockdropdownList },
     categories: { globalCategories: categoryList },
@@ -42,6 +42,8 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   } = useSelector(mapStateToProps);
 
   const dispatch = useDispatch();
+
+  const [categoryIdArray, setCategoryIdArray] = useState([]);
 
   const [item, setItem] = useState({
     product_name: "",
@@ -87,28 +89,29 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       description: item.description,
       sku: item.sku,
       photo: image,
-      categories: categories
     };
-
 
     if (product) {
       data["id"] = item.id
     }
 
-    if(categoryId){
-      data["category_id"]= categoryId
+    if(categoryIdArray.length > 0){
+      data["categories"] = categoryIdArray;
     }
+
     if(image){
       data["photo"] = image
     }
 
    
-    addProductToCat ? 
+    edit ? 
     addProductToCategory(data)
     .then((res) => {
       if(res.status === 201){
         toast.success("Product added successfully.");
-        handleResponse({ type : "product", itemId : res.data.id , data : res.data})         
+
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data}) 
+                
         closeModal(false); 
       }else{
         toast.error("Please fill the values correctly.");
@@ -118,29 +121,10 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
       toast.error("Adding product to category failed.")
     })
     : 
-    (
-    product ?
+    ( 
     editProduct(data)
     .then((res) => {
       if (res.status === 200) {
-
-        toast.success("Product updated successfully.");
-
-        handleResponse({ type : "product", itemId : res.data.id , data : res.data})
-
-        closeModal(false);
-      } else if (res.status === 400) {
-        toast.success("Please fill values correctly.");
-      }
-
-    }).catch((err) => {
-      const msg = errorMsg(err);
-      toast.error(msg);
-    }) 
-    : 
-    addProduct(data)
-    .then((res) => {
-      if (res.status === 201) {
         toast.success("Product added successfully.");
         handleResponse({ type : "product", itemId : res.data.id , data : res.data})         
         closeModal(false); 
@@ -182,7 +166,12 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
   const handleCategoryChange = (e) => {
     if (Array.isArray(e)) {
       const temp = e.map((x) => x.value);
+
+      const catId = e.map((x) => x.value.id);
+      setCategoryIdArray(catId);
+
       setCategories(temp);
+
     }
   };
 
@@ -281,16 +270,13 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
         
       </div>
 
-
-        <Select
-          placeholder={"Category"}
-          options={data}
-          onChange={handleCategoryChange}
-          isMulti
-          isClearable
-        />
-
-
+      <Select
+        placeholder={"Category"}
+        options={data}
+        onChange={handleCategoryChange}
+        isMulti
+        isClearable
+      />
 
       <div className="option-buttons save-changes-buttons">
         <button className="btn-none btn-outline" onClick={() => closeModal(false)}>
