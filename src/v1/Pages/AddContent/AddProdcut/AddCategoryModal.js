@@ -23,6 +23,8 @@ import {
 import { addCategory } from "../../../Api/dashboardAPI";
 import { actionsCreator } from "../../../Redux/actions/actionsCreator";
 import { addSubCategory } from "../../../Api/productAPI";
+import axios from "axios";
+import { getBaseUrl } from "../../../Lib/NetworkHandler";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
@@ -30,7 +32,6 @@ const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) =
   productsearch
 });
 
-////
 function AddCategoryModal({ closeModal, category, handleResponse, category_id, name}) {
   
   const {
@@ -57,6 +58,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id, n
         category_name: category.name,
         description: category.description,
         home_page: category.home_page,
+        image: category.image
         }) 
       }
 
@@ -93,6 +95,7 @@ function AddCategoryModal({ closeModal, category, handleResponse, category_id, n
     if(image){
       data["image"]=image
     }
+
 
     category ? 
     editCategory(data).then((res)=>{

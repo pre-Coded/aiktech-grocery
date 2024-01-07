@@ -71,24 +71,36 @@ export const deleteSubCategoryFromCategory = (data)=>{
 }
 
 export const addCategory = (data)=>{
+    const getFormData = data => Object.keys(data).reduce((formData, key) => {
+        formData.append(key, data[key]);
+        return formData;
+    }, new FormData());
     const url = `/shop/post/add_category/`
     const params = {  }
-    const payload = { ...data }
+    const payload = getFormData(data);
     return requestMaker(url, "post", {params,payload},{
         'Content-Type': 'multipart/form-data'
     })
 }
 
 export const editCategory = (data)=>{
+    const getFormData = data => Object.keys(data).reduce((formData, key) => {
+        formData.append(key, data[key]);
+        return formData;
+    }, new FormData());
     const url = `/shop/tenant/categories/`
     const params = {  }
-    const payload = { ...data }
+    const payload = getFormData(data)
     return requestMaker(url, "patch", {params,payload})
 }
 export const addProductToCategory = (data)=>{
+    const getFormData = data => Object.keys(data).reduce((formData, key) => {
+        formData.append(key, data[key]);
+        return formData;
+    }, new FormData());
     const url = `/shop/category/product/`
     const params = {  }
-    const payload = { ...data }
+    const payload = getFormData(data)
     return requestMaker(url, "patch", {params,payload})
 }
 export const linkProductToCategory = (data)=>{
