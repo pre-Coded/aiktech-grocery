@@ -23,8 +23,6 @@ import {
 import { addCategory } from "../../../Api/dashboardAPI";
 import { actionsCreator } from "../../../Redux/actions/actionsCreator";
 import { addSubCategory } from "../../../Api/productAPI";
-import axios from "axios";
-import { getBaseUrl } from "../../../Lib/NetworkHandler";
 
 const mapStateToProps = ({ stockdropdown, categories = {}, productsearch=[] }) => ({
   stockdropdown,
