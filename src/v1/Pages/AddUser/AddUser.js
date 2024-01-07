@@ -105,7 +105,7 @@ const UserCard = (props) => {
             </div>
 
             <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
-                <span className='text-small text-bold-sm'>Name : </span>
+                <span className='text-small text-bold-sm'>Username : </span>
                 <span>{props.data?.name}</span>
             </li>
             <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
@@ -180,28 +180,28 @@ const AddUser = () => {
     }
 
     const handleDelete = (data) => {
-        const newUser = fullUsers.filter((item) => item.id === data.id);
+        console.log(data,"response of deleting");
+        const newUser = fullUsers.filter((item) => item.id !== data);
 
         setUsers(newUser);
         setFullUsers(newUser);
     }
 
     const handleEditSuccess = (data) =>{
+        console.log(data,"response data");
         const id = data.id;
 
         let newUserAdded = true;
-        const newUserList = fullUsers.reduct( (newList, user) => {
+        const newUserList = fullUsers.reduce( (newList, user) => {
             if(user.id === id){
-
                 user = data.data;
-
                 if(newUserAdded) newUserAdded = false;
             }
 
             newList.push(user);
             return newList;
         }, [])
-
+        console.log(newUserAdded);
         if(newUserAdded) newUserList.push(data.data);
 
         setUsers(newUserList);

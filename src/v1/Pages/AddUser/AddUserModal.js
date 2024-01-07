@@ -19,26 +19,31 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
     e.preventDefault();
 
     !edit ? 
-    addTenantUser(userForm)
+    addTenantUser(item)
     .then( (res) => {
+        console.log(res,"add user result");
 
         res.status === 201 && handleResponse({
             id : res.data.id, 
             data : res.data
-        })
+        });
+        toast.success("user added successfully")
+        closeModal(false)
 
     })
     .catch( (err) => {
         toast.error("Error in adding user.")
     })
     :
-    editTenantUsers(userForm)
+    editTenantUsers(item)
     .then((res) => {
+        console.log(res,"response of editing user");
 
         res.status === 200 &&  handleResponse({
             id : res.data.id,
             data : res.data
-        })
+        });
+        closeModal(false);
 
     })
     .catch( (err) => {
@@ -54,10 +59,10 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
       <input 
         className="input-border"
         type={"text"}
-        name="name"
+        name="username"
         id="name"
         placeholder="User Name"
-        value={item.name}
+        value={item.username}
         onChange={handleChange}
         required
       />

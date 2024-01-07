@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import AddCategory from './AddCategory.scss';
 import { FiDelete } from 'react-icons/fi';
 import { MdAddCircleOutline } from 'react-icons/md';
-
+import { fetchTenantProducts, linkProductToCategory } from '../../../Api/dashboardAPI';
 import data from '../../../Assets/DummyData.json';
 import Loader from '../../../Components/Loader';
+import { toast } from 'react-toastify';
 
 
 const TreeView = ({ treeView }) => {
@@ -70,7 +71,7 @@ const ProductCard = (props) => {
                 {
                     !props.selectedCard &&
                     <span className='text-small text-bold-sm'>
-                        {props.data.description.slice(0, 30)}
+                        {props.data.description?.slice(0, 30)}
                     </span>
                 }
             </li>
@@ -92,10 +93,12 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const [treeView, setTreeView] = useState(null);
 
-    useEffect(() => {
+    useEffect(async () => {
         // make the api call and setProducts here. and setProduct;
         // make the loader false;
-
+        const response  = await fetchTenantProducts();
+        setProducts(response.data);
+        setLoder(false);
     }, [])
 
     const [selectedCard, toggleSelectedCard] = useState([]);
@@ -112,7 +115,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const changeCategories = (productIdArray) => {
 
-        const newCategoryList = fullCategoryList.reduct((newCat, cat) => {
+        const newCategoryList = fullCategoryList.reduce((newCat, cat) => {
             if (cat.id === categoryId) {
                 cat.products.concat(productIdArray);
 
@@ -150,14 +153,25 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         // all the ids of the selected product
         const productIdArray = selectedCard.map((item) => item.id);
 
         // make the api call and if successfull , 
-        // call the changecategory function with productIdArray and 
-        // make toast success and error and close the modal
-
+        const data = {
+            "category_id": categoryId,
+            "product_id":productIdArray
+        }
+        const response = await linkProductToCategory(data)
+        if (response.status===200){
+            toast.success("linked successfully");
+            changeCategories(productIdArray)
+            
+        }
+        else{
+            toast.error("Error while linking product");
+            
+        }
 
     }
 

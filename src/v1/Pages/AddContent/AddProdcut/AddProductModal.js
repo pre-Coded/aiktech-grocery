@@ -104,7 +104,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, addP
 
    
     addProductToCat ? 
-    addProductToCat(data)
+    addProductToCategory(data)
     .then((res) => {
       if(res.status === 201){
         toast.success("Product added successfully.");

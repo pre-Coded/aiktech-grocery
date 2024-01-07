@@ -465,12 +465,7 @@ const AddCategory = () => {
                 </span>
 
                 <div className='flex-row items-center gap-10'>
-                  <button 
-                    className='btn-none btn-primary' 
-                    onClick={() => {toggleAddProductModal(true)}}
-                  >
-                    Add Product
-                  </button>
+                  
                   {
                     productList.subCategoryId !== null &&
                     <div
