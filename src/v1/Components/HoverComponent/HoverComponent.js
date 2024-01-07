@@ -3,15 +3,11 @@ import React, {useState} from "react";
 
 const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, style}) => {
 
-    console.log("ref",hoverRef);
-
     const findPosition = () => {
         const element =  hoverRef?.current.getBoundingClientRect();
 
         const top = element.height;
-        const left = element.x - element.width + 10;
-
-        console.log(element)
+        const left = element.x - element.width + 10; 
 
         return {
             top : top,

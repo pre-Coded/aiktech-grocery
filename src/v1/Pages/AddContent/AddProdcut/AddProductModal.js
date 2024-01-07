@@ -85,9 +85,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit
     let data = {
       barcode: product_barcode,
       product_name: item.product_name,
-      price: item.price,
       description: item.description,
-      sku: item.sku,
       photo: image,
     };
 
@@ -98,6 +96,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit
     if(categoryIdArray.length > 0){
       data["categories"] = categoryIdArray;
     }
+ 
 
     if(image){
       data["photo"] = image
@@ -109,9 +108,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit
     .then((res) => {
       if(res.status === 201){
         toast.success("Product added successfully.");
-
-        handleResponse({ type : "product", itemId : res.data.id , data : res.data}) 
-                
+        handleResponse({ type : "product", itemId : res.data.id , data : res.data})           
         closeModal(false); 
       }else{
         toast.error("Please fill the values correctly.");
@@ -167,7 +164,7 @@ function AddProductModal({ closeModal, setBarcode, product, handleResponse, edit
     if (Array.isArray(e)) {
       const temp = e.map((x) => x.value);
 
-      const catId = e.map((x) => x.value.id);
+      const catId = e.map((x) => x.value);
       setCategoryIdArray(catId);
 
       setCategories(temp);

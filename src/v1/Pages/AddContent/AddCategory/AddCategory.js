@@ -217,8 +217,7 @@ const AddCategory = () => {
 
 
   const handleEditSuccess = (data) => {
-    console.log(data,"response data");
-
+    
     if(data.type === "category"){
       // checkAddSubCategory state will be used to find, whether to add new data to category or subCategory
       const catOrSubCatID = data.itemId;
@@ -479,6 +478,9 @@ const AddCategory = () => {
                               backgroundColor : '#f2f2f2',
                               width : '20rem',
                               height : '10rem'
+                          }}
+                          onMouseLeave={() => {
+                            toggleLinkProductModal(prev => !prev)
                           }}
                         >
                           <LinkProduct 

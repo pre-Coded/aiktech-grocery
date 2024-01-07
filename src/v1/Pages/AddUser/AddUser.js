@@ -180,7 +180,6 @@ const AddUser = () => {
     }
 
     const handleDelete = (data) => {
-        console.log(data,"response of deleting");
         const newUser = fullUsers.filter((item) => item.id !== data);
 
         setUsers(newUser);
@@ -188,7 +187,6 @@ const AddUser = () => {
     }
 
     const handleEditSuccess = (data) =>{
-        console.log(data,"response data");
         const id = data.id;
 
         let newUserAdded = true;
@@ -201,7 +199,6 @@ const AddUser = () => {
             newList.push(user);
             return newList;
         }, [])
-        console.log(newUserAdded);
         if(newUserAdded) newUserList.push(data.data);
 
         setUsers(newUserList);

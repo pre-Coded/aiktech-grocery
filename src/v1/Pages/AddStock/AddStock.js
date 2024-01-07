@@ -111,7 +111,7 @@ export default function AddStock() {
     invenrorys_promise.then((response) => {
       SetAllInventories(response.data.message);
     }).catch((err) => {
-      // console.log(err.message);
+      console.error(err.message);
     });
 
   }, [])

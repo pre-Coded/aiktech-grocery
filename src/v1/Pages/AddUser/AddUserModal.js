@@ -21,7 +21,6 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
     !edit ? 
     addTenantUser(item)
     .then( (res) => {
-        console.log(res,"add user result");
 
         res.status === 201 && handleResponse({
             id : res.data.id, 
@@ -37,7 +36,6 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
     :
     editTenantUsers(item)
     .then((res) => {
-        console.log(res,"response of editing user");
 
         res.status === 200 &&  handleResponse({
             id : res.data.id,

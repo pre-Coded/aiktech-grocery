@@ -11,8 +11,6 @@ import { toast } from 'react-toastify';
 const TreeView = ({ treeView }) => {
   const [active, setActive] = useState(false);
   const [active2, setActive2] = useState(false);
-  console.log(treeView,"tree view");
-
 
   return (
     <ul className='ul-style-none'>
