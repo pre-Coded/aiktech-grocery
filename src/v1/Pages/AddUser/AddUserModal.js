@@ -8,9 +8,6 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
     const [item, setItem] = useState(userForm);
 
     const handleChange = (e) => {
-
-        console.log(e.target.name, e.target.value);
-
         setItem( prev => ({
             ...prev, 
             [e.target.name] : e.target.value
