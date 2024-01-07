@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 const TreeView = ({ treeView }) => {
   const [active, setActive] = useState(false);
   const [active2, setActive2] = useState(false);
+  console.log(treeView,"tree view");
 
 
   return (
@@ -104,13 +105,11 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
     const [selectedCard, toggleSelectedCard] = useState([]);
 
     const filterProductName = (selectedProducts = []) => {
-        const data = product.map((p) => {
-            if(selectedProducts.some(item => item.id === p.id )){
-                return p.product_name;
-            }
-        })
-
-        return data;
+        const selectedProductNames = product
+            .filter(p => selectedProducts.some(item => item === p.id))
+            .map(p => p.product_name);
+    
+        return selectedProductNames;
     }
 
     const changeCategories = (productIdArray) => {
