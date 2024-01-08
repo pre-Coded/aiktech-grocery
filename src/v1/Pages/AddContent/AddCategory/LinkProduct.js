@@ -86,8 +86,8 @@ const ProductCard = (props) => {
 }
 
 const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCategoryList, closeModal }) => {
-    const [product, setProducts] = useState([]);
 
+    const [product, setProducts] = useState([]);
     const [loader, setLoder] = useState(true);
 
     const [treeView, setTreeView] = useState(null);
