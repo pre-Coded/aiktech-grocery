@@ -535,10 +535,11 @@ export default function AddStock() {
 
       </Modal>
 
-      <div className="input-border small-input-padding" style={{ maxHeight: 'fit-content' }}>
+      <div className="input-border small-input-padding flex-row" style={{ maxHeight: 'fit-content' }}>
         <select
           onChange={inventoryHandler}
           value={inventory}
+          className="flex-1"
         >
           <option>Select Inventory</option>
 
@@ -558,7 +559,7 @@ export default function AddStock() {
       </div>
 
 
-      <div className="" style={{ width: '100%', height: '100%' }}>
+      <div className="flex-1 overflow-scroll" style={{ width: '100%', height: '40rem', paddingBottom : '4rem'}}>
 
         <form
           className=""
@@ -566,7 +567,7 @@ export default function AddStock() {
           id="form"
           autoComplete="new-password"
         >
-          <div className=" " style={{ marginTop: '2rem' }}>
+          <div className=" " style={{ marginTop: '2rem', }}>
             {
               !editModal &&
               (
@@ -744,7 +745,7 @@ export default function AddStock() {
             <div className="table-stock">
               <table className="overflow-scroll">
                 <thead className="">
-                  <th>Address</th>
+                  <th style={{minWidth : '12rem'}}>Address</th>
                   <th>Product Remaining</th>
                   <th>Added By</th>
                   <th>Barcode</th>
@@ -777,7 +778,7 @@ export default function AddStock() {
 
                       return (
                         <tr className="" key={index}>
-                          <td>{product_address}</td>
+                          <td style={{minWidth : '12rem'}}>{product_address}</td>
                           <td>{product_remaining}</td>
                           <td>
                             {stockdropdownList &&

@@ -20,7 +20,7 @@ const AddProduct = () => {
     const [products, setProducts] = useState([])
     const [fullProductList, setFullProductList] = useState([]);
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const searchRef = useRef(null);
 
     const fetchItem = async () => {
@@ -181,7 +181,7 @@ const AddProduct = () => {
                         <div className='search-tab input-border flex-1'>
                             <input
                                 type={'search'}
-                                placeholder="Search Your Product..."
+                                placeholder="Search Products"
                                 onChange={handleChange}
                                 ref={searchRef}
                             />
@@ -197,26 +197,28 @@ const AddProduct = () => {
                     </section>
 
                     <section className='all-products-list-wrapper flex-row flex-1'>
-                        <div className='all-products-list overflow-scroll flex-1'>
+                        <div className='all-products-list overflow-scroll flex-1' style={{paddingBottom : '10rem'}}>
                             {
                                 products.length !== 0 ? 
                                 products.map((product, index) =>
                                 (
-                                    <ContentCard
-                                        key={product.id}
-                                        cardId={product.id}
-                                        data={product}
-                                        
-                                        editFunction={handleEditButton}
+                                    <div className='responsive-card'>
+                                        <ContentCard
+                                            key={product.id}
+                                            cardId={product.id}
+                                            data={product}
+                                            
+                                            editFunction={handleEditButton}
 
-                                        deleteCard={{
-                                            itemName : 'product',
-                                            response : handleDelete,
-                                        }}
+                                            deleteCard={{
+                                                itemName : 'product',
+                                                response : handleDelete,
+                                            }}
 
-                                        width ={"32%"}
-                                        productCard
-                                    />
+                                            width ={"100%"}
+                                            productCard
+                                        />
+                                    </div>
                                 )
                                 ) 
                                 :

@@ -265,8 +265,7 @@ select {
   background-color: $tabcolor2;
   letter-spacing: 2px;
   font-size: 0.9rem;
-  min-height: 2.2rem;
-  min-width: 8rem;
+  padding: 5px 10px;
   color : white;
 
   border-radius: 8px;
@@ -274,8 +273,7 @@ select {
 
 .btn-outline{
   border: 1px solid $tabcolor2;
-  min-height: 2.2rem;
-  min-width: 8rem;
+  padding: 5px 10px;
 
   letter-spacing: 2px;
   font-size: 0.9rem;
@@ -283,6 +281,10 @@ select {
   background-color: white;
 
   border-radius: 8px;
+}
+
+.btn-hover:hover{
+  opacity: 0.7;
 }
 
 .place-item-center{
@@ -334,6 +336,14 @@ select {
   border: 1px solid red;
 }
 
+.text-uppercase{
+  text-transform: uppercase;
+}
+
+.text-smallcase{
+  text-transform: lowercase;
+}
+
 .overflow-hidden{
   overflow: hidden;
 }
@@ -343,17 +353,92 @@ select {
   scroll-behavior: smooth;
 }
 
-.btn-hover:hover{
-  opacity: 0.7;
-}
-
 .overflow-scroll::-webkit-scrollbar{
   width: 2px;
   margin-left: 5px;
+}
+
+.overflowX-scroll{
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+}
+
+.overflowX-scroll::-webkit-scrollbar{
+  width: 2px;
+}
+
+.overflowY-scroll{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.overflowY-scroll::-webkit-scrollbar{
+  width: 1px;
 }
 
 @media #{$media-tablet} {
   .responsive-flex-row{
     flex-direction: column;
   }
+}
+
+// table design
+.table-stock{
+  width: 100%;
+  margin: 2rem 0;
+  overflow: scroll;
+}
+
+.table-stock table{
+  width: 100%;
+}
+
+.table-stock thead{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(226,231,255,.4392156862745098);
+  border-radius: 10px;
+}
+ 
+.table-stock thead th{
+  flex: 1;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid white;
+}
+
+.table-stock thead th:first-child{
+  min-width: 10rem;
+}
+
+.table-stock tbody{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+}
+
+.table-stock tbody tr{
+  padding: 0;
+  margin : 0;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.table-stock tbody tr td{
+  flex: 1;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(226,231,255,.4392156862745098);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.table-stock tbody tr td:first-child{
+  min-width: 10rem;
 }

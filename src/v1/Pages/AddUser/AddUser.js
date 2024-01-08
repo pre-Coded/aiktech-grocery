@@ -1,22 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-// import './AddProduct.scss'
+import './AddUser.scss'
 
 import { Modal } from '../../Components';
-
-import ContentCard from '../AddContent/ContentCards';
-
-
-import AddProductModal from '../AddContent/AddProdcut/AddProductModal';
-
-import { dashboardAPI } from "../../Api/index.js";
-
-// import data from '../../../Assets/DummyData.json'
 
 import Loader from '../../Components/Loader';
 import { toast } from 'react-toastify';
 
-import { productList } from '../../../api/request.api';
 
 import { fetchTenantUsers } from '../../Api/authAPI';
 import { CiEdit } from 'react-icons/ci';
@@ -54,18 +44,19 @@ const UserCard = (props) => {
             style={{
                 display : 'inline-flex',
                 flexDirection : 'column',
-                maxWidth : '32%',
-                width : '32%',
+                width : '100%',
                 marginBottom : '1%',
                 marginLeft : '1%',
                 gap : '4px',
                 borderRadius : '8px',
                 padding : '4px',
-                boxShadow : '0 0 1px #333'
+                border : '1px solid #f2f2f2',
+                boxShadow : '0 0 2px #f2f2f2',
+                flexWrap : 'wrap'
             }}
         >
             <div
-                className='content-card-edit btn-none'
+                className='content-card-edit btn-none relative'
                 onMouseEnter={() => toggleEditBtn(true)}
                 onMouseLeave={() => toggleEditBtn(false)}
                 ref={editRef}
@@ -105,15 +96,15 @@ const UserCard = (props) => {
             </div>
 
             <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
-                <span className='text-small text-bold-sm'>Username : </span>
+                <span className='text-small text-bold-md'>Username : </span>
                 <span>{props.data?.name}</span>
             </li>
             <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
-                <span className='text-small text-bold-sm'>Email : </span>
+                <span className='text-small text-bold-md'>Email : </span>
                 <span>{props.data?.email}</span>
             </li>
             <li className='flex-row gap-10 items-center gap-10 text-small text-bold-sm'>
-                <span className='text-small text-bold-sm'>Phone Number : </span>
+                <span className='text-small text-bold-md'>Phone Number : </span>
                 <span>{props.data?.phone_number}</span>
             </li>
         </ul>
@@ -175,6 +166,7 @@ const AddUser = () => {
     }
 
     const handleEditButton = (data) => {
+        console.log(data);
         setUserForm(data);
         handleToggleModal();
     }
@@ -263,13 +255,15 @@ const AddUser = () => {
                                 users.length !== 0 ? 
                                 users.map((user, index) =>
                                 (
-                                    <UserCard
-                                        key={user.id}
-                                        id={user.id}
-                                        data={user}
-                                        editFunction = {handleEditButton}
-                                        deleteFunction = {handleDelete}
-                                    />
+                                    <div className='responsive-card'>
+                                        <UserCard
+                                            key={user.id}
+                                            id={user.id}
+                                            data={user}
+                                            editFunction = {handleEditButton}
+                                            deleteFunction = {handleDelete}
+                                        />
+                                    </div>
                                 )
                                 ) 
                                 :

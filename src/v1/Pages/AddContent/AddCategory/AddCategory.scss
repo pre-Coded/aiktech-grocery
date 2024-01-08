@@ -1,36 +1,40 @@
-.add-category-container{
-
-}
-
-// .add-category-wrapper{
-//     min-height: 100%;
-// }
+@import "../../../../v1/Assets/Styles/Variables.scss";
 
 .category-product{
     margin-top: 1rem;
 }
 
-// .add-category-container{
-//     width: 100%;
-//     height: 100%;
-// }
+.category-subcategory{
+  // min-width: 60%;
+}
 
-// .add-category-wrapper{
-//     width: 100%;
-//     height: 100%;
-// }
+.cat-sub-product{
+  max-width: 40%;
+}
 
-.overflow-x-hidden{
-    overflow-x: hidden;
+.cat-text-btn{
+  display: flex;
+  flex-direction: row;
+}
+
+@media #{$media-tablet} {
+  .cat-sub-product{
+    max-width: 20%;
+  }
+}
+
+@media #{media-mobile} {
+  .cat-text-btn{
+    flex-direction: column;
+  }
 }
 
 // TreView
 .caret {
     cursor: pointer;
-    user-select: none; /* Prevent text selection */
+    user-select: none; 
   }
   
-  /* Create the caret/arrow with a unicode, and style it */
   .caret::before {
     content: "\25B6";
     color: black;
@@ -38,17 +42,14 @@
     margin-right: 6px;
   }
   
-  /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
   .caret-down::before {
     transform: rotate(90deg);
   }
   
-  /* Hide the nested list */
   .nested {
     display: none;
   }
   
-  /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
   .active {
     display: block;
   }
