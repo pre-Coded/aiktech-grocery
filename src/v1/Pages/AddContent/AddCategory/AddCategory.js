@@ -389,7 +389,7 @@ const AddCategory = () => {
 
     // Check if touch events are supported
     if (isTouchDevice && resizerRight) {
-      resizerRight.addEventListener("touchstart", onTouchStartResize);
+      resizerRight?.addEventListener("touchstart", onTouchStartResize);
     }
 
     return () => {
