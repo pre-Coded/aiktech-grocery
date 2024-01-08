@@ -93,10 +93,30 @@ function AddUserModal({ closeModal, userForm , handleResponse, edit }) {
                 className="flex-1"
                 required
             >
-                <option value={"C"} defaultValue>Customer</option>
-                <option value={"DP"}>Delievery Partner</option>
-                <option value={"SK"}>Store Manager</option>
-                <option value={"ADMIN"}>Admin</option>
+                <option 
+                    value={"C"} 
+                    selected={ userForm.role === 'CUSTOMER' || userForm.role === ''}
+                >
+                    Customer
+                </option>
+                <option 
+                    value={"DP"} 
+                    selected={userForm.role === 'DELIVERYPARTNER'}
+                >
+                        Delievery Partner
+                </option>
+                <option 
+                    value={"SK"}
+                    selected={userForm.role === 'STOREMANAGER'}
+                >
+                    Store Manager
+                </option>
+                <option 
+                    value={"ADMIN"}
+                    selected={userForm.role === 'ADMIN'}
+                >
+                    Admin
+                </option>
             </select>
         </div>
 

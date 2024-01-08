@@ -76,7 +76,7 @@ function App() {
                 <Route path="/privacy-policy" component={Privacypolicy} />
                  {/* added */}
                         
-               <Route path='/orderItems' render={()=><Carditems/>}/>
+               <Route path='/orderItems' render={ ()=> <Carditems/> }/>
                 {/* <Route path="/aboutus" component={Aboutus} />
                 <Route path="/contactus" component={Contactus} /> */}
                 <Route path="*" component={Home} />

@@ -1,42 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react'
 import AddCategory from './AddCategory.scss';
 import { FiDelete } from 'react-icons/fi';
-import { MdAddCircleOutline } from 'react-icons/md';
+import { MdAddCircleOutline, MdDelete, MdGroupAdd } from 'react-icons/md';
 import { fetchTenantProducts, linkProductToCategory } from '../../../Api/dashboardAPI';
 import data from '../../../Assets/DummyData.json';
 import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
+import defaultImg from '../../../Assets/Images/default-image.png'
+import { IoAddCircleOutline } from "react-icons/io5";
 
 
 const TreeView = ({ treeView }) => {
-  const [active, setActive] = useState(false);
-  const [active2, setActive2] = useState(false);
+    const [active, setActive] = useState(false);
+    const [active2, setActive2] = useState(false);
 
-  return (
-    <ul className='ul-style-none'>
-      <li onClick={(e) => {
-        e.stopPropagation();
-        setActive(prev => !prev);
-      }} className={active ? 'caret caret-down' : 'caret'}>
-        {treeView.categoryName}
-        <ul className={`${active ? "active" : 'nested'}`}>
-          {treeView.subCategoryName !== '' &&
+    return (
+        <ul className='ul-style-none'>
             <li onClick={(e) => {
                 e.stopPropagation();
-                setActive2(prev => !prev)
-            }} className={active2 ? 'caret caret-down' : 'caret'}>
-              {treeView.subCategoryName}
+                setActive(prev => !prev);
+            }} className={active ? 'caret caret-down' : 'caret'}>
+                {treeView.categoryName}
+                <ul className={`${active ? "active" : 'nested'}`}>
+                    {treeView.subCategoryName !== '' &&
+                        <li onClick={(e) => {
+                            e.stopPropagation();
+                            setActive2(prev => !prev)
+                        }} className={active2 ? 'caret caret-down' : 'caret'}>
+                            {treeView.subCategoryName}
+                        </li>
+                    }
+                    <ul className={`${active2 ? "active" : 'nested'}`}>
+                        {treeView.products?.map((item, index) => (
+                            <li key={index}>{item}</li>
+                        ))}
+                    </ul>
+                </ul>
             </li>
-          }
-          <ul className={`${ active2 ? "active" : 'nested'}`}>
-            {treeView.products?.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
         </ul>
-      </li>
-    </ul>
-  );
+    );
 }
 
 
@@ -47,38 +49,56 @@ const ProductCard = (props) => {
             style={{
                 display: 'inline-flex',
                 flexDirection: 'row',
-                gap: '4px',
                 width: props.width,
-                minHeight: '3rem',
+                // maxHeight: '4rem',
                 padding: '4px 10px',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                boxShadow: '0 0 1px #111',
+                border : '1px solid #f2f2f2',
+                boxShadow : '0 0 2px #f2f2f2',
                 marginBottom: '4px',
-                marginRight: props.selectedCard ? '4px' : '0',
-                justifyContent: 'space-between'
+                gap : '10px',
             }}
 
             onClick={() => {
                 props.onClick(props.data)
             }}
         >
-            <li className='flex-column gap-10 justify-center'>
-                <span className='text-medium text-bold-md'>
-                    {props.data.product_name}
+            <li
+                className='content-card-img overflow-hidden'
+                style={{
+                    height: '3.8rem',
+                    aspectRatio: '1',
+                    overflow: 'hidden'
+                }}
+            >
+                <img
+                    src={props.data?.photo || props.data?.image || defaultImg}
+                    alt={"Not Found"}
+                    style={{
+                        objectFit: 'contain',
+                        width: '100%',
+                        height: '100%',
+                        fontSize: '10px',
+                        justifyContent: 'flex-start',
+                        display: 'inline-block'
+                    }}
+                />
+            </li>
+            <li className='flex-column justify-center flex-1'>
+                <span className='text-medium text-bold-md text-uppercase'>
+                    {props.data.product_name.substring(0, 20)}...
                 </span>
-                {
-                    !props.selectedCard &&
-                    <span className='text-small text-bold-sm'>
-                        {props.data.description?.slice(0, 30)}
-                    </span>
-                }
+
+                <span className='text-small text-bold-sm'>
+                    {props.data.description?.slice(0, 30)}
+                </span>
             </li>
             <li className='flex-row items-center'>
                 {
                     !props.selectedCard ?
-                        <MdAddCircleOutline size={'1.2rem'} color={'green'} /> :
-                        <FiDelete size={'1.2rem'} color={'red'} />
+                        <IoAddCircleOutline size={'1.5rem'} color={'#00FF00'} /> :
+                        <MdDelete size={'1.4rem'} color={'red'} />
                 }
             </li>
         </ul>
@@ -86,18 +106,24 @@ const ProductCard = (props) => {
 }
 
 const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCategoryList, closeModal }) => {
-    const [product, setProducts] = useState([])
 
-    const [loader, setLoder] = useState(true);
+    const [product, setProducts] = useState([])
+    const [fullProductList, setFullProductList] = useState([])
+
+    const [loader, setLoader] = useState(true);
 
     const [treeView, setTreeView] = useState(null);
 
     useEffect(async () => {
-        // make the api call and setProducts here. and setProduct;
-        // make the loader false;
-        const response  = await fetchTenantProducts();
-        setProducts(response.data);
-        setLoder(false);
+        try{
+            const response = await fetchTenantProducts();
+            setProducts(response.data);
+            setFullProductList(response.data)
+        }catch(e){
+            console.log("Error in fetching product list");
+        }
+
+        setLoader(false);
     }, [])
 
     const [selectedCard, toggleSelectedCard] = useState([]);
@@ -106,7 +132,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
         const selectedProductNames = product
             .filter(p => selectedProducts.some(item => item === p.id))
             .map(p => p.product_name);
-    
+
         return selectedProductNames;
     }
 
@@ -117,9 +143,9 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                 cat.products.concat(productIdArray);
 
                 setTreeView({
-                    categoryName : cat.name, 
-                    subCategoryName : '',
-                    products : filterProductName(cat.products)
+                    categoryName: cat.name,
+                    subCategoryName: '',
+                    products: filterProductName(cat.products)
                 })
 
             } else {
@@ -129,9 +155,9 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                         sub.products.concat(productIdArray);
 
                         setTreeView({
-                            categoryName : cat.name, 
-                            subCategoryName : sub.name,
-                            products : filterProductName(sub.products)
+                            categoryName: cat.name,
+                            subCategoryName: sub.name,
+                            products: filterProductName(sub.products)
                         })
                     }
 
@@ -159,42 +185,60 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
         // make the api call and if successfull , 
         const data = {
             "category_id": categoryId,
-            "product_id":productIdArray
+            "product_id": productIdArray
         }
         const response = await linkProductToCategory(data)
-        if (response.status===200){
+        if (response.status === 200) {
             toast.success("linked successfully");
             changeCategories(productIdArray)
-            
+
         }
-        else{
+        else {
             toast.error("Error while linking product");
         }
 
     }
 
-    const handleSelect = (data) => {
+    const toggleSelect = (data) => {
+        if (selectedCard.some((item) => item.id === data.id)) {
+            const filterCard = selectedCard.filter((item) => item.id !== data.id);
+            toggleSelectedCard(filterCard);
+            return;
+        }
+
         toggleSelectedCard(prev => ([...prev, data]));
     }
 
-    const handleDelete = (data) => {
-        const filterData = selectedCard.filter(item => item.id !== data.id)
 
-        toggleSelectedCard(filterData);
+    const handleChange = (e) => {
+        const searchText = e.target.value;
+
+        if (searchText === null || searchText.length === 0 || searchText === "") {
+            setProducts(fullProductList);
+            return;
+        }
+
+        const filterItem = fullProductList.filter((item) => {
+            return item?.product_name.toLowerCase().includes(searchText.toLowerCase())
+        })
+
+        setProducts(filterItem);
     }
 
     return (
         <div className='absolute flex-column' style={{
-            width: '20rem',
-            minHeight: '30rem',
-            maxHeight: '30rem',
-            backgroundColor: '#f2f2f2',
+            width: '100%',
+            height: '30rem',
+            backgroundColor: 'white',
+            borderLeft: '1px solid #5c77ff',
+            borderRight: '1px solid #5c77ff',
+            borderBottom: '1px solid #5c77ff',
             padding: '4px',
             position: 'absolute',
             borderRadius: '8px',
             right: '0',
+            overflow : 'hidden',
             display: 'flex',
-            overflow: 'hidden',
             flexDirection: 'column',
         }}>
             {
@@ -205,49 +249,29 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                     :
                     (
                         treeView !== null ?
-                            <div className='flex-1 flex-row justify-center' style={{paddingTop : '10px'}}>
-                                <TreeView treeView={ treeView } />
-                            </div>    
-                             :
+                            <div className='flex-1 flex-row place-item-center' style={{ paddingTop: '10px' }}>
+                                <TreeView treeView={treeView} />
+                            </div>
+                            :
                             <>
-                                {
-                                    selectedCard.length > 0 &&
-                                    <div style={{
-                                        borderBottom: '1px solid #222',
-                                        minWidth: '100%',
-                                        minHeight: '4.5rem',
-                                        overflowX: 'scroll',
-                                        overflowY: 'hidden',
-                                    }}>
-                                        <div style={{
-                                            width: '60rem',
-                                            overflowY: 'hidden',
-                                            overflowX: 'scroll',
-                                            margin: '10px',
-                                            padding: '0 2px'
-                                        }}>
-                                            {
-                                                selectedCard.map((item) => {
-                                                    return (
-                                                        <ProductCard
-                                                            key={item.id}
-                                                            id={item.id}
-                                                            data={item}
-                                                            selectedCard={true}
-                                                            width={'8rem'}
-                                                            onClick={handleDelete}
-                                                        />
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                }
 
                                 <div
+                                    className='flex-1 input-border'
+                                    style={{ 
+                                        maxHeight: '2.5rem'
+                                    }}
+                                >
+                                    <input
+                                        placeholder='Search Product'
+                                        type={'search'}
+                                        onChange={handleChange}
+                                        autoFocus
+                                    />
+                                </div>
+
+                                <div
+                                    className='overflowY-scroll'
                                     style={{
-                                        overflowY: 'scroll',
-                                        overflowX: 'hidden',
                                         width: '100%',
                                         height: '100%',
                                         padding: '10px 4px',
@@ -261,8 +285,8 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                                                     key={item.id}
                                                     id={item.id}
                                                     data={item}
-                                                    onClick={handleSelect}
-                                                    selectedCard={false}
+                                                    onClick={toggleSelect}
+                                                    selectedCard={selectedCard.some(card => card.id === item.id)}
                                                     width={'100%'}
                                                 />
                                             )
@@ -270,13 +294,59 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                                     }
                                 </div>
 
-                                <div className='flex-row' style={{ justifyContent: 'flex-end', padding: '1rem 10px' }}>
-                                    <button className='btn-none btn-primary' onClick={handleSave}>
-                                        Save
-                                    </button>
+                                <div 
+                                    className='gap-10 flex-column' 
+                                    style={{ 
+                                        padding: '1rem 10px', 
+                                        maxHeight: '10rem',
+                                        width : '100%', 
+                                        overflowX : "hidden",
+                                    }}
+                                >
+                                    {
+                                        selectedCard.length > 0 && 
+                                        <div 
+                                            className='' 
+                                            style={{ 
+                                                overflowX: 'scroll', 
+                                                whiteSpace : 'nowrap',
+                                                minWidth : '300px',
+                                                paddingRight : '20px'
+                                            }}
+                                        >
+                                        {
+                                            selectedCard.map((item) => {
+                                                return (
+                                                    <button
+                                                        style={{
+                                                            display: 'inline-flex',
+                                                            padding: '4px',
+                                                            marginRight : '10px',
+                                                            marginBottom : '5px',
+                                                            alignItems : 'center'
+                                                        }}
+
+                                                        onClick={() => {
+                                                            toggleSelect(item)
+                                                        }}
+
+                                                        className="btn-none gap-10 input-border"
+                                                    >
+                                                        <span>{item.product_name}</span>
+                                                        <MdDelete size={'1.2rem'} color={'red'} />
+                                                    </button>
+                                                )
+                                            })
+                                        }
+                                        </div>
+                                    }
+
+                                    <div className='flex-row' style={{ justifyContent: 'flex-end', maxHeight : '2.2rem', justifySelf : 'flex-end' }}>
+                                        <button className='btn-none btn-primary' onClick={handleSave}>
+                                            Save
+                                        </button>
+                                    </div>
                                 </div>
-
-
                             </>
                     )
             }

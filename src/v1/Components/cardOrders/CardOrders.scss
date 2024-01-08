@@ -22,3 +22,16 @@
 .cardorder:hover{
     box-shadow: 0 0 2px $tabcolor2;
 }
+
+@media #{$media-tablet} {
+    .cardorder{
+        width: 48%;
+    }
+}
+
+@media #{$media-mobile} {
+    .cardorder{
+        width : 100%;
+        margin-right: 1%;
+    }
+}
