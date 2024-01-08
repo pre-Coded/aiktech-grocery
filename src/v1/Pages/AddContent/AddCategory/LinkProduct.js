@@ -112,6 +112,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const [loader, setLoader] = useState(true);
 
+
     const [treeView, setTreeView] = useState(null);
 
     useEffect(async () => {
@@ -225,6 +226,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
         setProducts(filterItem);
     }
 
+
     return (
         <div className='absolute flex-column' style={{
             width: '100%',
@@ -277,9 +279,9 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                                         padding: '10px 4px',
                                         flex: '1',
                                     }}
-                                >
+                                > 
                                     {
-                                        product.map((item) => {
+                                        product.length !==0 && product.map((item) => {
                                             return (
                                                 <ProductCard
                                                     key={item.id}
