@@ -100,7 +100,7 @@ const Dashboard = () => {
 
                         <div className="flex-1 flex-row place-item-center" style={{marginTop : '1rem'}}>
                             {
-                                orders.length === 0 && firstRender === false ? 
+                                orders.length === 0 && firstRender === false ?
                                 (
                                     <span>No orders to display</span>
                                 ) 

@@ -22,18 +22,17 @@ const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, style}) 
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{
-            padding : `${position.top}px 10px`,
+            ...style,
+            top : `${position.top}px`,
+            // padding : '0 10px',
             position: 'absolute',
             right : '0px',
             zIndex : '1000',
-            top : '0px',
         }}
     >
-        <div style={style}>
         {
             children
         }
-        </div>
     </div>
     )
 }

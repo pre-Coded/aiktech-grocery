@@ -1,5 +1,6 @@
 import React, {useRef, useState} from "react";
 import { toast } from "react-toastify";
+import './ContentCard.scss'
 
 import { deleteProduct, deleteCategory, deleteProductFromCategory, deleteSubCategoryFromCategory } from '../../Api/dashboardAPI';
 import HoverComponent from '../../Components/HoverComponent/HoverComponent';
@@ -100,17 +101,10 @@ const ContentCard = (props) => {
     return (
         <div
             className='content-card-container border'
-
             style={{
-
-                width: props.width,
-                maxHeight : '40rem',
-
-                minHeight : '4rem',
-                minWidth : "32%",
-                padding: "5px"
+                width : '100%',
+                padding: "5px",
             }}
-
 
             onClick={ (e) => {
                 e.stopPropagation();
@@ -133,7 +127,7 @@ const ContentCard = (props) => {
                     onMouseLeave={() => toggleEditBtn(false)}
                     ref={editRef}
                 >
-                    <BsThreeDotsVertical fontSize={'1rem'} color={"black"} />
+                    <BsThreeDotsVertical style={{cursor : 'pointer'}} fontSize={'1rem'} color={"black"} />
                     {
                         showEditBtn &&
                         <HoverComponent
@@ -141,7 +135,7 @@ const ContentCard = (props) => {
                             style={{
                                 backgroundColor : '#f2f2f2', 
                                 padding : '4px 0', 
-                                width : '8rem',
+                                width : '10rem',
                                 borderRadius : '8px'
                             }}
                         >
@@ -200,40 +194,53 @@ const ContentCard = (props) => {
 
                     <ul className='content-card-ul ul-style-none flex-row gap-10'>
 
-                        <li className='content-card-img overflow-hidden' style={{ maxHeight : '3.8rem', minHeight : '3.8rem' ,aspectRatio : '1'}}>
+                        <li 
+                            className='content-card-img overflow-hidden' 
+                            style={{ 
+                                height : '3.8rem',
+                                aspectRatio : '1', 
+                                overflow : 'hidden'
+                            }}
+                            >
                             <img
-                                src={props.data?.image || props.data?.photo || defaultImg} 
-                                alt={"Img"}
-
+                                src={props.data?.photo || props.data?.image || defaultImg} 
+                                alt={"Not Found"}
                                 style={{
                                     objectFit: 'contain',
-                                    maxHeight : '100%',
-                                    aspectRatio: '1',
-                                    overflow : 'hidden',
-                                    fontSize : '12px'
+                                    width : '100%',
+                                    height : '100%',
+                                    fontSize : '10px',
+                                    justifyContent : 'flex-start',
+                                    display : 'inline-block'
                                 }}
                             />
                         </li>
 
-                        <li className='flex-column gap-10 text-bold-md text-medium flex-1'>
+                        <li className='flex-column justify-center text-bold-md text-medium flex-1'>
 
-                            <div className='flex-column' style={{paddingTop: '10px'}}>
+                            <div className='flex-column justify-center'>
 
                                 <span
                                     className='product-title text-bold-md text-medium'
                                     style={{
-                                        maxHeight: '2rem',
                                     }}
                                 >
-                                    {props.data?.product_name?.toUpperCase() || props.data?.name?.toUpperCase() || "Title"}
+                                    {
+                                        props.data?.product_name?.toUpperCase() || 
+                                        props.data?.name?.toUpperCase() || 
+                                        "Title"
+                                    }
                                 </span>
                                 <span className='product-description text-bold-sm text-small'>
-                                    {props.data?.description?.substring(0, 43) || ""}
+                                    {
+                                        (props.data?.description && props.data?.description?.substring(0, 43) + "...") || 
+                                        "Description"
+                                    }
                                 </span>
 
                                 <span className='product-description text-bold-sm text-small flex-row gap-10 items-center'>
                                     {props.data?.market_price && `Market Price : ${props.data?.market_price}` }
-                                    {props.data?.price && `Market Price : ${props.data?.price}` }
+                                    {props.data?.price && `Our Price : ${props.data?.price}` }
                                 </span>
                                 
                             </div>
@@ -259,19 +266,24 @@ const ContentCard = (props) => {
                             {
                                 props.data?.sub_categories?.map((item, index) => {
                                     return (
-                                        <SubContentCard
-                                            key={item.id}
-                                            cardId={item.id}
-                                            data={item}
+                                        <div style={{
+                                            width : '100%',
+                                            marginBottom : '1%'
+                                          }}>
+                                            <SubContentCard
+                                                key={item.id}
+                                                cardId={item.id}
+                                                data={item}
 
-                                            categoryId = {props.cardId}
-                                            selectSubCategory={props.selectSubCategory}
+                                                categoryId = {props.cardId}
+                                                selectSubCategory={props.selectSubCategory}
 
-                                            deleteCard={props.deleteSubCategory}
+                                                deleteCard={props.deleteSubCategory}
 
-                                            productCard
-                                            width={"100%"}
-                                        />
+                                                productCard
+                                                width={"100%"}
+                                            />
+                                        </div>
                                     )
                                 }) 
                             }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import './AddCategory.scss'
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsArrowDownCircleFill, BsArrowUpCircleFill, BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { Modal } from '../../../Components';
 import ContentCard from '../ContentCards';
@@ -19,20 +19,20 @@ import data from '../../../Assets/DummyData.json'
 
 import Select from 'react-select';
 import LinkProduct from './LinkProduct';
-import { BsArrowUpCircle, BsArrowDownCircle } from "react-icons/bs";
+import { RxColumnSpacing } from "react-icons/rx";
 
 const AddCategory = () => {
-  
+
   const [categories, setCategories] = useState([])
   const [fullCategoryList, setFullCategoryList] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [productList, setProductList] = useState({
-    subCategoryId : null, 
-    subCategoryName : null,
-    data : null,
+    subCategoryId: null,
+    subCategoryName: null,
+    data: null,
   });
 
   const [checkAddSubCategory, setCheckAddSubCategory] = useState(false);
@@ -40,30 +40,30 @@ const AddCategory = () => {
   const linkProductRef = useRef(null);
 
   const fetchItem = async () => {
-    try{
-        const response = await dashboardAPI.fetchTenantCategories();
-        setCategories(response.data);
-        setFullCategoryList(response.data)
-    }catch(e){
-        toast.error("Failed in fetching categories.", 1000)
+    try {
+      const response = await dashboardAPI.fetchTenantCategories();
+      setCategories(response.data);
+      setFullCategoryList(response.data)
+    } catch (e) {
+      toast.error("Failed in fetching categories.", 1000)
     }
 
     setLoading(false);
   }
 
-  useEffect(async ()=>{
+  useEffect(async () => {
     fetchItem();
-  },[])
+  }, [])
 
   const fetchSpecificProduct = async () => {
-    try{
-      if(productList.subCategoryId !== null){
-        const input = {name : productList.subCategoryName, id : productList.subCategoryId }
-        const response = await axios.post(`${getBaseUrl()}/api/shop/category/product/`,input);
+    try {
+      if (productList.subCategoryId !== null) {
+        const input = { name: productList.subCategoryName, id: productList.subCategoryId }
+        const response = await axios.post(`${getBaseUrl()}/api/shop/category/product/`, input);
         const data = response.data.data;
-        setProductList( prev => ({...prev , data : data }));
+        setProductList(prev => ({ ...prev, data: data }));
       }
-    }catch(er){
+    } catch (er) {
       toast.error("Error in fetching products");
     }
   }
@@ -75,21 +75,21 @@ const AddCategory = () => {
 
   const handleProductChange = (event, data) => {
     event.stopPropagation();
-    
-    if(data.data?.length === 0){
+
+    if (data.data?.length === 0) {
       setProductList({
-        subCategoryId : data.id,
-        subCategoryName : data.name,
-        data : []
+        subCategoryId: data.id,
+        subCategoryName: data.name,
+        data: []
       })
 
       return;
     }
 
     setProductList({
-      subCategoryId : data.id,
-      subCategoryName : data.name,
-      data : data.data
+      subCategoryId: data.id,
+      subCategoryName: data.name,
+      data: data.data
     });
 
   }
@@ -99,12 +99,12 @@ const AddCategory = () => {
     const searchText = e.target.value;
 
     if (searchText === null || searchText.length === 0 || searchText === "") {
-        setCategories(fullCategoryList);
-        return;
+      setCategories(fullCategoryList);
+      return;
     }
 
     const filterItem = fullCategoryList.filter((item) => {
-        return item?.name.toLowerCase().includes(searchText.toLowerCase())
+      return item?.name.toLowerCase().includes(searchText.toLowerCase())
     })
 
     setCategories(filterItem);
@@ -122,33 +122,33 @@ const AddCategory = () => {
   }
 
   const handleEditButton = (data) => {
-      setCheckAddSubCategory(false);
+    setCheckAddSubCategory(false);
 
-      setCategoryForm({
-          name :  data.name,
-          description: data.description,
-          home_page: data.home_page,
-          id: data.id
-      })
+    setCategoryForm({
+      name: data.name,
+      description: data.description,
+      home_page: data.home_page,
+      id: data.id
+    })
 
-      handleToggleModal();
+    handleToggleModal();
   }
 
   const handleDelete = (data) => {
 
-    if(data?.type === "category" || data?.type === "subcategory"){
+    if (data?.type === "category" || data?.type === "subcategory") {
 
-      const newCategoryList = fullCategoryList.reduce( (array, item) => {
+      const newCategoryList = fullCategoryList.reduce((array, item) => {
 
-        if(item.id !== data.cardId){
+        if (item.id !== data.cardId) {
 
           let subCategory = item.sub_categories.filter((item) => item.id !== data.cardId);
-          
+
           item["sub_categories"] = subCategory;
           array.push(item);
 
         }
-      
+
         return array;
       }, [])
 
@@ -156,24 +156,24 @@ const AddCategory = () => {
       setFullCategoryList(newCategoryList)
 
       setProductList({
-        subCategoryId : null, 
-        subCategoryName : null,
-        data : null,
+        subCategoryId: null,
+        subCategoryName: null,
+        data: null,
       })
 
     }
 
-    if(data?.type === "productFromSubCat" || data?.type === "productFromCat"){
+    if (data?.type === "productFromSubCat" || data?.type === "productFromCat") {
 
       const catOrSubCatID = data.catOrSubCatId;
 
-      const newCategoryList = fullCategoryList.reduce( (cat, catItem) => {
+      const newCategoryList = fullCategoryList.reduce((cat, catItem) => {
 
-        if(catItem.id !== catOrSubCatID){
+        if (catItem.id !== catOrSubCatID) {
 
-          let newSubcategory = catItem.sub_categories.reduce( (subCat, subCatItem) => {
+          let newSubcategory = catItem.sub_categories.reduce((subCat, subCatItem) => {
 
-            if(subCatItem.id === catOrSubCatID){
+            if (subCatItem.id === catOrSubCatID) {
 
               const newProductList = subCatItem.products.filter((item) => item.id !== data.cardId);
 
@@ -184,59 +184,59 @@ const AddCategory = () => {
 
             return subCat;
           }, [])
-          
+
 
           cat["sub_categories"] = newSubcategory;
           cat.push(catItem);
 
-        }else{
+        } else {
           const newProductList = catItem.products.filter((item) => item.id !== data.cardId);
 
           catItem["products"] = newProductList;
 
           cat.push(catItem);
         }
-      
+
         return cat;
       }, [])
 
       setCategories(newCategoryList);
-      setFullCategoryList(newCategoryList); 
+      setFullCategoryList(newCategoryList);
     }
   }
 
   const [productForm, setProductForm] = useState({
-    product_name : "",
+    product_name: "",
     packaging_price: "",
     description: "",
     sku: "",
     category: null,
     id: null,
-    categoryId : productList.subCategoryId, 
+    categoryId: productList.subCategoryId,
   })
 
 
   const handleEditSuccess = (data) => {
-    
-    if(data.type === "category"){
+
+    if (data.type === "category") {
       // checkAddSubCategory state will be used to find, whether to add new data to category or subCategory
       const catOrSubCatID = data.itemId;
 
       let newCategoryAdded = true;
-      const newCategoryList = fullCategoryList.reduce(( newCat , cat) => {
-        if(cat.id === catOrSubCatID){
+      const newCategoryList = fullCategoryList.reduce((newCat, cat) => {
+        if (cat.id === catOrSubCatID) {
           cat = data.data;
 
-          if(newCategoryAdded) newCategoryAdded = false;
-        }else{
+          if (newCategoryAdded) newCategoryAdded = false;
+        } else {
 
           let newSubCatAdded = true;
           const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
-            
-            if(sub.id === catOrSubCatID){
+
+            if (sub.id === catOrSubCatID) {
 
               sub = data.data;
-              if(newSubCatAdded) newSubCatAdded = false;
+              if (newSubCatAdded) newSubCatAdded = false;
             }
 
             newSub.push(sub);
@@ -244,7 +244,7 @@ const AddCategory = () => {
             return newSub;
           }, [])
 
-          if(newSubCatAdded && checkAddSubCategory) newSubCat.push(data.data);
+          if (newSubCatAdded && checkAddSubCategory) newSubCat.push(data.data);
 
           cat["sub_categories"] = newSubCat;
         }
@@ -253,26 +253,26 @@ const AddCategory = () => {
         return newCat;
       }, []);
 
-      if(newCategoryAdded && !checkAddSubCategory) newCategoryList.push(data.data);
+      if (newCategoryAdded && !checkAddSubCategory) newCategoryList.push(data.data);
 
       setCategories(newCategoryList);
       setFullCategoryList(newCategoryList);
     }
 
-    if(data.type === "product"){
+    if (data.type === "product") {
 
       const catOrSubCatID = productList.subCategoryId;
 
-      const newCategoryList = fullCategoryList.reduce(( newCat , cat) => {
+      const newCategoryList = fullCategoryList.reduce((newCat, cat) => {
 
-        if(cat.id === catOrSubCatID){
+        if (cat.id === catOrSubCatID) {
 
           let newProductAdded = true;
 
           const newProductList = cat.products.map((item) => {
-            if(item.id === data.itemId){
+            if (item.id === data.itemId) {
 
-              if(newProductAdded) newProductAdded = false;
+              if (newProductAdded) newProductAdded = false;
 
               return data.data;
             }
@@ -280,29 +280,29 @@ const AddCategory = () => {
             return item;
           })
 
-          if(newProductAdded) newProductList.push(data.data);
+          if (newProductAdded) newProductList.push(data.data);
 
           cat["products"] = newProductList;
-        }else{
+        } else {
 
           const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
-            
-            if(sub.id === catOrSubCatID){
+
+            if (sub.id === catOrSubCatID) {
 
               let newProductAdded = true;
 
               const newProductList = sub.products.map((item) => {
-                if(item.id === data.itemId){
-    
-                  if(newProductAdded) newProductAdded = false;
-    
+                if (item.id === data.itemId) {
+
+                  if (newProductAdded) newProductAdded = false;
+
                   return data.data;
                 }
-    
+
                 return item;
               })
-    
-              if(newProductAdded) newProductList.push(data.data);
+
+              if (newProductAdded) newProductList.push(data.data);
 
               sub["products"] = newProductList;
             }
@@ -331,38 +331,104 @@ const AddCategory = () => {
     toggleAddOrEditModal(true);
   }
 
-  // handleProductLink
+  // handleCardSliding
+  const categoryContainerRef = useRef(null);
+  const sliderRef = useRef(null);
+  const windowWidth = window.screen.width
+
+  useEffect(() => {
+    const resizeableEle = categoryContainerRef.current;
+    let width = resizeableEle?.offsetWidth;
+    let x = 0;
+    let isTouchDevice = 'ontouchstart' in window;
+
+    const handleMoveResize = (clientX) => {
+      
+      const dx = clientX - x;
+      x = clientX;
+      width = width - dx;
+      
+      const widthPercent = (windowWidth / width) * 100;
+
+      if(widthPercent < 130 || x < 10) return;
+      // Ensure the width is not going below 0
+      width = Math.max(width, 0);
+
+      resizeableEle.style.minWidth = `${width}px`;
+    };
+
+    const handleUpResize = () => {
+      if (isTouchDevice) {
+        document.removeEventListener("touchmove", onTouchMoveResize);
+        document.removeEventListener("touchend", onTouchEndResize);
+      }
+    };
+
+
+    const onTouchMoveResize = (event) => {
+      handleMoveResize(event.touches[0].clientX);
+    };
+
+
+    const onTouchEndResize = () => {
+      handleUpResize();
+    };
+
+
+    const onTouchStartResize = (event) => {
+      // event.preventDefault();
+
+      if(event.target === sliderRef.current){
+        x = event.touches[0].clientX;
+        document.addEventListener("touchmove", onTouchMoveResize);
+        document.addEventListener("touchend", onTouchEndResize);
+      }
+    };
+
+    const resizerRight = sliderRef.current;
+
+    // Check if touch events are supported
+    if (isTouchDevice && resizerRight) {
+      resizerRight?.addEventListener("touchstart", onTouchStartResize);
+    }
+
+    return () => {
+      handleUpResize();
+      resizerRight.removeEventListener("touchstart", onTouchStartResize);
+    };
+
+  }, []) 
 
 
   return (
-    <div className='add-category-container flex-column flex-1'>
+    <div className='add-category-container flex-column flex-1 overflow-hidden'>
 
       {
-        addOrEditModal && 
-        <Modal 
-            show={addOrEditModal}
-            onClick={handleToggleModal}
+        addOrEditModal &&
+        <Modal
+          show={addOrEditModal}
+          onClick={handleToggleModal}
         >
-           <AddCategoryModal 
-            closeModal={handleToggleModal}  
-            category={categoryForm} 
+          <AddCategoryModal
+            closeModal={handleToggleModal}
+            category={categoryForm}
             category_id={productList.subCategoryId}
-            handleResponse ={ handleEditSuccess } 
+            handleResponse={handleEditSuccess}
             name={checkAddSubCategory}
-            />
+          />
         </Modal>
       }
 
       {
-        loading ? 
+        loading ?
 
-        <div className="flex-1 flex-row place-item-center">
+          <div className="flex-1 flex-row place-item-center">
             <Loader />
-        </div> 
-        
-        :  
+          </div>
 
-        <div className='add-category-wrapper flex-column'>
+          :
+
+          <div className='add-category-wrapper flex-column'>
 
             <div className='flex-row gap-10 flex-1'>
 
@@ -375,157 +441,209 @@ const AddCategory = () => {
               </div>
             </div>
 
-          <section className='category-product flex-row gap-10 flex-1'>
+            <section className='category-product flex-row gap-10 flex-1'>
 
-            <div 
-              className='category-subcategory flex-1 overflow-scroll' 
-              
-              style={{ 
-                  height: '40rem',
-                  padding: '0 10px', 
-                  paddingBottom: '4rem', 
-                  minWidth : '60%' 
-              }}>
+              <div 
+                className='category-subcategory flex-1 overflowY-scroll'
+                style={{
+                  position : 'relative',
+                }}
+              >
 
-              <div className='flex-row justify-between' style={{paddingBottom : '1rem'}}>
-                <span className='text-large text-bold-md flex-row'>
-                  Category and Subcategory
-                </span>
-                <button className='add-btn btn-none btn-primary' onClick={()=>{
-                  setCheckAddSubCategory(false);
-                  handleToggleModal();
-                  setCategoryForm(null)
-                }}>
-                  {`Add Cateogory`}
-                </button>
+                <button 
+                  ref={sliderRef}
+                  className="btn-none"
+                  style={{
+                    position : 'absolute',
+                    top : '50%',
+                    transform : 'translateY(-50%)',
+                    right : '0',
+                    height : '100%',  
+                    zIndex : '100',
+                    cursor : 'col-resize',
+                    width : '1.2rem',
+                  }}
+                /> 
+
+                <div 
+                  className='flex-1'
+
+                  style={{
+                    height: '40rem',
+                    padding: '0 10px',
+                    paddingBottom: '4rem',
+                    minWidth : '200px',
+                  }}>
+
+                    <div
+                      className='cat-text-btn justify-between' 
+                      style={{ 
+                        paddingBottom: '1rem',
+                        width : '100%',
+                      }}
+                    >
+                      <span className='text-large text-bold-md'>
+                        Category and Subcategory
+                      </span>
+                      <button className='btn-none btn-primary' onClick={() => {
+                        setCheckAddSubCategory(false);
+                        handleToggleModal();
+                        setCategoryForm(null)
+                      }}>
+                        {`Add Category`}
+                      </button>
+
+                    </div>
+
+                    {
+                      categories.length !== 0 ?
+                        categories.map((category) => (
+                          <div style={{
+                            width: '100%',
+                            marginBottom: '1%',
+                          }}>
+                            <ContentCard
+                              key={category.id}
+                              cardId={category.id}
+                              selectedCardId={selectedCardId}
+                              data={category}
+
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedCardId(category.id);
+                              }}
+
+                              editFunction={handleEditButton}
+
+                              deleteCard={{
+                                itemName: 'category',
+                                response: handleDelete,
+                              }}
+
+                              deleteSubCategory={{
+                                itemName: 'subcategory',
+                                response: handleDelete
+                              }}
+
+                              addSubcategory={addSubcategory}
+
+                              selectSubCategory={handleProductChange}
+
+                              width={"100%"}
+                            />
+                          </div>
+                        ))
+
+                        :
+                        <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>
+                         No Categories to show
+                        </div>
+                    }
+
+                </div>
               </div>
 
-              {
+              <div  
+                ref={categoryContainerRef} 
+                className='cat-sub-product flex-1 overflowY-scroll' 
+                style={{ 
+                  padding: '0 10px', 
+                  height: '40rem'
+                }}
+              >
 
-                categories.length !== 0 ?
-                categories.map( (category) => (
-                  <ContentCard
-                    key={category.id}
-                    cardId={category.id}
-                    selectedCardId={selectedCardId}
-                    data={category}
+                <div className='flex-row justify-between items-center nowrap relative' style={{ paddingBottom: '1rem', minWidth : '200px' }}>
 
-                    onClick={ (e) => {
-                        e.stopPropagation();
-                        setSelectedCardId(category.id);
-                    }}
+                  <span className='text-large text-bold-md'>
+                    {productList.subCategoryName?.toUpperCase() || "Select Category"}
+                  </span>
 
-                    editFunction={handleEditButton}
+                  <div className='flex-row items-center gap-10'>
 
-                    deleteCard ={ {
-                      itemName : 'category',
-                      response : handleDelete,
-                    } }
-
-                    deleteSubCategory ={{
-                      itemName : 'subcategory',
-                      response : handleDelete
-                    }}
-
-                    addSubcategory = {addSubcategory}
-
-                    selectSubCategory={handleProductChange}
-
-                    width={"100%"}
-                  />
-                )) : 
-                <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>
-                    No Categories to show
-                </div>
-              }
-
-            </div>
-
-            <div className='cat-sub-product flex-1 overflow-scroll' style={{ padding: '0 10px', height: '40rem', }}>
-
-              <div className='flex-row justify-between items-center' style={{paddingBottom : '1rem'}}>
-                <span className='text-large text-bold-md'>
-                  {productList.subCategoryName?.toUpperCase() || "Select Category"}
-                </span>
-
-                <div className='flex-row items-center gap-10'>
-                  
-                  {
-                    productList.subCategoryId !== null &&
-                    <div
-                      ref={linkProductRef}
-                      className="relative"
-                    >
-                      <button 
-                        className='btn-none btn-outline flex-row items-center gap-10' 
-                        onClick={() => {
+                    {
+                      productList.subCategoryId !== null &&
+                      <div
+                        ref={linkProductRef}
+                        onMouseLeave={() => {
                           toggleLinkProductModal(prev => !prev);
                         }}
                       >
-                        <span>Link Product</span>
-                        {
-                          linkProductModal ? 
-                          <BsArrowUpCircle size={'1rem'} color={'#5c77ff'}/> : 
-                          <BsArrowDownCircle size={'1rem'} color={'#5c77ff'}/>
-                        }
-                      </button>
-
-                      {
-                        linkProductModal && 
-                        <HoverComponent 
-                          hoverRef={linkProductRef}
-                          style={{
-                              backgroundColor : '#f2f2f2',
-                              width : '20rem',
-                              height : '10rem'
-                          }}
-                          onMouseLeave={() => {
-                            toggleLinkProductModal(prev => !prev)
+                        <button
+                          className='btn-none btn-outline flex-row items-center gap-10'
+                          onClick={() => {
+                            toggleLinkProductModal(prev => !prev);
                           }}
                         >
-                          <LinkProduct 
-                            categoryId = {productList.subCategoryId}
-                            fullCategoryList = {fullCategoryList}
-                            setCategories = {setCategories}
-                            setFullCategoryList = {setFullCategoryList}
-                            closeModal = {toggleLinkProductModal}
-                          />
-                        </HoverComponent>
-                      }
-                    </div>
-                  }
+                          <span>Link Product</span>
+                          {
+                            linkProductModal ?
+                              <BsArrowUpCircleFill size={'1rem'} color={'#5c77ff'} /> :
+                              <BsArrowDownCircleFill size={'1rem'} color={'#5c77ff'} />
+                          }
+                        </button>
+
+                        {
+                          linkProductModal &&
+                          <HoverComponent
+                            hoverRef={linkProductRef}
+                            style={{
+                              backgroundColor: '#f2f2f2',
+                              width : '100%',
+                              height: '10rem', 
+                              whiteSpace : 'normal'
+                            }}
+                          >
+                            <LinkProduct
+                              categoryId={productList.subCategoryId}
+                              fullCategoryList={fullCategoryList}
+                              setCategories={setCategories}
+                              setFullCategoryList={setFullCategoryList}
+                              closeModal={toggleLinkProductModal}
+                            />
+                          </HoverComponent>
+                        }
+                      </div>
+                    }
+                  </div>
                 </div>
+
+                {
+                  productList.data?.length > 0 ?
+
+                    (
+                      productList.data.map((product, index) => (
+                        <div
+                          style={{
+                            width: '100%',
+                            marginBottom: '1%',
+                            minWidth : '200px'
+                          }}
+                        >
+                          <ContentCard
+                            key={index}
+                            cardId={product.id}
+                            data={product}
+
+                            deleteCard={{
+                              itemName: 'productFromSubCat',
+                              response: handleDelete,
+                            }}
+
+                            subCategoryId={productList.subCategoryId}
+
+                            width={"100%"}
+                            productCard
+                          />
+                        </div>
+                      ))
+                    )
+                    :
+                    <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>No Products To Show</div>
+                }
+
               </div>
-
-              {
-                productList.data?.length > 0 ?
-                
-                (
-                  productList.data.map((product, index) => (
-                    <ContentCard 
-                      key={index} 
-                      cardId={product.id}
-                      data={product} 
-
-                      deleteCard ={ {
-                        itemName : 'productFromSubCat',
-                        response : handleDelete,
-                      } }
-
-                      subCategoryId ={ productList.subCategoryId }
-
-                      width ={"100%"}
-                      productCard
-                    /> 
-                  ))
-                )
-                :
-                <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>No Products To Show</div>
-              }
-
-            </div>
-          </section>
-        </div>
+            </section>
+          </div>
       }
     </div>
   )

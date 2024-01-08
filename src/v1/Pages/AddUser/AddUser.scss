@@ -1,0 +1,19 @@
+@import '../../Assets/Styles/Variables.scss';
+
+.responsive-card{
+    width: 32%;
+    display: inline-block;
+    padding-bottom: '4rem';
+}
+
+@media #{$media-tablet}{
+    .responsive-card{
+        width: 48%;
+    }
+}
+
+@media #{$media-mobile}{
+    .responsive-card{
+        width: 100%;
+    }
+}

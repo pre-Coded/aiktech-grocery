@@ -109,6 +109,7 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
     const [product, setProducts] = useState([])
     const [fullProductList, setFullProductList] = useState([])
+
     const [loader, setLoader] = useState(true);
 
 

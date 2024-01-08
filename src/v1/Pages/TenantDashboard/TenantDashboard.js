@@ -90,9 +90,13 @@ const TenantDashboard = () => {
                             hoverRef={userInfoRef}
                             style={{
                                 backgroundColor : '#f2f2f2', 
-                                padding : '4px 0', 
-                                width : '8rem',
+                                padding : '8px 4px', 
+                                width : '12rem',
                                 borderRadius : '8px'
+                            }}
+
+                            onMouseLeave={() => {
+                                setUserInformation(false);
                             }}
                         >
                             <div className="mobile-sidebar-items">
@@ -102,7 +106,7 @@ const TenantDashboard = () => {
                                 />
                             </div>
                             <button 
-                                className="btn-none nowrap flex-row items-center text-small"
+                                className="btn-none nowrap flex-row items-center text-medium"
                                 onClick={logout}
                             >
                                 Log Out
