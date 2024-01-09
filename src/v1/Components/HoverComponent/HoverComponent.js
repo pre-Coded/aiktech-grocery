@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 
 
-const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, style}) => {
+const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter,onClick,  style}) => {
+
 
     const findPosition = () => {
         const element =  hoverRef?.current.getBoundingClientRect();
@@ -19,6 +20,7 @@ const HoverComponent = ({children, hoverRef, onMouseLeave,onMouseEnter, style}) 
 
     return (
     <div
+        onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{

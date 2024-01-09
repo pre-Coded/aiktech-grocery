@@ -29,6 +29,30 @@
     padding: 10px;
 }
 
+.responsive-card{
+    width: 32%;
+    display: inline-block;
+    margin-right: 1%;
+    margin-bottom: 1%;
+}
+
+@media #{$media-tablet}{
+    .all-products-list-wrapper{
+        padding: 0 4px;
+    }
+
+    .responsive-card{
+        width: 48%;
+    }
+}
+
+@media #{$media-mobile}{
+    .responsive-card{
+        width: 100%;
+        margin-right: 0%;
+    }
+}
+
 .card-loading1{
     background-color: #888;
     animation: load 800ms  infinite alternate-reverse; 

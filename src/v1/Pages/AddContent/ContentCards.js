@@ -123,6 +123,7 @@ const ContentCard = (props) => {
 
                 <div
                     className='content-card-edit btn-none'
+                    onClick={() => toggleEditBtn(true)}
                     onMouseEnter={() => toggleEditBtn(true)}
                     onMouseLeave={() => toggleEditBtn(false)}
                     ref={editRef}
@@ -312,14 +313,13 @@ const SubContentCard = (props) => {
 }
 
 export const LoadingCard = ({ num }) => {
+    const isTouchEnabled = 'ontouchstart' in window;
+    num = isTouchEnabled ? 10 : 30;
     return (
         Array.from({ length: num }, () => 0).map((data, ind) => {
             const even = ind % 2 === 0
             return (
-                <div style={{
-                    width: '100%',
-                    marginBottom: '1%',
-                }}>
+                <div className="responsive-card">
                     <div
                         className={`content-card-container border ${even ? 'card-loading1' : 'card-loading2'}`}
                         style={{

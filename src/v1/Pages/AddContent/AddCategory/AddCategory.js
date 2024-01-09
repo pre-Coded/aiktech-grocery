@@ -20,12 +20,19 @@ import data from '../../../Assets/DummyData.json'
 import Select from 'react-select';
 import LinkProduct from './LinkProduct';
 import { RxColumnSpacing } from "react-icons/rx";
-import InfiniteScroll from 'react-infinite-scroller';
-import { debounce } from 'lodash';
+import InfiniteScroller from '../../../Components/InfiniteScrollContainer/InfiniteScrollerContainer';
+import { set } from 'lodash';
 
 
 
-const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList }) => {
+const AddCategory = ({ 
+    page, 
+    setPage,
+    fullProductList, 
+    fullCategoryList, 
+    setFullCategoryList,
+    setFullProductList
+  }) => {
 
   const [categories, setCategories] = useState([])
   const [selectedCardId, setSelectedCardId] = useState(null);
@@ -100,70 +107,13 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
     return () => {
       handleUpResize();
       resizerRight.removeEventListener("touchstart", onTouchStartResize);
-      isMounted.current = false;
     };
 
   }, [])
 
-
-  // infinite scroll
-  const isMounted = useRef(true);
-const [page, setPage] = useState(1);
-const [hasMore, toggleHasMore] = useState(true);
-const [loading, setLoading] = useState(false);
-console.log(loading,"loading");
-console.log(categories,"categories");
-console.log(page,"page number");
-
-const fetchItem = async (newPage) => {
-  console.log("fetch item starting");
-  try {
-    const data = {
-      "page": newPage
-    }
-
-    const response = await dashboardAPI.fetchTenantCategories(data);
-
-    if (response.data.length === 0) {
-      toggleHasMore(false);
-    } else {
-      const data = response.data;
-      const uniqueData = [
-        ...new Map([...categories, ...data].map((item) => [item.id, item])).values(),
-      ];
-      if(uniqueData.length===categories.length){
-        toggleHasMore(false)
-      }
-
-      setPage(newPage);
-      setCategories(uniqueData);
-      setFullCategoryList(uniqueData);
-    }
-  } catch (e) {
-    toggleHasMore(false)
-  }
-}
-
-const loadMore = async () => {
-  if (!loading && isMounted.current) {
-    console.log("loading");
-    try {
-      setLoading(true);
-      await fetchItem(page + 1);
-    } finally {
-      setLoading(false);
-    }
-  }
-};
-
-
-// Use useCallback to memoize the debouncedLoadMore function
-const debouncedLoadMore = useCallback(
-  debounce(loadMore, 500),
-  [loadMore]
-);
-
-
+  useEffect(() => {
+    setCategories(fullCategoryList);
+  }, [fullCategoryList])
 
   // swipe functionality
   const categoryContainerRef = useRef(null);
@@ -252,70 +202,45 @@ const debouncedLoadMore = useCallback(
   }
 
   const handleDelete = (data) => {
-
     if (data?.type === "category" || data?.type === "subcategory") {
-
       const newCategoryList = fullCategoryList.reduce((array, item) => {
-
         if (item.id !== data.cardId) {
-
           let subCategory = item.sub_categories.filter((item) => item.id !== data.cardId);
-
           item["sub_categories"] = subCategory;
           array.push(item);
         }
-
         return array;
       }, [])
-
       setCategories(newCategoryList)
       setFullCategoryList(newCategoryList)
-
       setProductList({
         subCategoryId: null,
         subCategoryName: null,
         data: null,
       })
-
     }
 
     if (data?.type === "productFromSubCat" || data?.type === "productFromCat") {
-
       const catOrSubCatID = data.catOrSubCatId;
-
       const newCategoryList = fullCategoryList.reduce((cat, catItem) => {
-
         if (catItem.id !== catOrSubCatID) {
-
           let newSubcategory = catItem.sub_categories.reduce((subCat, subCatItem) => {
-
             if (subCatItem.id === catOrSubCatID) {
-
               const newProductList = subCatItem.products.filter((item) => item.id !== data.cardId);
-
               subCatItem["products"] = newProductList;
             }
-
             subCat.push(subCatItem);
-
             return subCat;
           }, [])
-
-
           cat["sub_categories"] = newSubcategory;
           cat.push(catItem);
-
         } else {
           const newProductList = catItem.products.filter((item) => item.id !== data.cardId);
-
           catItem["products"] = newProductList;
-
           cat.push(catItem);
         }
-
         return cat;
       }, [])
-
       setCategories(newCategoryList);
       setFullCategoryList(newCategoryList);
     }
@@ -333,38 +258,27 @@ const debouncedLoadMore = useCallback(
 
 
   const handleEditSuccess = (data) => {
-
     if (data.type === "category") {
       // checkAddSubCategory state will be used to find, whether to add new data to category or subCategory
       const catOrSubCatID = data.itemId;
-
       let newCategoryAdded = true;
       const newCategoryList = fullCategoryList.reduce((newCat, cat) => {
         if (cat.id === catOrSubCatID) {
           cat = data.data;
-
           if (newCategoryAdded) newCategoryAdded = false;
         } else {
-
           let newSubCatAdded = true;
           const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
-
             if (sub.id === catOrSubCatID) {
-
               sub = data.data;
               if (newSubCatAdded) newSubCatAdded = false;
             }
-
             newSub.push(sub);
-
             return newSub;
           }, [])
-
           if (newSubCatAdded && checkAddSubCategory) newSubCat.push(data.data);
-
           cat["sub_categories"] = newSubCat;
         }
-
         newCat.push(cat);
         return newCat;
       }, []);
@@ -376,42 +290,28 @@ const debouncedLoadMore = useCallback(
     }
 
     if (data.type === "product") {
-
       const catOrSubCatID = productList.subCategoryId;
-
       const newCategoryList = fullCategoryList.reduce((newCat, cat) => {
-
         if (cat.id === catOrSubCatID) {
-
           let newProductAdded = true;
-
           const newProductList = cat.products.map((item) => {
             if (item.id === data.itemId) {
-
               if (newProductAdded) newProductAdded = false;
-
               return data.data;
             }
-
             return item;
           })
 
           if (newProductAdded) newProductList.push(data.data);
-
           cat["products"] = newProductList;
         } else {
 
           const newSubCat = cat.sub_categories.reduce((newSub, sub) => {
-
             if (sub.id === catOrSubCatID) {
-
               let newProductAdded = true;
-
               const newProductList = sub.products.map((item) => {
                 if (item.id === data.itemId) {
-
                   if (newProductAdded) newProductAdded = false;
-
                   return data.data;
                 }
 
@@ -419,12 +319,10 @@ const debouncedLoadMore = useCallback(
               })
 
               if (newProductAdded) newProductList.push(data.data);
-
               sub["products"] = newProductList;
             }
 
             newSub.push(sub);
-
             return newSub;
           }, [])
 
@@ -432,7 +330,6 @@ const debouncedLoadMore = useCallback(
         }
 
         newCat.push(cat);
-
         return newCat;
       }, []);
 
@@ -489,9 +386,6 @@ const debouncedLoadMore = useCallback(
                 position: 'relative',
               }}
             >
-
-              
-
                 <div
                   className='absolute'
                   style={{
@@ -552,18 +446,14 @@ const debouncedLoadMore = useCallback(
                     </button>
 
                   </div>
-                <InfiniteScroll
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
-                
-                hasMore={hasMore}
-                loadMore={ !loading && loadMore}
-                loader={
-                  <LoadingCard num={10} />
-                }
-              >
+                <InfiniteScroller
+                  apiCall={dashboardAPI.fetchTenantCategories}
+                  page={page}
+                  setPage={setPage}
+                  fullItem={fullCategoryList}
+                  setFullItem={setFullCategoryList}
+                  errorMsg={"Error in fetching categories"}
+                >
 
                   {
                       categories.length !== 0 ?
@@ -577,28 +467,21 @@ const debouncedLoadMore = useCallback(
                               cardId={category.id}
                               selectedCardId={selectedCardId}
                               data={category}
-
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedCardId(category.id);
                               }}
-
                               editFunction={handleEditButton}
-
                               deleteCard={{
                                 itemName: 'category',
                                 response: handleDelete,
                               }}
-
                               deleteSubCategory={{
                                 itemName: 'subcategory',
                                 response: handleDelete
                               }}
-
                               addSubcategory={addSubcategory}
-
                               selectSubCategory={handleProductChange}
-
                               width={"100%"}
                             />
                           </div>
@@ -609,9 +492,8 @@ const debouncedLoadMore = useCallback(
                           No Categories to show
                         </div>
                   }
-                  </InfiniteScroll>
+                  </InfiniteScroller>
                 </div>
-              
             </div>
 
             <div
@@ -639,7 +521,7 @@ const debouncedLoadMore = useCallback(
                     <div
                       ref={linkProductRef}
                       onMouseLeave={() => {
-                        toggleLinkProductModal(prev => !prev);
+                        toggleLinkProductModal(false);
                       }}
                     >
                       <button
@@ -669,9 +551,7 @@ const debouncedLoadMore = useCallback(
                         >
                           <LinkProduct
                             categoryId={productList.subCategoryId}
-                            fullProductList={fullProductList}
                             fullCategoryList={fullCategoryList}
-                            setCategories={setCategories}
                             setFullCategoryList={setFullCategoryList}
                             closeModal={toggleLinkProductModal}
                           />
@@ -680,7 +560,7 @@ const debouncedLoadMore = useCallback(
                     </div>
                   }
                 </div>
-              </div>
+              </div> 
 
               {
                 productList.data?.length > 0 ?

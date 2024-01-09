@@ -8,6 +8,8 @@ import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
 import defaultImg from '../../../Assets/Images/default-image.png'
 import { IoAddCircleOutline } from "react-icons/io5";
+import InfiniteScroller from '../../../Components/InfiniteScrollContainer/InfiniteScrollerContainer';
+import { dashboardAPI } from '../../../Api';
 
 
 const TreeView = ({ treeView }) => {
@@ -105,26 +107,24 @@ const ProductCard = (props) => {
     )
 }
 
-const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCategoryList, closeModal }) => {
+const LinkProduct = ({ 
+        categoryId, 
+        fullCategoryList,
+        setCategories, 
+        setFullCategoryList, 
+    }) => {
 
     const [product, setProducts] = useState([])
-    const [fullProductList, setFullProductList] = useState([])
+    const [fullProductList, setFullProductList] = useState([]);
+
+    useEffect(() => {
+        setProducts(fullProductList)
+    }, [fullProductList])
 
     const [loader, setLoader] = useState(true);
 
     const [treeView, setTreeView] = useState(null);
 
-    useEffect(async () => {
-        try{
-            const response = await fetchTenantProducts();
-            setProducts(response.data);
-            setFullProductList(response.data)
-        }catch(e){
-            console.log("Error in fetching product list");
-        }
-
-        setLoader(false);
-    }, [])
 
     const [selectedCard, toggleSelectedCard] = useState([]);
 
@@ -175,7 +175,6 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
 
         setCategories(newCategoryList);
         setFullCategoryList(newCategoryList);
-
     }
 
     const handleSave = async () => {
@@ -278,20 +277,28 @@ const LinkProduct = ({ categoryId, setCategories, setFullCategoryList, fullCateg
                                         flex: '1',
                                     }}
                                 >
-                                    {
-                                        product.map((item) => {
-                                            return (
-                                                <ProductCard
+                                
+                                    <InfiniteScroller
+                                        apiCall={dashboardAPI.fetchTenantProducts}
+                                        fullItem={fullProductList}
+                                        setFullItem={setFullProductList}
+                                        errorMsg={"Error in fetching Products."}
+                                    >
+                                        {
+                                            product.map((item) => {
+                                                return (
+                                                    <ProductCard
                                                     key={item.id}
                                                     id={item.id}
                                                     data={item}
                                                     onClick={toggleSelect}
                                                     selectedCard={selectedCard.some(card => card.id === item.id)}
                                                     width={'100%'}
-                                                />
-                                            )
-                                        })
-                                    }
+                                                    />
+                                                    )
+                                                })
+                                            }
+                                    </InfiniteScroller>
                                 </div>
 
                                 <div 

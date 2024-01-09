@@ -33,6 +33,11 @@ const TenantDashboard = () => {
         history.push('/')
     };
 
+    const [pageNumber, setPageNumber] = useState({
+        product : 1,
+        category : 1,
+    })
+
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
             return <Dashboard />
@@ -40,6 +45,12 @@ const TenantDashboard = () => {
         else if(activeComponent === "addProduct"){
             return (
                 <AddProduct 
+                    page={pageNumber.product}
+                    setPage={(num) => {
+                        setPageNumber(prev => (
+                            {...prev, 'product' : num}
+                        ))
+                    }}
                     fullProductList={fullProductList} 
                     setFullProductList={setFullProductList} 
                 />
@@ -48,6 +59,12 @@ const TenantDashboard = () => {
         else if(activeComponent === "addCategory"){
             return (
                 <AddCategory
+                    page={pageNumber.category}
+                    setPage={(num) => {
+                        setPageNumber(prev => (
+                            {...prev, 'category' : num}
+                        ))
+                    }}
                     fullProductList={fullProductList}
                     fullCategoryList={fullCategoryList}
                     setFullCategoryList={setFullCategoryList} 

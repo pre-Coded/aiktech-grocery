@@ -14,31 +14,22 @@ import data from '../../../Assets/DummyData.json'
 import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
 import { productList } from '../../../../api/request.api';
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroller from '../../../Components/InfiniteScrollContainer/InfiniteScrollerContainer';
 
 
-const AddProduct = ({fullProductList, setFullProductList}) => {
+const AddProduct = ({
+        page, 
+        setPage,
+        fullProductList, 
+        setFullProductList
+    }) => {
     const [products, setProducts] = useState([])
 
-    const [loading, setLoading] = useState(true);
     const searchRef = useRef(null);
 
-    const fetchItem = async () => {
-        try{
-            const response = await dashboardAPI.fetchTenantProducts();
-            setProducts(response.data);
-            setFullProductList(response.data)
-        }catch(e){
-            toast.error("Failed in fetching product.", 1000)
-        }
-
-        setLoading(false);
-    }
-
-    useEffect(async ()=>{
-        fetchItem();
-    },[])
-
+    useEffect(() => {
+        setProducts(fullProductList)
+    }, [fullProductList])
 
     // handling searchPart
     const handleChange = (e) => {
@@ -191,17 +182,20 @@ const AddProduct = ({fullProductList, setFullProductList}) => {
                     </section>
 
                     <section className='all-products-list-wrapper flex-row flex-1'>
-                        <InfiniteScroll 
-                            className='all-products-list overflowY-scroll flex-1' 
+
+                        <div
+                            className='all-products-list overflowY-scroll flex-1'
                             style={{paddingBottom : '10rem'}}
-                            hasMore={true}
-                            loadMore={() => console.log("reached-end")}
-                            loader={
-                                <LoadingCard 
-                                num={6}
-                                />
-                            }
                         >
+                            
+                            <InfiniteScroller
+                                apiCall={dashboardAPI.fetchTenantProducts}
+                                page={page}
+                                setPage={setPage}
+                                fullItem={fullProductList}
+                                setFullItem={setFullProductList}
+                                errorMsg={"Error in fetching categories"}
+                            >
                             {
                                 products.length !== 0 ? 
                                 products.map((product, index) =>
@@ -229,7 +223,8 @@ const AddProduct = ({fullProductList, setFullProductList}) => {
                                     No Product to show
                                 </div>
                             }
-                        </InfiniteScroll>
+                        </InfiniteScroller>
+                        </div>
                     </section>
                 </div>
             }
