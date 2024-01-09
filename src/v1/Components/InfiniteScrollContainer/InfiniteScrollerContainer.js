@@ -42,7 +42,6 @@ const InfiniteScroller = ({
                 setFullItem(uniqueData);
             }
         } catch (e) {
-            toast.error(errorMsg);
             toggleHasMore(false)
         }
     }
