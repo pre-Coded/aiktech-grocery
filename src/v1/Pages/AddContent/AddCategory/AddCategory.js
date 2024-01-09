@@ -114,7 +114,10 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
     console.log("fetchmore", newPage);
 
     try {
-      const response = await dashboardAPI.fetchTenantCategories(newPage);
+      const data = {
+        "page": newPage
+      }
+      const response = await dashboardAPI.fetchTenantCategories(data);
       console.log("fetchmore", newPage);
 
       if(response.data.length === 0){
