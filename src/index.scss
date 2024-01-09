@@ -344,6 +344,13 @@ select {
   text-transform: lowercase;
 }
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 .overflow-hidden{
   overflow: hidden;
 }
@@ -361,6 +368,7 @@ select {
 .overflowX-scroll{
   overflow-x: scroll;
   overflow-y: hidden;
+  padding-right: 10%;
   scroll-behavior: smooth;
 }
 
@@ -371,11 +379,16 @@ select {
 .overflowY-scroll{
   overflow-y: scroll;
   overflow-x: hidden;
+  padding-bottom: 10%;
   scroll-behavior: smooth;
 }
 
 .overflowY-scroll::-webkit-scrollbar{
   width: 1px;
+}
+
+.opacity-0{
+  opacity: 0;
 }
 
 @media #{$media-tablet} {

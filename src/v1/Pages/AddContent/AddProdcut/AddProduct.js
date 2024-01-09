@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import './AddProduct.scss'
 
 import { Modal } from '../../../Components';
-import ContentCard from '../ContentCards';
+import ContentCard, { LoadingCard } from '../ContentCards';
 
 import AddProductModal from './AddProductModal';
 import { useAsyncError } from 'react-router';
@@ -14,11 +14,11 @@ import data from '../../../Assets/DummyData.json'
 import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
 import { productList } from '../../../../api/request.api';
+import InfiniteScroll from 'react-infinite-scroller';
 
 
-const AddProduct = () => {
+const AddProduct = ({fullProductList, setFullProductList}) => {
     const [products, setProducts] = useState([])
-    const [fullProductList, setFullProductList] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const searchRef = useRef(null);
@@ -168,12 +168,6 @@ const AddProduct = () => {
             }
 
             {
-                loading ? 
-
-                <div className="flex-1 flex-row place-item-center">
-                    <Loader />
-                </div> : 
-
                 <div className='add-content-wrapper flex-column'>
 
                     <section className='flex-row items-center gap-10 flex-1'>
@@ -197,12 +191,22 @@ const AddProduct = () => {
                     </section>
 
                     <section className='all-products-list-wrapper flex-row flex-1'>
-                        <div className='all-products-list overflow-scroll flex-1' style={{paddingBottom : '10rem'}}>
+                        <InfiniteScroll 
+                            className='all-products-list overflowY-scroll flex-1' 
+                            style={{paddingBottom : '10rem'}}
+                            hasMore={true}
+                            loadMore={() => console.log("reached-end")}
+                            loader={
+                                <LoadingCard 
+                                num={6}
+                                />
+                            }
+                        >
                             {
                                 products.length !== 0 ? 
                                 products.map((product, index) =>
                                 (
-                                    <div className='responsive-card'>
+                                    <div className='responsive-card relative'>
                                         <ContentCard
                                             key={product.id}
                                             cardId={product.id}
@@ -215,7 +219,6 @@ const AddProduct = () => {
                                                 response : handleDelete,
                                             }}
 
-                                            width ={"100%"}
                                             productCard
                                         />
                                     </div>
@@ -226,7 +229,7 @@ const AddProduct = () => {
                                     No Product to show
                                 </div>
                             }
-                        </div>
+                        </InfiniteScroll>
                     </section>
                 </div>
             }

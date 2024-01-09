@@ -22,6 +22,9 @@ const TenantDashboard = () => {
     const userInfoRef = useRef(null);
     const history = useHistory();
 
+    const [fullProductList, setFullProductList] = useState([])
+    const [fullCategoryList, setFullCategoryList] = useState([])
+
     const dispatch = useDispatch()
     
     const logout = () => {
@@ -35,10 +38,21 @@ const TenantDashboard = () => {
             return <Dashboard />
         }
         else if(activeComponent === "addProduct"){
-            return <AddProduct />
+            return (
+                <AddProduct 
+                    fullProductList={fullProductList} 
+                    setFullProductList={setFullProductList} 
+                />
+            )
         }
         else if(activeComponent === "addCategory"){
-            return <AddCategory />
+            return (
+                <AddCategory
+                    fullProductList={fullProductList}
+                    fullCategoryList={fullCategoryList}
+                    setFullCategoryList={setFullCategoryList} 
+                />
+            )
         }
         else if (activeComponent === 'addStock') {
             return <AddStock />

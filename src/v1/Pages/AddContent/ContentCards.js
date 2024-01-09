@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import './ContentCard.scss'
 
@@ -23,76 +23,76 @@ const ContentCard = (props) => {
 
         setDeleteLoader(true);
 
-        if(props.deleteCard?.itemName === "product"){
-            try{
+        if (props.deleteCard?.itemName === "product") {
+            try {
 
-                const response = await deleteProduct({id : props.cardId})
+                const response = await deleteProduct({ id: props.cardId })
                 response.status === 202 && props.deleteCard?.response({
-                    type : props.deleteCard?.itemName, 
-                    cardId : props.cardId
+                    type: props.deleteCard?.itemName,
+                    cardId: props.cardId
                 });
 
-            }catch(e){
-                toast.error("Error in deleting product.", {autoClose : 1000})
+            } catch (e) {
+                toast.error("Error in deleting product.", { autoClose: 1000 })
             }
         }
 
-        if(props.deleteCard?.itemName === "productFromCat"){
-            try{
-                const response = await deleteProductFromCategory({ category_id : props.categoryId, id : props.cardId})
+        if (props.deleteCard?.itemName === "productFromCat") {
+            try {
+                const response = await deleteProductFromCategory({ category_id: props.categoryId, id: props.cardId })
 
                 response.status === 202 && props.deleteCard?.response({
-                    type : props.deleteCard?.itemName,
-                    cardId : props.cardId,
-                    catOrSubCatId : props.categoryId, 
+                    type: props.deleteCard?.itemName,
+                    cardId: props.cardId,
+                    catOrSubCatId: props.categoryId,
                 });
 
-            }catch(e){
-                toast.error("Error in deleting product.",  {autoClose : 1000})
+            } catch (e) {
+                toast.error("Error in deleting product.", { autoClose: 1000 })
             }
         }
 
-        if(props.deleteCard?.itemName === "productFromSubCat"){
-            try{
-                const response = await deleteProductFromCategory({ category_id : props.subCategoryId , id : props.cardId})
+        if (props.deleteCard?.itemName === "productFromSubCat") {
+            try {
+                const response = await deleteProductFromCategory({ category_id: props.subCategoryId, id: props.cardId })
 
                 response.status === 202 && props.deleteCard?.response({
-                    type : props.deleteCard?.itemName,
-                    cardId : props.cardId,
-                    catOrSubCatId : props.subCategoryId,
+                    type: props.deleteCard?.itemName,
+                    cardId: props.cardId,
+                    catOrSubCatId: props.subCategoryId,
                 });
 
-            }catch(e){
-                toast.error("Error in deleting product.",  {autoClose : 1000})
+            } catch (e) {
+                toast.error("Error in deleting product.", { autoClose: 1000 })
             }
         }
 
 
-        if(props.deleteCard?.itemName === "category"){
-            try{
-                const response = await deleteCategory({id : props.cardId})
+        if (props.deleteCard?.itemName === "category") {
+            try {
+                const response = await deleteCategory({ id: props.cardId })
 
                 response.status === 202 && props.deleteCard?.response({
-                    type : props.deleteCard?.itemName, 
-                    cardId : props.cardId
+                    type: props.deleteCard?.itemName,
+                    cardId: props.cardId
                 });
-            }catch(e){
-                toast.error("Error in deleting category.",  {autoClose : 1000})
+            } catch (e) {
+                toast.error("Error in deleting category.", { autoClose: 1000 })
             }
         }
 
-        if(props.deleteCard?.itemName === "subcategory"){
-            try{
-                const response = await deleteSubCategoryFromCategory({ category_id : props.categoryId, id : props.cardId})
-                
-                 response.status === 202 && props.deleteCard?.response({
-                    type : props.deleteCard.itemName, 
-                    cardId : props.cardId
+        if (props.deleteCard?.itemName === "subcategory") {
+            try {
+                const response = await deleteSubCategoryFromCategory({ category_id: props.categoryId, id: props.cardId })
+
+                response.status === 202 && props.deleteCard?.response({
+                    type: props.deleteCard.itemName,
+                    cardId: props.cardId
                 });
-                
-            }catch(e){
-                toast.error("Error in deleting subcategory.",  {autoClose : 1000})
-            }   
+
+            } catch (e) {
+                toast.error("Error in deleting subcategory.", { autoClose: 1000 })
+            }
         }
 
         setDeleteLoader(false);
@@ -102,17 +102,17 @@ const ContentCard = (props) => {
         <div
             className='content-card-container border'
             style={{
-                width : '100%',
+                width: '100%',
                 padding: "5px",
             }}
 
-            onClick={ (e) => {
+            onClick={(e) => {
                 e.stopPropagation();
 
-                props.selectSubCategory &&  props.selectSubCategory(e, {
-                    id : props.data?.id,
-                    name : props.data?.name, 
-                    data : props.data?.products
+                props.selectSubCategory && props.selectSubCategory(e, {
+                    id: props.data?.id,
+                    name: props.data?.name,
+                    data: props.data?.products
                 });
 
                 props.onClick && props.onClick(e);
@@ -127,61 +127,61 @@ const ContentCard = (props) => {
                     onMouseLeave={() => toggleEditBtn(false)}
                     ref={editRef}
                 >
-                    <BsThreeDotsVertical style={{cursor : 'pointer'}} fontSize={'1rem'} color={"black"} />
+                    <BsThreeDotsVertical style={{ cursor: 'pointer' }} fontSize={'1rem'} color={"black"} />
                     {
                         showEditBtn &&
                         <HoverComponent
                             hoverRef={editRef}
                             style={{
-                                backgroundColor : '#f2f2f2', 
-                                padding : '4px 0', 
-                                width : '10rem',
-                                borderRadius : '8px'
+                                backgroundColor: '#f2f2f2',
+                                padding: '4px 0',
+                                width: '10rem',
+                                borderRadius: '8px'
                             }}
                         >
                             <div className='flex-column gap-10'>
                                 {
-                                    props.editFunction && 
+                                    props.editFunction &&
                                     <button
-                                        onClick={ (e) => {
+                                        onClick={(e) => {
                                             e.stopPropagation();
                                             props.editFunction && props.editFunction(props.data)
                                         }}
                                         className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
                                     >
-                                        <CiEdit fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/> Edit
+                                        <CiEdit fontSize={'1.2rem'} style={{ maxWidth: '2rem' }} /> Edit
                                     </button>
                                 }
                                 <button
                                     className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
 
-                                    onClick={ handleDelete }
+                                    onClick={handleDelete}
                                 >
-                                    <MdDeleteOutline fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
+                                    <MdDeleteOutline fontSize={'1.2rem'} style={{ maxWidth: '2rem' }} />
                                     {
-                                        deleteLoader ? 
-                                        <span>Unlinking...</span>
-                                        :
-                                        <span>Unlink</span>
+                                        deleteLoader ?
+                                            <span>Unlinking...</span>
+                                            :
+                                            <span>Unlink</span>
                                     }
                                 </button>
-                                
-                                {
-                                    props.addSubcategory && 
-                                    <button
-                                    className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
 
-                                    onClick={ (e) => {
-                                        e.stopPropagation();
-                                        props.addSubcategory(props.cardId)
-                                    } }
+                                {
+                                    props.addSubcategory &&
+                                    <button
+                                        className='btn-none nowrap flex-row items-center gap-10 text-small btn-hover'
+
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            props.addSubcategory(props.cardId)
+                                        }}
 
                                     >
 
-                                    <IoMdAdd fontSize={'1.2rem'} style={{maxWidth : '2rem'}}/>
-                                    {
-                                        'Add Subcategory'
-                                    }
+                                        <IoMdAdd fontSize={'1.2rem'} style={{ maxWidth: '2rem' }} />
+                                        {
+                                            'Add Subcategory'
+                                        }
                                     </button>
                                 }
 
@@ -194,31 +194,32 @@ const ContentCard = (props) => {
 
                     <ul className='content-card-ul ul-style-none flex-row gap-10'>
 
-                        <li 
-                            className='content-card-img overflow-hidden' 
-                            style={{ 
-                                height : '3.8rem',
-                                aspectRatio : '1', 
-                                overflow : 'hidden'
+                        <li
+                            className='content-card-img overflow-hidden'
+                            style={{
+                                height: '3.8rem',
+                                aspectRatio: '1',
+                                overflow: 'hidden'
                             }}
-                            >
+                        >
                             <img
-                                src={props.data?.photo || props.data?.image || defaultImg} 
+                                src={props.data?.photo || props.data?.image || defaultImg}
                                 alt={"Not Found"}
                                 style={{
                                     objectFit: 'contain',
-                                    width : '100%',
-                                    height : '100%',
-                                    fontSize : '10px',
-                                    justifyContent : 'flex-start',
-                                    display : 'inline-block'
+                                    width: '100%',
+                                    height: '100%',
+                                    fontSize: '10px',
+                                    justifyContent: 'flex-start',
+                                    display: 'inline-block'
                                 }}
+                                loading={'lazy'}
                             />
                         </li>
 
-                        <li className='flex-column justify-center text-bold-md text-medium flex-1'>
+                        <li className='flex-column justify-center text-bold-md text-medium flex-1' style={{paddingRight : '10px'}}>
 
-                            <div className='flex-column justify-center'>
+                            <div className='flex-column justify-center text-uppercase'>
 
                                 <span
                                     className='product-title text-bold-md text-medium'
@@ -226,23 +227,23 @@ const ContentCard = (props) => {
                                     }}
                                 >
                                     {
-                                        props.data?.product_name?.toUpperCase() || 
-                                        props.data?.name?.toUpperCase() || 
+                                        props.data?.product_name?.toUpperCase() ||
+                                        props.data?.name?.toUpperCase() ||
                                         "Title"
                                     }
                                 </span>
                                 <span className='product-description text-bold-sm text-small'>
                                     {
-                                        (props.data?.description && props.data?.description?.substring(0, 43) + "...") || 
+                                        (props.data?.description && props.data?.description?.substring(0, 35) + "...") ||
                                         "Description"
                                     }
                                 </span>
 
                                 <span className='product-description text-bold-sm text-small flex-row gap-10 items-center'>
-                                    {props.data?.market_price && `Market Price : ${props.data?.market_price}` }
-                                    {props.data?.price && `Our Price : ${props.data?.price}` }
+                                    {props.data?.market_price && `Market Price : ${props.data?.market_price}`}
+                                    {props.data?.price && `Our Price : ${props.data?.price}`}
                                 </span>
-                                
+
                             </div>
 
                         </li>
@@ -254,39 +255,39 @@ const ContentCard = (props) => {
 
 
             {
-                props.cardId !== null && 
+                props.cardId !== null &&
                 props.selectedCardId !== null &&
-                !props.productCard && 
+                !props.productCard &&
                 (props.cardId === props.selectedCardId) &&
-                    <div className='subcategory-container overflow-scroll' >
-                        {
-                            props.data?.sub_categories?.length > 0 ?
+                <div className='subcategory-container overflow-scroll' >
+                    {
+                        props.data?.sub_categories?.length > 0 ?
                             <>
-                            <span className="text-small text-bold-md" style={{marginBottom : '5px'}}>Sub-Categories</span>
-                            {
-                                props.data?.sub_categories?.map((item, index) => {
-                                    return (
-                                        <div style={{
-                                            width : '100%',
-                                            marginBottom : '1%'
-                                          }}>
-                                            <SubContentCard
-                                                key={item.id}
-                                                cardId={item.id}
-                                                data={item}
+                                <span className="text-small text-bold-md" style={{ marginBottom: '5px' }}>Sub-Categories</span>
+                                {
+                                    props.data?.sub_categories?.map((item, index) => {
+                                        return (
+                                            <div style={{
+                                                width: '100%',
+                                                marginBottom: '1%'
+                                            }}>
+                                                <SubContentCard
+                                                    key={item.id}
+                                                    cardId={item.id}
+                                                    data={item}
 
-                                                categoryId = {props.cardId}
-                                                selectSubCategory={props.selectSubCategory}
+                                                    categoryId={props.cardId}
+                                                    selectSubCategory={props.selectSubCategory}
 
-                                                deleteCard={props.deleteSubCategory}
+                                                    deleteCard={props.deleteSubCategory}
 
-                                                productCard
-                                                width={"100%"}
-                                            />
-                                        </div>
-                                    )
-                                }) 
-                            }
+                                                    productCard
+                                                    width={"100%"}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
                             </>
                             :
                             (
@@ -294,8 +295,8 @@ const ContentCard = (props) => {
                                     No SubCategory to show.
                                 </span>
                             )
-                        }
-                    </div>
+                    }
+                </div>
             }
         </div>
     )
@@ -304,9 +305,50 @@ const ContentCard = (props) => {
 
 const SubContentCard = (props) => {
     return (
-        <ContentCard 
+        <ContentCard
             {...props}
         />
+    )
+}
+
+export const LoadingCard = ({ num }) => {
+    return (
+        Array.from({ length: num }, () => 0).map((data, ind) => {
+            const even = ind % 2 === 0
+            return (
+                <div style={{
+                    width: '100%',
+                    marginBottom: '1%',
+                }}>
+                    <div
+                        className={`content-card-container border ${even ? 'card-loading1' : 'card-loading2'}`}
+                        style={{
+                            width: '100%',
+                            padding: "5px",
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '4px',
+                        }}
+                    >
+                        <div
+                            style={{
+                                height: '3.8rem',
+                                aspectRatio: '1',
+                                borderRadius: '8px',
+                                backgroundColor: '#666'
+                            }}
+                        />
+                        <div
+                            className={`${even ? 'card-loading2' : 'card-loading1'} flex-1`}
+                            style={{
+                                backgroundColor: '#666',
+                                borderRadius: '8px',
+                            }}
+                        />
+                    </div>
+                </div>
+            )
+        })
     )
 }
 

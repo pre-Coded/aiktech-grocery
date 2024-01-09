@@ -3,7 +3,7 @@ import './AddCategory.scss'
 import { BsArrowDownCircleFill, BsArrowUpCircleFill, BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
 import { Modal } from '../../../Components';
-import ContentCard from '../ContentCards';
+import ContentCard, { LoadingCard } from '../ContentCards';
 import AddCategoryModal from '../AddProdcut/AddCategoryModal';
 import { dashboardAPI } from "../../../Api/index.js";
 import Loader from '../../../Components/Loader';
@@ -20,13 +20,14 @@ import data from '../../../Assets/DummyData.json'
 import Select from 'react-select';
 import LinkProduct from './LinkProduct';
 import { RxColumnSpacing } from "react-icons/rx";
+import InfiniteScroll from 'react-infinite-scroller';
 
-const AddCategory = () => {
+const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList }) => {
 
   const [categories, setCategories] = useState([])
-  const [fullCategoryList, setFullCategoryList] = useState([]);
-
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, toggleHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [productList, setProductList] = useState({
@@ -39,22 +40,121 @@ const AddCategory = () => {
   const [linkProductModal, toggleLinkProductModal] = useState(false);
   const linkProductRef = useRef(null);
 
-  const fetchItem = async () => {
+  useEffect(() => {
+    const resizeableEle = categoryContainerRef.current;
+    let width = resizeableEle?.offsetWidth;
+    let x = 0;
+
+    const handleMoveResize = (clientX) => {
+
+      const dx = clientX - x;
+      x = clientX;
+      width = width - dx;
+
+      const widthPercent = (windowWidth / width) * 100;
+
+      if (widthPercent < 130 || x < 10) return;
+      // Ensure the width is not going below 0
+      width = Math.max(width, 0);
+
+      resizeableEle.style.minWidth = `${width}px`;
+    };
+
+    const handleUpResize = () => {
+      if (isTouchDevice && sliderRef.current) {
+        sliderRef.current.style.opacity = "0";
+        document.removeEventListener("touchmove", onTouchMoveResize);
+        document.removeEventListener("touchend", onTouchEndResize);
+      }
+    };
+
+
+    const onTouchMoveResize = (event) => {
+      handleMoveResize(event.touches[0].clientX);
+    };
+
+
+    const onTouchEndResize = () => {
+      handleUpResize();
+    };
+
+
+    const onTouchStartResize = (event) => {
+      // event.preventDefault();
+
+      if (event.target === sliderRef.current) {
+        sliderRef.current.style.opacity = "1";
+        x = event.touches[0].clientX;
+        document.addEventListener("touchmove", onTouchMoveResize);
+        document.addEventListener("touchend", onTouchEndResize);
+      }
+    };
+
+    const resizerRight = sliderRef.current;
+
+    // Check if touch events are supported
+    if (isTouchDevice && resizerRight) {
+      resizerRight?.addEventListener("touchstart", onTouchStartResize);
+    }
+
+    return () => {
+      handleUpResize();
+      resizerRight.removeEventListener("touchstart", onTouchStartResize);
+      isMounted.current = false;
+      clearTimeout(debouncedLoadMore);
+    };
+
+  }, [])
+
+
+  // infinite scroll
+  const isMounted = useRef(true);
+
+  const fetchItem = async (newPage) => {
+    console.log("fetchmore", newPage);
+
     try {
-      const response = await dashboardAPI.fetchTenantCategories();
-      setCategories(response.data);
-      setFullCategoryList(response.data)
+      const response = await dashboardAPI.fetchTenantCategories(newPage);
+      console.log("fetchmore", newPage);
+
+      if(response.data.length === 0){
+        toggleHasMore(false);
+        isMounted.current = false;
+      }else{
+        const data = response.data;
+        const uniqueData = [
+          ...new Map([...categories, ...data].map((item) => [item.id, item])).values(),
+        ];
+        setPage(prev => prev+1);
+
+        setCategories(uniqueData);
+        setFullCategoryList(uniqueData);
+      }
+
     } catch (e) {
+      isMounted.current = false;
       toast.error("Failed in fetching categories.", 1000)
     }
 
-    setLoading(false);
   }
 
-  useEffect(async () => {
-    fetchItem();
-  }, [])
+  const loadMore = () => {
+    if (!loading && isMounted.current){
+      console.log("load-more");
+      setLoading(true);  // Set loadingMore to true to prevent concurrent requests
+      fetchItem(page).finally(() => setLoading(false));  // Reset loadingMore on completion (success or failure)
+    }
+  };
 
+  const debouncedLoadMore = setTimeout(loadMore, 500)
+
+  // swipe functionality
+  const categoryContainerRef = useRef(null);
+  const sliderRef = useRef(null);
+  const windowWidth = window.screen.width;
+  let isTouchDevice = 'ontouchstart' in window;
+
+  
   const fetchSpecificProduct = async () => {
     try {
       if (productList.subCategoryId !== null) {
@@ -331,74 +431,6 @@ const AddCategory = () => {
     toggleAddOrEditModal(true);
   }
 
-  // handleCardSliding
-  const categoryContainerRef = useRef(null);
-  const sliderRef = useRef(null);
-  const windowWidth = window.screen.width
-
-  useEffect(() => {
-    const resizeableEle = categoryContainerRef.current;
-    let width = resizeableEle?.offsetWidth;
-    let x = 0;
-    let isTouchDevice = 'ontouchstart' in window;
-
-    const handleMoveResize = (clientX) => {
-      
-      const dx = clientX - x;
-      x = clientX;
-      width = width - dx;
-      
-      const widthPercent = (windowWidth / width) * 100;
-
-      if(widthPercent < 130 || x < 10) return;
-      // Ensure the width is not going below 0
-      width = Math.max(width, 0);
-
-      resizeableEle.style.minWidth = `${width}px`;
-    };
-
-    const handleUpResize = () => {
-      if (isTouchDevice) {
-        document.removeEventListener("touchmove", onTouchMoveResize);
-        document.removeEventListener("touchend", onTouchEndResize);
-      }
-    };
-
-
-    const onTouchMoveResize = (event) => {
-      handleMoveResize(event.touches[0].clientX);
-    };
-
-
-    const onTouchEndResize = () => {
-      handleUpResize();
-    };
-
-
-    const onTouchStartResize = (event) => {
-      // event.preventDefault();
-
-      if(event.target === sliderRef.current){
-        x = event.touches[0].clientX;
-        document.addEventListener("touchmove", onTouchMoveResize);
-        document.addEventListener("touchend", onTouchEndResize);
-      }
-    };
-
-    const resizerRight = sliderRef.current;
-
-    // Check if touch events are supported
-    if (isTouchDevice && resizerRight) {
-      resizerRight?.addEventListener("touchstart", onTouchStartResize);
-    }
-
-    return () => {
-      handleUpResize();
-      resizerRight.removeEventListener("touchstart", onTouchStartResize);
-    };
-
-  }, []) 
-
 
   return (
     <div className='add-category-container flex-column flex-1 overflow-hidden'>
@@ -420,84 +452,105 @@ const AddCategory = () => {
       }
 
       {
-        loading ?
+        <div className='add-category-wrapper flex-column'>
 
-          <div className="flex-1 flex-row place-item-center">
-            <Loader />
+          <div className='flex-row gap-10 flex-1'>
+
+            <div className='search-tab input-border small-input-padding flex-1'>
+              <input
+                type={'search'}
+                placeholder="Search Category..."
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
-          :
+          <section className='category-product flex-row gap-10 flex-1'>
 
-          <div className='add-category-wrapper flex-column'>
+            <div
+              className='category-subcategory flex-1 overflow-hidden'
+              style={{
+                position: 'relative',
+              }}
+            >
 
-            <div className='flex-row gap-10 flex-1'>
-
-              <div className='search-tab input-border small-input-padding flex-1'>
-                <input
-                  type={'search'}
-                  placeholder="Search Category..."
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <section className='category-product flex-row gap-10 flex-1'>
-
-              <div 
-                className='category-subcategory flex-1 overflowY-scroll'
+              <InfiniteScroll
                 style={{
-                  position : 'relative',
+                  width: '100%',
+                  height: '100%',
                 }}
+
+                hasMore={hasMore}
+                loadMore={debouncedLoadMore}
+                loader={
+                  <LoadingCard num={10} />
+                }
               >
 
-                <button 
-                  ref={sliderRef}
-                  className="btn-none"
+                <div
+                  className='absolute'
                   style={{
-                    position : 'absolute',
-                    top : '50%',
-                    transform : 'translateY(-50%)',
-                    right : '0',
-                    height : '100%',  
-                    zIndex : '100',
-                    cursor : 'col-resize',
-                    width : '1.2rem',
+                    height: '100%',
+                    width: '1.2rem',
+                    top: '0',
+                    right: '0',
+                    zIndex: '100',
                   }}
-                /> 
+                >
+                  <button
+                    ref={sliderRef}
 
-                <div 
-                  className='flex-1'
+                    className="btn-none flex-col place-item-center opacity-0"
+                    style={{
+                      position: 'sticky',
+                      top: '0',
+                      right: '0',
+                      height: '100%',
+                      width: '100%',
+                      backgroundColor: '#f2f2f2',
+                      cursor: 'none'
+                    }}
+                  >
+                    <RxColumnSpacing
+                      size={'0.8rem'}
+                      color={'#333'}
+                    />
+                  </button>
+                </div>
+
+                <div
+                  className='flex-1 overflowY-scroll'
 
                   style={{
                     height: '40rem',
                     padding: '0 10px',
                     paddingBottom: '4rem',
-                    minWidth : '200px',
+                    minWidth: '200px',
                   }}>
 
-                    <div
-                      className='cat-text-btn justify-between' 
-                      style={{ 
-                        paddingBottom: '1rem',
-                        width : '100%',
-                      }}
-                    >
-                      <span className='text-large text-bold-md'>
-                        Category and Subcategory
-                      </span>
-                      <button className='btn-none btn-primary' onClick={() => {
-                        setCheckAddSubCategory(false);
-                        handleToggleModal();
-                        setCategoryForm(null)
-                      }}>
-                        {`Add Category`}
-                      </button>
+                  <div
+                    className='cat-text-btn justify-between'
+                    style={{
+                      paddingBottom: '1rem',
+                      width: '100%',
+                    }}
+                  >
+                    <span className='text-large text-bold-md'>
+                      Category and Subcategory
+                    </span>
+                    <button className='btn-none btn-primary' onClick={() => {
+                      setCheckAddSubCategory(false);
+                      handleToggleModal();
+                      setCategoryForm(null)
+                    }}>
+                      {`Add Category`}
+                    </button>
 
-                    </div>
+                  </div>
 
-                    {
+                  {
                       categories.length !== 0 ?
-                        categories.map((category) => (
+                        categories.map((category, index) => (
                           <div style={{
                             width: '100%',
                             marginBottom: '1%',
@@ -536,114 +589,118 @@ const AddCategory = () => {
 
                         :
                         <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>
-                         No Categories to show
+                          No Categories to show
                         </div>
-                    }
-
+                  }
                 </div>
-              </div>
+              </InfiniteScroll>
+            </div>
 
-              <div  
-                ref={categoryContainerRef} 
-                className='cat-sub-product flex-1 overflowY-scroll' 
-                style={{ 
-                  padding: '0 10px', 
-                  height: '40rem'
-                }}
+            <div
+              ref={categoryContainerRef}
+              className='cat-sub-product flex-1 overflowY-scroll'
+              style={{
+                padding: '0 10px',
+                height: '40rem'
+              }}
+            >
+
+              <div
+                className='flex-row justify-between items-center nowrap relative'
+                style={{ paddingBottom: '1rem', minWidth: '200px' }}
               >
 
-                <div className='flex-row justify-between items-center nowrap relative' style={{ paddingBottom: '1rem', minWidth : '200px' }}>
+                <span className='text-large text-bold-md'>
+                  {productList.subCategoryName?.toUpperCase() || "Select Category"}
+                </span>
 
-                  <span className='text-large text-bold-md'>
-                    {productList.subCategoryName?.toUpperCase() || "Select Category"}
-                  </span>
+                <div className='flex-row items-center gap-10'>
 
-                  <div className='flex-row items-center gap-10'>
-
-                    {
-                      productList.subCategoryId !== null &&
-                      <div
-                        ref={linkProductRef}
-                        onMouseLeave={() => {
+                  {
+                    productList.subCategoryId !== null &&
+                    <div
+                      ref={linkProductRef}
+                      onMouseLeave={() => {
+                        toggleLinkProductModal(prev => !prev);
+                      }}
+                    >
+                      <button
+                        className='btn-none btn-outline flex-row items-center gap-10'
+                        onClick={() => {
                           toggleLinkProductModal(prev => !prev);
                         }}
                       >
-                        <button
-                          className='btn-none btn-outline flex-row items-center gap-10'
-                          onClick={() => {
-                            toggleLinkProductModal(prev => !prev);
-                          }}
-                        >
-                          <span>Link Product</span>
-                          {
-                            linkProductModal ?
-                              <BsArrowUpCircleFill size={'1rem'} color={'#5c77ff'} /> :
-                              <BsArrowDownCircleFill size={'1rem'} color={'#5c77ff'} />
-                          }
-                        </button>
-
+                        <span>Link Product</span>
                         {
-                          linkProductModal &&
-                          <HoverComponent
-                            hoverRef={linkProductRef}
-                            style={{
-                              backgroundColor: '#f2f2f2',
-                              width : '100%',
-                              height: '10rem', 
-                              whiteSpace : 'normal'
-                            }}
-                          >
-                            <LinkProduct
-                              categoryId={productList.subCategoryId}
-                              fullCategoryList={fullCategoryList}
-                              setCategories={setCategories}
-                              setFullCategoryList={setFullCategoryList}
-                              closeModal={toggleLinkProductModal}
-                            />
-                          </HoverComponent>
+                          linkProductModal ?
+                            <BsArrowUpCircleFill size={'1rem'} color={'#5c77ff'} /> :
+                            <BsArrowDownCircleFill size={'1rem'} color={'#5c77ff'} />
                         }
-                      </div>
-                    }
-                  </div>
-                </div>
+                      </button>
 
-                {
-                  productList.data?.length > 0 ?
-
-                    (
-                      productList.data.map((product, index) => (
-                        <div
+                      {
+                        linkProductModal &&
+                        <HoverComponent
+                          hoverRef={linkProductRef}
                           style={{
+                            backgroundColor: '#f2f2f2',
                             width: '100%',
-                            marginBottom: '1%',
-                            minWidth : '200px'
+                            height: '10rem',
+                            whiteSpace: 'normal'
                           }}
                         >
-                          <ContentCard
-                            key={index}
-                            cardId={product.id}
-                            data={product}
-
-                            deleteCard={{
-                              itemName: 'productFromSubCat',
-                              response: handleDelete,
-                            }}
-
-                            subCategoryId={productList.subCategoryId}
-
-                            width={"100%"}
-                            productCard
+                          <LinkProduct
+                            categoryId={productList.subCategoryId}
+                            fullProductList={fullProductList}
+                            fullCategoryList={fullCategoryList}
+                            setCategories={setCategories}
+                            setFullCategoryList={setFullCategoryList}
+                            closeModal={toggleLinkProductModal}
                           />
-                        </div>
-                      ))
-                    )
-                    :
-                    <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>No Products To Show</div>
-                }
-
+                        </HoverComponent>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
-            </section>
-          </div>
+
+              {
+                productList.data?.length > 0 ?
+                  (
+                    productList.data.map((product, index) => (
+                      <div
+                        style={{
+                          width: '100%',
+                          marginBottom: '1%',
+                          minWidth: '200px'
+                        }}
+                      >
+                        <ContentCard
+                          key={index}
+                          cardId={product.id}
+                          data={product}
+
+                          deleteCard={{
+                            itemName: 'productFromSubCat',
+                            response: handleDelete,
+                          }}
+
+                          subCategoryId={productList.subCategoryId}
+
+                          width={"100%"}
+                          productCard
+                        />
+                      </div>
+                    ))
+                  )
+                  :
+                  <div className='text-small text-bold-sm flex-1 flex-row place-item-center'>
+                    No Products To Show
+                  </div>
+              }
+            </div>
+          </section>
+        </div>
       }
     </div>
   )

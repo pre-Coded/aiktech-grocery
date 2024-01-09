@@ -47,7 +47,7 @@ function App() {
     <div className="AppRoot">
       <Provider store={store}>
           <Switch>
-          <Route path='/cms' render={()=>(<AuthWrapper><TenantDashboard/></AuthWrapper>)}/> 
+          <Route path='/cms' render={()=>(<TenantDashboard/>)}/> 
             <Route path="/">
               <Navigation />
               <ScrollToTop />
