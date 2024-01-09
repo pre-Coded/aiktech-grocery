@@ -35,6 +35,7 @@ export const fetchTenantProducts = (data)=>{
     return requestMaker(url, "get", {params,payload})
 }
 export const fetchTenantCategories = (data)=>{
+    console.log("inside fetch categories ");
     const url = `/shop/tenant/categories/`
     const params = { ...data }
     const payload = {}

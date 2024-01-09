@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import './AddCategory.scss'
 import { BsArrowDownCircleFill, BsArrowUpCircleFill, BsThreeDotsVertical } from "react-icons/bs";
 import HoverComponent from '../../../Components/HoverComponent/HoverComponent';
@@ -21,13 +21,13 @@ import Select from 'react-select';
 import LinkProduct from './LinkProduct';
 import { RxColumnSpacing } from "react-icons/rx";
 import InfiniteScroll from 'react-infinite-scroller';
+import { debounce } from 'lodash';
+
+
 
 const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList }) => {
 
   const [categories, setCategories] = useState([])
-  const [page, setPage] = useState(1);
-  const [hasMore, toggleHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [productList, setProductList] = useState({
@@ -101,7 +101,6 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
       handleUpResize();
       resizerRight.removeEventListener("touchstart", onTouchStartResize);
       isMounted.current = false;
-      clearTimeout(debouncedLoadMore);
     };
 
   }, [])
@@ -109,47 +108,62 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
 
   // infinite scroll
   const isMounted = useRef(true);
+const [page, setPage] = useState(1);
+const [hasMore, toggleHasMore] = useState(true);
+const [loading, setLoading] = useState(false);
+console.log(loading,"loading");
+console.log(categories,"categories");
+console.log(page,"page number");
 
-  const fetchItem = async (newPage) => {
-    console.log("fetchmore", newPage);
-
-    try {
-      const data = {
-        "page": newPage
-      }
-      const response = await dashboardAPI.fetchTenantCategories(data);
-      console.log("fetchmore", newPage);
-
-      if(response.data.length === 0){
-        toggleHasMore(false);
-        isMounted.current = false;
-      }else{
-        const data = response.data;
-        const uniqueData = [
-          ...new Map([...categories, ...data].map((item) => [item.id, item])).values(),
-        ];
-        setPage(prev => prev+1);
-
-        setCategories(uniqueData);
-        setFullCategoryList(uniqueData);
-      }
-
-    } catch (e) {
-      isMounted.current = false;
-      toast.error("Failed in fetching categories.", 1000)
+const fetchItem = async (newPage) => {
+  console.log("fetch item starting");
+  try {
+    const data = {
+      "page": newPage
     }
 
+    const response = await dashboardAPI.fetchTenantCategories(data);
+
+    if (response.data.length === 0) {
+      toggleHasMore(false);
+    } else {
+      const data = response.data;
+      const uniqueData = [
+        ...new Map([...categories, ...data].map((item) => [item.id, item])).values(),
+      ];
+      if(uniqueData.length===categories.length){
+        toggleHasMore(false)
+      }
+
+      setPage(newPage);
+      setCategories(uniqueData);
+      setFullCategoryList(uniqueData);
+    }
+  } catch (e) {
+    toggleHasMore(false)
   }
+}
 
-  const loadMore = () => {
-    if (!loading && isMounted.current){
-      console.log("load-more");
-      setLoading(true);  // Set loadingMore to true to prevent concurrent requests
-      fetchItem(page).finally(() => setLoading(false));  // Reset loadingMore on completion (success or failure)
+const loadMore = async () => {
+  if (!loading && isMounted.current) {
+    console.log("loading");
+    try {
+      setLoading(true);
+      await fetchItem(page + 1);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
+};
 
-  const debouncedLoadMore = setTimeout(loadMore, 500)
+
+// Use useCallback to memoize the debouncedLoadMore function
+const debouncedLoadMore = useCallback(
+  debounce(loadMore, 500),
+  [loadMore]
+);
+
+
 
   // swipe functionality
   const categoryContainerRef = useRef(null);
@@ -249,7 +263,6 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
 
           item["sub_categories"] = subCategory;
           array.push(item);
-
         }
 
         return array;
@@ -477,18 +490,7 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
               }}
             >
 
-              <InfiniteScroll
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
-
-                hasMore={hasMore}
-                loadMore={debouncedLoadMore}
-                loader={
-                  <LoadingCard num={10} />
-                }
-              >
+              
 
                 <div
                   className='absolute'
@@ -550,6 +552,18 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
                     </button>
 
                   </div>
+                <InfiniteScroll
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                
+                hasMore={hasMore}
+                loadMore={ !loading && loadMore}
+                loader={
+                  <LoadingCard num={10} />
+                }
+              >
 
                   {
                       categories.length !== 0 ?
@@ -595,8 +609,9 @@ const AddCategory = ({ fullProductList, fullCategoryList, setFullCategoryList })
                           No Categories to show
                         </div>
                   }
+                  </InfiniteScroll>
                 </div>
-              </InfiniteScroll>
+              
             </div>
 
             <div

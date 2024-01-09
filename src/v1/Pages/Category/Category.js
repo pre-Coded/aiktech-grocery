@@ -135,7 +135,7 @@ const Category = () => {
     };
    };
 
-const debouncedLoadMore = debounce(loadMore, 500);
+  const debouncedLoadMore = debounce(loadMore, 500);
 
 
 
