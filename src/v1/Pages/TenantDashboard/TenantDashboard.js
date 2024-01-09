@@ -38,6 +38,21 @@ const TenantDashboard = () => {
         category : 1,
     })
 
+    
+    const changeProductPage = () => {
+        setPageNumber(prev => ({
+            ...prev,
+            ["product"] : prev.product+1
+        }))
+    }
+
+    const changeCategoryPage = () => {
+        setPageNumber(prev => ({
+            ...prev,
+            ["category"] : prev.category+1
+        }))
+    }
+
     const handleActiveComponent = useCallback(() => {
         if (activeComponent === 'dashboard') {
             return <Dashboard />
@@ -46,11 +61,7 @@ const TenantDashboard = () => {
             return (
                 <AddProduct 
                     page={pageNumber.product}
-                    setPage={(num) => {
-                        setPageNumber(prev => (
-                            {...prev, 'product' : num}
-                        ))
-                    }}
+                    setPage={changeProductPage}
                     fullProductList={fullProductList} 
                     setFullProductList={setFullProductList} 
                 />
@@ -60,11 +71,7 @@ const TenantDashboard = () => {
             return (
                 <AddCategory
                     page={pageNumber.category}
-                    setPage={(num) => {
-                        setPageNumber(prev => (
-                            {...prev, 'category' : num}
-                        ))
-                    }}
+                    setPage={changeCategoryPage}
                     fullProductList={fullProductList}
                     fullCategoryList={fullCategoryList}
                     setFullCategoryList={setFullCategoryList} 
@@ -80,7 +87,7 @@ const TenantDashboard = () => {
         else {
             return <></>;
         }
-    }, [activeComponent])
+    }, [activeComponent, pageNumber])
     
     
     return (

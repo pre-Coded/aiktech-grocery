@@ -13,6 +13,8 @@ const InfiniteScroller = ({
         errorMsg
     }) => {
 
+    console.log("page",page);
+    
     const isMounted = useRef(true);
     const [hasMore, toggleHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -36,7 +38,7 @@ const InfiniteScroller = ({
                     toggleHasMore(false)
                 }
 
-                setPage(newPage);
+                setPage();
                 setFullItem(uniqueData);
             }
         } catch (e) {
