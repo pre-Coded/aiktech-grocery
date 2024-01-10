@@ -66,6 +66,7 @@ export default function AddStock() {
   const [allInventories, SetAllInventories] = useState(null);
   const [allproducts, setAllProducts] = useState([])
   const [addStockModal, toggleAddStockModal] = useState(false);
+  console.log(allproducts,"all products");
 
 
 
@@ -93,7 +94,7 @@ export default function AddStock() {
             }
             axios.get(`${getBaseUrl()}/api/shop/products/data/`, config)
               .then((response) => {
-                setAllProducts(response.data.data);
+                setAllProducts(response.data);
               }).catch((err) => {
 
               })
@@ -349,7 +350,7 @@ export default function AddStock() {
   };
 
   //using debouncing
-  const handleSearchProduct = getProduct
+  const handleSearchProduct = getProduct;
 
   //filling data after selecting from the suggestions list
   const handleSuggestion = (e) => {
@@ -491,6 +492,7 @@ export default function AddStock() {
 
 
   const newArr = new Array(4).fill(0);
+  console.log(productSuggestions,"suggestions");
 
   //qwert
   return (
@@ -656,9 +658,9 @@ export default function AddStock() {
 
                   <div className="responsive-flex-row gap-10">
 
-                    <div className="flex-row justify-between input-border smaller-input-padding flex-1 relative">
+                    <div className="smaller-input-padding flex-1 relative">
 
-                      <div className="flex-1 flex-row">
+                      <div className="flex-1 input-border">
                         <input
                           id="product_name"
                           className="suggestion_input flex-1"

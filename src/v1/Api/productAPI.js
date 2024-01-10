@@ -121,7 +121,6 @@ export const fetchleafcategory = (data) => {
 
 export const fetchPagedProducts = (data) => {
   const { page , subCategoryName, subCategoryId } = data;
-  console.log(data,"data");
   if(!page) page=1
   const url = `/shop/products/Pagination/`;
   const params = {data};
@@ -130,21 +129,29 @@ export const fetchPagedProducts = (data) => {
 }
 
 export const editProduct = (data) => {
+  const getFormData = data => Object.keys(data).reduce((formData, key) => {
+    formData.append(key, data[key]);
+    return formData;
+}, new FormData());
+
   const url = `/shop/tenant/products/`;
   const params = {};
-  const payload = { ...data };
+  const payload = getFormData(data);
   return requestMaker(url, "patch", { params, payload }, {
     'Content-Type': 'multipart/form-data',
   });
 };
 
 export const addSubCategory = (data) => {
+  const getFormData = data => Object.keys(data).reduce((formData, key) => {
+    formData.append(key, data[key]);
+    return formData;
+}, new FormData());
   const url = `/shop/category/subcategory/`;
   const params = {};
-  const payload = { ...data };
+  const payload = getFormData(data);
   return requestMaker(url, "put", { params, payload },  {
     'Content-Type': 'multipart/form-data',
-    'Accept': '*/*'
   });
 };
 

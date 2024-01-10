@@ -27,7 +27,9 @@ import { set } from 'lodash';
 
 const AddCategory = ({ 
     page, 
+    productpage,
     setPage,
+    setProductPage,
     fullProductList, 
     fullCategoryList, 
     setFullCategoryList,
@@ -551,9 +553,13 @@ const AddCategory = ({
                         >
                           <LinkProduct
                             categoryId={productList.subCategoryId}
+                            page={productpage}
+                            setPage={setProductPage}
                             fullCategoryList={fullCategoryList}
                             setFullCategoryList={setFullCategoryList}
                             closeModal={toggleLinkProductModal}
+                            fullProductList={fullProductList}
+                            setFullProductList={setFullProductList}
                           />
                         </HoverComponent>
                       }

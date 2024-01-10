@@ -70,7 +70,9 @@ const TenantDashboard = () => {
         else if(activeComponent === "addCategory"){
             return (
                 <AddCategory
+                    productpage={pageNumber.product}
                     page={pageNumber.category}
+                    setProductPage={changeProductPage}
                     setPage={changeCategoryPage}
                     fullProductList={fullProductList}
                     fullCategoryList={fullCategoryList}
@@ -87,7 +89,7 @@ const TenantDashboard = () => {
         else {
             return <></>;
         }
-    }, [activeComponent, pageNumber])
+    }, [activeComponent, pageNumber, fullCategoryList, fullProductList])
     
     
     return (

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import AddCategory from './AddCategory.scss';
 import { FiDelete } from 'react-icons/fi';
 import { MdAddCircleOutline, MdDelete, MdGroupAdd } from 'react-icons/md';
-import { fetchTenantProducts, linkProductToCategory } from '../../../Api/dashboardAPI';
+import { fetchAllTenantProducts, linkProductToCategory } from '../../../Api/dashboardAPI';
 import data from '../../../Assets/DummyData.json';
 import Loader from '../../../Components/Loader';
 import { toast } from 'react-toastify';
@@ -89,7 +89,7 @@ const ProductCard = (props) => {
             </li>
             <li className='flex-column justify-center flex-1'>
                 <span className='text-medium text-bold-md text-uppercase'>
-                    {props.data.product_name.substring(0, 20)}...
+                    {props.data.product_name?.substring(0, 20)}...
                 </span>
 
                 <span className='text-small text-bold-sm'>
@@ -109,19 +109,27 @@ const ProductCard = (props) => {
 
 const LinkProduct = ({ 
         categoryId, 
+        page,
+        setPage,
         fullCategoryList,
         setCategories, 
         setFullCategoryList, 
+        fullProductList,
+        setFullProductList
     }) => {
 
     const [product, setProducts] = useState([])
-    const [fullProductList, setFullProductList] = useState([]);
+    // const [fullProductList, setFullProductList] = useState([]);
+    useEffect(async ()=>{
+        const response = await fetchAllTenantProducts();
+        setProducts(response.data)
+    },[])
 
     useEffect(() => {
         setProducts(fullProductList)
     }, [fullProductList])
 
-    const [loader, setLoader] = useState(true);
+    const [loader, setLoader] = useState(false);
 
     const [treeView, setTreeView] = useState(null);
 
@@ -173,7 +181,7 @@ const LinkProduct = ({
             return newCat;
         }, [])
 
-        setCategories(newCategoryList);
+        // setCategories(newCategoryList);
         setFullCategoryList(newCategoryList);
     }
 
@@ -223,7 +231,7 @@ const LinkProduct = ({
 
         setProducts(filterItem);
     }
-
+    
     return (
         <div className='absolute flex-column' style={{
             width: '100%',
@@ -278,12 +286,7 @@ const LinkProduct = ({
                                     }}
                                 >
                                 
-                                    <InfiniteScroller
-                                        apiCall={dashboardAPI.fetchTenantProducts}
-                                        fullItem={fullProductList}
-                                        setFullItem={setFullProductList}
-                                        errorMsg={"Error in fetching Products."}
-                                    >
+                                     
                                         {
                                             product.map((item) => {
                                                 return (
@@ -298,7 +301,7 @@ const LinkProduct = ({
                                                     )
                                                 })
                                             }
-                                    </InfiniteScroller>
+                                    
                                 </div>
 
                                 <div 
