@@ -202,7 +202,7 @@ export default function CheckoutBill({
               Pay on Delivery
             </div>
           </button>
-          <button
+          {/* <button
             onClick={() => {
               // setIsWallet(false);
               setModeOfPayment("online");
@@ -224,7 +224,7 @@ export default function CheckoutBill({
               ></div>
               Online Payment
             </div>
-          </button>
+          </button> */}
           {" "}
         </>
       )}

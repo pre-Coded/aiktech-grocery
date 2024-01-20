@@ -178,10 +178,10 @@ export default function CheckoutAddress({
       </div>
       <h5>ADDRESSES</h5>
 
-      {addresses && addresses.length > 0 ? (
+      {addresses && addresses.length > 0  ? (
         <div className="addresses-list">
           {addresses.map((address) => {
-            return (
+            return address["value"] && (
               <div
                 key={address.pk}
                 className={`address-card ${address.value === selectedAddress ? "selected" : ""
@@ -216,7 +216,7 @@ export default function CheckoutAddress({
           }).reverse()}
         </div>
       ) : null}
-      {addresses && addresses.length > 0 ? (
+      {addresses && addresses.length > 0 && addresses["address"] ? (
         <div className="or">
           <h6>
             <span>or</span>

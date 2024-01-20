@@ -117,9 +117,6 @@ const Auth = (props) => {
     const register = async () => {
         setLoading(true)
         try {
-            if(inventory===null){
-                toast.error("your location cannot be delivered");
-            }
 
             const payload = {
                 name: username,
