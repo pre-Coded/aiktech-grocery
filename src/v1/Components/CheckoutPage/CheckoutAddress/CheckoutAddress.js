@@ -180,8 +180,10 @@ export default function CheckoutAddress({
 
       {addresses && addresses.length > 0  ? (
         <div className="addresses-list">
-          {addresses.map((address) => {
-            return address["value"] && (
+          {addresses.map((address, ind) => {
+            if(ind === 0 || address["value_type"] !== 3) return;
+
+            return (
               <div
                 key={address.pk}
                 className={`address-card ${address.value === selectedAddress ? "selected" : ""

@@ -387,24 +387,26 @@ export default function Checkout() {
     setLoading(true);
     try {
 
-      const deliverable = await checkDeliverability();
-      console.log(deliverable,"deliverable");
-      if(!deliverable){
-        setLoading(false)
-        return toast.error("cannot order your location")
-        
-      }
       
       const { cartitem = [] } = cartData;
       const modifiedCartItems = [...cartitem].map((i) => {
         return { product: i.id, quantity: i.quantity };
       });
       const cartId = get(cartData, "data.0.id");
-
+      
       if (!selectedAddress && !newAddress) {
         setLoading(false);
         return toast.error("Address can't be empty !");
       }
+
+      const deliverable = await checkDeliverability();
+      console.log(deliverable,"deliverable");
+      if(!deliverable){
+        setLoading(false)
+        return toast.error("Cannot order your location")
+        
+      }
+
       if(mode_of_payment === undefined)
       {
           setLoading(false);

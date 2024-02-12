@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { InputField, Button } from '../../../Components';
 import { findError } from '../../../Utils';
 
@@ -7,7 +8,11 @@ export default function PasswordLogin({ controls, submitHandler, onChange, error
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const clickHandler=()=>{
     setShowPasswordInput(true)
-   password && submitHandler();
+    if (password) {
+      submitHandler();
+    }else{
+      toast.error("Please type password");
+    }
    }
   return (
     <div>
